@@ -93,6 +93,7 @@ export default function AddRider(props) {
               },
               (error) => {
                 console.log("err post=", error);
+                setIsSubmitted(false);
               });           
 
     }
@@ -128,7 +129,7 @@ export default function AddRider(props) {
         if(isSubmitted){
             onSubmit();
         }
-    });
+    },[isSubmitted]);
          
     return (
         <Container>

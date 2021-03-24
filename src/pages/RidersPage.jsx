@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useHistory } from "react-router-dom";
+import { useHistory} from "react-router-dom";
 import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Container,Button,Grid,IconButton,TextField,MenuItem} from '@material-ui/core';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
@@ -23,7 +23,7 @@ export default function RidersPage(props) {
     const history = useHistory();
     const classes = useStyles();
 
-    useEffect(()=>{
+    const getRiders = () => {
         let apiUrl= props.apiUrl + "Rider/";
 
         fetch(apiUrl,
@@ -49,18 +49,33 @@ export default function RidersPage(props) {
                 alert(error);
             }
         );
+    }
+
+    useEffect(()=>{
+        getRiders();
 
     },[]);
 
     const btnAddRider=()=>{
         history.push('/addRider');
     }
-    const btnEditing=()=>{
 
+    const btnView=(rider_id)=>{
+        
+        history.push({
+            pathname: '/ViewRider',
+            state: { 
+                id: rider_id,
+            }
+        });
     }
 
-    const btnRemove=()=>{
+    const btnEditing=(rider_id)=>{
+        history.push("/EditRider/"+rider_id);
+    }
 
+    const btnRemove=(rider_id)=>{
+        
     }
 
     const requestSearch = (searchedVal) => {
@@ -88,9 +103,9 @@ export default function RidersPage(props) {
     setRows(arrayCopy);
     };
 
-    const handleRidingSectorChange = async(event) => {
+    const handleRidingSectorChange = (event) => {
 
-        await setRidingSector(event.target.value);
+        setRidingSector(event.target.value);
 
         if(ridingSector!=="הכל"){
             const filteredRows = riders.filter((rider) => {
@@ -167,7 +182,7 @@ export default function RidersPage(props) {
                                 <TableCell align="right">{rider.regular_lessons.map((lesson)=>(lesson.time+" "))}</TableCell>
                                 <TableCell align="right">
                                     <IconButton aria-label="צפייה">  
-                                         <VisibilityOutlinedIcon onClick={() => btnEditing(rider.id)} />
+                                         <VisibilityOutlinedIcon onClick={() => btnView(rider.id)} />
                                     </IconButton>
                                 </TableCell>
                                 <TableCell align="right">
