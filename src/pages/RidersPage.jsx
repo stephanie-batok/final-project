@@ -57,17 +57,11 @@ export default function RidersPage(props) {
     },[]);
 
     const btnAddRider=()=>{
-        history.push('/addRider');
+        history.push('/AddRider');
     }
 
     const btnView=(rider_id)=>{
         
-        history.push({
-            pathname: '/ViewRider',
-            state: { 
-                id: rider_id,
-            }
-        });
     }
 
     const btnEditing=(rider_id)=>{
@@ -122,7 +116,7 @@ export default function RidersPage(props) {
         <Container>
             <Grid container justify="flex-start" alignItems="center">
                 <Grid item xs={3}>
-                    <Button variant="outlined" color="primary" onClick={btnAddRider}>הוסף תלמיד</Button>
+                    <Button variant="outlined" color="primary" onClick={btnAddRider}>הוספת רוכב</Button>
                 </Grid>
                 <Grid item xs={3}>
                     <TextField style={{width:"25ch"}} select label="בחר מגזר רכיבה" value={ridingSector} onChange={handleRidingSectorChange}>
@@ -179,7 +173,7 @@ export default function RidersPage(props) {
                                 <TableCell align="right">{rider.phone_number}</TableCell>
                                 <TableCell align="right">{rider.instructor_full_name}</TableCell>
                                 <TableCell align="right">{rider.regular_lessons.map((lesson)=>(lesson.day+" "))}</TableCell>
-                                <TableCell align="right">{rider.regular_lessons.map((lesson)=>(lesson.time+" "))}</TableCell>
+                                <TableCell align="right">{rider.regular_lessons.map((lesson)=>(lesson.start_time+" "))}</TableCell>
                                 <TableCell align="right">
                                     <IconButton aria-label="צפייה">  
                                          <VisibilityOutlinedIcon onClick={() => btnView(rider.id)} />

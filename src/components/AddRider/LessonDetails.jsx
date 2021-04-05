@@ -8,7 +8,7 @@ import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 export default function LessonDetails(props) {
     const { register, handleSubmit} = useForm();
     const [showLessonDetails,setShowLessonDetails] = useState(false);
-    const [instructors,setInstructors]=useState([]);
+    const [instructors,setInstructors]=useState("");
     const [horses,setHorses]=useState([]);
     const days =["ראשון","שני","שלישי","רביעי","חמישי","שישי"];
     const [addLesson,setAddLesson] = useState(false);
@@ -28,7 +28,7 @@ export default function LessonDetails(props) {
     });
 
     const getInstructors = () => {
-        let apiUrl= props.apiUrl + "SystemUser/Instructor";
+        let apiUrl= props.apiUrl + "Worker/Instructor";
 
         fetch(apiUrl,
             {
@@ -83,19 +83,20 @@ export default function LessonDetails(props) {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+            {instructors!==""?
             <Grid container spacing={3} style={{display:(showLessonDetails?"block":"none")}}>
                 <Grid item>
                     <label>פרטי השיעור</label>
                 </Grid>
                 <Grid item>
-                    <TextField select label="בחר מדריך קבוע" variant="outlined" onChange={(e) => register({name:"instructor_id", value: e.target.value})} style={{width:"25ch"}}>
+                    <TextField select label="בחר מדריך קבוע" variant="outlined" onChange={(e) => register({name:"instructor_id", value: e.target.value, required: true})} style={{width:"25ch"}}>
                         {instructors.map((i) =>(
                         <MenuItem value={i.id}>{i.first_name+" "+i.last_name}</MenuItem>
                         ))}
                     </TextField>
                 </Grid>
                 <Grid item>
-                    <TextField select label="בחר סוס קבוע" variant="outlined" onChange={(e) => register({name:"horse_id", value: e.target.value})} style={{width:"25ch"}}>
+                    <TextField select label="בחר סוס קבוע" variant="outlined" onChange={(e) => register({name:"horse_id", value: e.target.value, required: true})} style={{width:"25ch"}}>
                         <MenuItem value={0}>ללא סוס קבוע</MenuItem>
                         {horses.map((h) =>(
                         <MenuItem value={h.id}>{h.name}</MenuItem>
@@ -136,11 +137,18 @@ export default function LessonDetails(props) {
                     </TextField>
                 </Grid>
                 <Grid item>
-                    <TextField name="time" style={{width:"25ch"}} variant="outlined" defaultValue="00:00" label="בחר שעה קבועה" type="time" inputRef={register}
+                    <TextField name="start_time" style={{width:"25ch"}} variant="outlined" defaultValue="00:00" label="בחר שעת תחילת שיעור" type="time" inputRef={register}
                         inputProps={{ 
                         step: 300, // 5 min
                         }}
                     />
+                </Grid>
+                <Grid item>
+                        <TextField name="end_time" style={{width:"25ch"}} variant="outlined" defaultValue="00:00" label="בחר שעת סיום שיעור" type="time" inputRef={register}
+                            inputProps={{
+                            step: 300, // 5 min
+                            }}
+                        />
                 </Grid>
                 <Grid item style={{display:(addLesson?"none":"block")}}>
                     <Button startIcon={<AddCircleOutlineIcon />} style={{color:'green'}} onClick={()=>{setAddLesson(true)}}>
@@ -187,7 +195,14 @@ export default function LessonDetails(props) {
                         </TextField>
                     </Grid>
                     <Grid item>
-                        <TextField name="time2" style={{width:"25ch"}} variant="outlined" defaultValue="00:00" label="בחר שעה קבועה" type="time" inputRef={register}
+                        <TextField name="start_time2" style={{width:"25ch"}} variant="outlined" defaultValue="00:00" label="בחר שעת תחילת שיעור" type="time" inputRef={register}
+                            inputProps={{
+                            step: 300, // 5 min
+                            }}
+                        />
+                    </Grid>
+                    <Grid item>
+                        <TextField name="end_time2" style={{width:"25ch"}} variant="outlined" defaultValue="00:00" label="בחר שעת סיום שיעור" type="time" inputRef={register}
                             inputProps={{
                             step: 300, // 5 min
                             }}
@@ -212,7 +227,7 @@ export default function LessonDetails(props) {
                         </Button>
                     </Grid>
                 </Grid>
-            </Grid>
+            </Grid>:null}
         </form>
     )
 }

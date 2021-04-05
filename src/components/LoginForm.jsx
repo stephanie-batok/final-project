@@ -1,6 +1,8 @@
 import React,{useState,useEffect} from 'react';
 import {Button,Grid,TextField,Checkbox,FormControlLabel} from '@material-ui/core';
 import { useHistory } from "react-router-dom";
+import logo from '../horse-club-logo.png';
+
 
 
 export default function LoginForm(props) {
@@ -38,7 +40,6 @@ export default function LoginForm(props) {
             .then(
               (result) => {
                   localStorage.setItem('id', result);
-                  alert(result);
               },
               (error) => {
                 alert(error);
@@ -48,7 +49,7 @@ export default function LoginForm(props) {
 
     useEffect(() => {
         if(allowd){
-            history.push('/riders');
+            history.push('/Schedule');
         }
     });
 
@@ -60,7 +61,12 @@ export default function LoginForm(props) {
             alignItems="center"
             spacing={3}
         >
-            <h2>כניסה למערכת</h2>
+            <Grid item>
+                <br/>
+                <img src={logo} />
+                <br/><br/>
+                <h4>כניסה למערכת</h4>
+            </Grid>
             <Grid item>
             <TextField value={email} onChange={e => setEmail(e.target.value)} label="דואר אלקטרוני" variant="outlined" />
             </Grid>

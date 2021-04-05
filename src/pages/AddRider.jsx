@@ -17,6 +17,7 @@ export default function AddRider(props) {
 
 
     const onSubmit = () => {
+        setIsSubmitted(false);
         let apiUrl= props.apiUrl + "Rider/";
 
         let newRider={                                  //create object to send in the body of POST method
@@ -56,21 +57,24 @@ export default function AddRider(props) {
             "regular_lessons":[
                 {
                     "day":lessonDetails["day"],
-                    "time":lessonDetails["time"],
+                    "start_time":lessonDetails["start_time"],
+                    "end_time":lessonDetails["end_time"],
                     "lesson_type":lessonDetails["lesson_type"],
                     "price":parseInt(lessonDetails["price"]),
                     "funding_source":lessonDetails["funding_source"]
                 },
                 {
                     "day":lessonDetails["day2"],
-                    "time":lessonDetails["time2"],
+                    "start_time":lessonDetails["start_time2"],
+                    "end_time":lessonDetails["end_time2"],
                     "lesson_type":lessonDetails["lesson_type2"],
                     "price":parseInt(lessonDetails["price2"]),
                     "funding_source":lessonDetails["funding_source2"]
                 }
             ]
         }
-
+        console.log(newRider);
+        
         fetch(apiUrl,                                    //add new rider to db with POST method
             {
               method: 'POST',
@@ -93,7 +97,6 @@ export default function AddRider(props) {
               },
               (error) => {
                 console.log("err post=", error);
-                setIsSubmitted(false);
               });           
 
     }
@@ -129,7 +132,7 @@ export default function AddRider(props) {
         if(isSubmitted){
             onSubmit();
         }
-    },[isSubmitted]);
+    });
          
     return (
         <Container>

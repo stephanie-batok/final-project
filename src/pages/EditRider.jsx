@@ -8,7 +8,7 @@ import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 
 export default function EditRider(props) {
     let { id } = useParams();
-    const { register, handleSubmit} = useForm();
+    const { register, handleSubmit,setValue} = useForm({mode: 'onBlur'});
     const [rider,setRider] = useState("");
     const [instructors,setInstructors]=useState("");
     const [horses,setHorses]=useState("");
@@ -19,6 +19,26 @@ export default function EditRider(props) {
         getRider();
         getInstructors();
         getHorses();
+        if (rider!=="") {
+            setValue([{first_name : rider.first_name},
+                      {last_name : rider.last_name},
+                      {id : rider.id},
+                      {gender : rider.gender},
+                      {date_of_birth : rider.date_of_birth},
+                      {phone_number : rider.phone_number},
+                      {email : rider.email},
+                      {password : rider.password},
+                      {riding_type : rider.riding_type},
+                      {city : rider.city},
+                      {address : rider.address},
+                      {weight : rider.weight},
+                      {height : rider.height},
+                      {starting_date : rider.starting_date},
+                      {healthForm : rider.healthForm},
+                      {horse_id : rider.horse_id},
+                      {instructor_id : rider.instructor_id},
+                    ]);
+        }
     },[]);
 
     const onSubmit = (data) => {
@@ -63,7 +83,7 @@ export default function EditRider(props) {
         );
     }
     const getInstructors = () => {
-        let apiUrl= props.apiUrl + "SystemUser/Instructor";
+        let apiUrl= props.apiUrl + "Worker/Instructor";
 
         fetch(apiUrl,
             {
@@ -125,16 +145,16 @@ export default function EditRider(props) {
                             <label>פרטים אישיים</label>
                         </Grid>
                         <Grid item>
-                            <TextField name="first_name" value={rider.first_name} inputRef={register} label="שם פרטי" variant="outlined" />
+                            <TextField name="first_name" defaultValue={rider.first_name} inputRef={register} label="שם פרטי" variant="outlined" />
                         </Grid>
                         <Grid item>
-                            <TextField name="last_name" value={rider.last_name} inputRef={register} label="שם משפחה" variant="outlined" />
+                            <TextField name="last_name" defaultValue={rider.last_name} inputRef={register} label="שם משפחה" variant="outlined" />
                         </Grid>
                         <Grid item>
-                            <TextField name="id" value={rider.id} inputRef={register} label="תעודת זהות" variant="outlined" />
+                            <TextField name="id" defaultValue={rider.id} inputRef={register} label="תעודת זהות" variant="outlined" />
                         </Grid>
                         <Grid item>
-                            <TextField select variant="outlined" value={rider.gender} label="בחר מגדר" onChange={(e) => register({name:"gender", value: e.target.value})} style={{width:"24ch"}}>
+                            <TextField select variant="outlined" defaultValue={rider.gender} label="בחר מגדר" onChange={(e) => register({name:"gender", value: e.target.value})} style={{width:"24ch"}}>
                                 <MenuItem value="זכר">
                                     זכר
                                 </MenuItem>
@@ -144,19 +164,19 @@ export default function EditRider(props) {
                             </TextField>
                         </Grid>
                         <Grid item>
-                            <TextField name="date_of_birth" value={rider.date_of_birth} style={{width:"24ch"}} InputLabelProps={{shrink:true}} type="date" inputRef={register} label="תאריך לידה" variant="outlined" />
+                            <TextField name="date_of_birth" defaultValue={rider.date_of_birth} style={{width:"24ch"}} InputLabelProps={{shrink:true}} type="date" inputRef={register} label="תאריך לידה" variant="outlined" />
                         </Grid>
                         <Grid item>
-                            <TextField name="phone" value={rider.phone} inputRef={register} label="מספר טלפון" variant="outlined" />
+                            <TextField name="phone" defaultValue={rider.phone} inputRef={register} label="מספר טלפון" variant="outlined" />
                         </Grid>
                         <Grid item>
-                            <TextField name="city" value={rider.city} inputRef={register} label="עיר מגורים" variant="outlined" />
+                            <TextField name="city" defaultValue={rider.city} inputRef={register} label="עיר מגורים" variant="outlined" />
                         </Grid>
                         <Grid item>
-                            <TextField name="address" value={rider.address} inputRef={register} label="כתובת" variant="outlined" />
+                            <TextField name="address" defaultValue={rider.address} inputRef={register} label="כתובת" variant="outlined" />
                         </Grid>
                         <Grid item>
-                            <TextField select label="בחר מגזר רכיבה" value={rider.riding_type} variant="outlined" onChange={(e) => register({name:"riding_type", value: e.target.value})} style={{width:"24ch"}}>
+                            <TextField select label="בחר מגזר רכיבה" defaultValue={rider.riding_type} variant="outlined" onChange={(e) => register({name:"riding_type", value: e.target.value})} style={{width:"24ch"}}>
                                 <MenuItem value="רכיבה ספורטיבית">
                                 רכיבה ספורטיבית
                                 </MenuItem>
@@ -166,22 +186,22 @@ export default function EditRider(props) {
                             </TextField>
                         </Grid>
                         <Grid item>
-                            <TextField name="starting_date" value={rider.starting_date} style={{width:"24ch"}} InputLabelProps={{shrink:true}} type="date" inputRef={register} label="תאריך רישום לחווה" variant="outlined" />
+                            <TextField name="starting_date" defaultValue={rider.starting_date} style={{width:"24ch"}} InputLabelProps={{shrink:true}} type="date" inputRef={register} label="תאריך רישום לחווה" variant="outlined" />
                         </Grid>
                         <Grid item>
-                            <TextField name="height" value={rider.height} inputRef={register} defaultValue={0} label="גובה" variant="outlined" />
+                            <TextField name="height" defaultValue={rider.height} inputRef={register} defaultValue={0} label="גובה" variant="outlined" />
                         </Grid>
                         <Grid item>
-                            <TextField name="weight" value={rider.weight} inputRef={register} defaultValue={0} type="number" label="משקל" variant="outlined" />
+                            <TextField name="weight" defaultValue={rider.weight} inputRef={register} defaultValue={0} type="number" label="משקל" variant="outlined" />
                         </Grid>
                         <Grid item>
-                            <TextField name="email" value={rider.email} inputRef={register} label="דואר אלקטרוני" variant="outlined" />
+                            <TextField name="email" defaultValue={rider.email} inputRef={register} label="דואר אלקטרוני" variant="outlined" />
                         </Grid>
                         <Grid item>
-                            <TextField name="password" value={rider.password} inputRef={register} label="סיסמה" variant="outlined" />
+                            <TextField name="password" defaultValue={rider.password} inputRef={register} label="סיסמה" variant="outlined" />
                         </Grid>
                         <Grid item>
-                            <TextField name="healthForm" value={rider.healthForm} inputRef={register} label="טופס הצהרת בריאות" variant="outlined" />
+                            <TextField name="healthForm" defaultValue={rider.healthForm} inputRef={register} label="טופס הצהרת בריאות" variant="outlined" />
                         </Grid>
                         <Grid item xs={12}>
                             <label>פרטי הורים</label>
@@ -280,14 +300,14 @@ export default function EditRider(props) {
                             <label><br/>פרטי שיעורים קבועים</label>
                         </Grid>
                         <Grid item>
-                            <TextField select label="בחר מדריך קבוע" value={rider.instructor_id} variant="outlined" onChange={(e) => register({name:"instructor_id", value: e.target.value})} style={{width:"25ch"}}>
+                            <TextField select label="בחר מדריך קבוע" defaultValue={rider.instructor_id} variant="outlined" onChange={(e) => register({name:"instructor_id", value: e.target.value})} style={{width:"25ch"}}>
                                 {instructors!==""?instructors.map((i) =>(
                                 <MenuItem value={i.id}>{i.first_name+" "+i.last_name}</MenuItem>
                                 )):null}
                             </TextField>
                         </Grid>
                         <Grid item>
-                            <TextField select label="בחר סוס קבוע" value={rider.horse_id} variant="outlined" onChange={(e) => register({name:"horse_id", value: e.target.value})} style={{width:"25ch"}}>
+                            <TextField select label="בחר סוס קבוע" defaultValue={rider.horse_id} variant="outlined" onChange={(e) => register({name:"horse_id", value: e.target.value})} style={{width:"25ch"}}>
                                 <MenuItem value={0}>ללא סוס קבוע</MenuItem>
                                 {horses!==""?horses.map((h) =>(
                                 <MenuItem value={h.id}>{h.name}</MenuItem>
@@ -333,7 +353,14 @@ export default function EditRider(props) {
                                     </TextField>
                                 </Grid>
                                 <Grid item>
-                                    <TextField name={"time"+key} style={{width:"25ch"}} value={regular_lesson.time} variant="outlined" label="בחר שעה קבועה" type="time" inputRef={register}
+                                    <TextField name={"start_time"+key} style={{width:"25ch"}} value={regular_lesson.start_time} variant="outlined" label="שעת התחלת שיעור" type="time" inputRef={register}
+                                        inputProps={{ 
+                                        step: 300, // 5 min
+                                        }}
+                                    />
+                                </Grid>
+                                <Grid item>
+                                    <TextField name={"end_time"+key} style={{width:"25ch"}} value={regular_lesson.end_time} variant="outlined" label="שעת סיום שיעור" type="time" inputRef={register}
                                         inputProps={{ 
                                         step: 300, // 5 min
                                         }}
@@ -384,7 +411,14 @@ export default function EditRider(props) {
                                 </TextField>
                             </Grid>
                             <Grid item>
-                                <TextField name="time1" style={{width:"25ch"}} variant="outlined" label="בחר שעה קבועה" type="time" inputRef={register}
+                                <TextField name="start_time1" style={{width:"25ch"}} variant="outlined" label="בחר שעת התחלת שיעור" defaultValue="00:00" type="time" inputRef={register}
+                                    inputProps={{ 
+                                    step: 300, // 5 min
+                                    }}
+                                />
+                            </Grid>
+                            <Grid item>
+                                <TextField name="end_time1" style={{width:"25ch"}} variant="outlined" label="בחר שעת סיום שיעור" defaultValue="00:00" type="time" inputRef={register}
                                     inputProps={{ 
                                     step: 300, // 5 min
                                     }}

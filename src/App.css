@@ -8,6 +8,13 @@
   pointer-events: none;
 }
 
+.color-nav{
+  background-color:rgba(243, 198, 177, 0.301);
+  font-weight: bold;
+  font-family: Verdana,"Geneva", Tahoma, sans-serif ;
+
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
