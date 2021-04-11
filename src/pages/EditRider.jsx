@@ -1,19 +1,21 @@
 import React,{useState,useEffect} from 'react';
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
-import {Button,Grid,TextField,MenuItem,Container} from '@material-ui/core';
+import { useParams,useHistory } from "react-router-dom";
+import {Button,Grid,TextField,MenuItem,Container, IconButton} from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 
 export default function EditRider(props) {
     let { id } = useParams();
+    const history = useHistory();
     const { register, handleSubmit,setValue} = useForm({mode: 'onBlur'});
     const [rider,setRider] = useState("");
     const [instructors,setInstructors]=useState("");
     const [horses,setHorses]=useState("");
-    const days =["ראשון","שני","שלישי","רביעי","חמישי","שישי"];
     const [addLesson,setAddLesson] = useState(false);
+    const days =["ראשון","שני","שלישי","רביעי","חמישי","שישי"];
 
     useEffect(()=>{
         getRider();
@@ -67,15 +69,9 @@ export default function EditRider(props) {
             .then(
               (result) => {
                   setRider(result);
-                  console.log('====================================');
-                  console.log(result.regular_lessons.length);
-                  console.log('====================================');
-
                   if(result.regular_lessons.length===1){
                         setAddLesson(true);
                   }
-                  
-
               },
               (error) => {
                 alert(error);
@@ -138,6 +134,14 @@ export default function EditRider(props) {
 
     return (
         <Container>
+            <Grid container justify="flex-start">
+                <Grid item>
+                    <IconButton aria-label="חזור">
+                        <ArrowForwardIosIcon onClick={() => history.goBack()} />
+                    </IconButton>
+                    <label>חזור</label>
+                </Grid>
+            </Grid>
             <form onSubmit={handleSubmit(onSubmit)}>
                 {rider!==""?<Grid container justify="center" spacing={3}>
                     <Grid container item justify="center" xs={6} spacing={3}>

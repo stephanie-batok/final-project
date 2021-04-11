@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import Paper from '@material-ui/core/Paper';
 import { ViewState, GroupingState,IntegratedGrouping } from '@devexpress/dx-react-scheduler';
-import {Scheduler,Resources , DayView, Appointments, WeekView, GroupingPanel} from '@devexpress/dx-react-scheduler-material-ui';
+import {Scheduler,Resources, DayView, Appointments, WeekView, GroupingPanel} from '@devexpress/dx-react-scheduler-material-ui';
 
 
 export default function Schedule(props) {
@@ -35,7 +35,6 @@ export default function Schedule(props) {
                     let tempInstructors = [];
 
                     result.map((lesson) => {
-
                         tempSchedulerData.push({
                         startDate: lesson.date+"T"+lesson.start_time,
                         endDate: lesson.date+"T"+lesson.end_time,

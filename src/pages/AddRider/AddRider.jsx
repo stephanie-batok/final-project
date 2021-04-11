@@ -1,12 +1,14 @@
 import React,{useState,useEffect} from 'react';
-import {Container} from '@material-ui/core';
-
-import PersonalDetails from '../components/AddRider/PersonalDetails';
-import ParentDetails from '../components/AddRider/ParentDetails';
-import LessonDetails from '../components/AddRider/LessonDetails';
+import {Container, Grid, IconButton} from '@material-ui/core';
+import {useHistory} from "react-router-dom";
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import PersonalDetails from './PersonalDetails';
+import ParentDetails from './ParentDetails';
+import LessonDetails from './LessonDetails';
 
 
 export default function AddRider(props) {
+    const history = useHistory();
     const [showPersonalDetails,setShowPersonalDetails] = useState(true);
     const [personalDetails,setPersonalDetails]=useState("");
     const [showParentDetails,setShowParentDetails] = useState(false);
@@ -136,6 +138,14 @@ export default function AddRider(props) {
          
     return (
         <Container>
+            <Grid container justify="flex-start">
+                <Grid item>
+                    <IconButton aria-label="חזור"> 
+                        <ArrowForwardIosIcon onClick={() => history.goBack()} />
+                    </IconButton>
+                    <label>חזור</label>
+                </Grid>
+            </Grid>
             <PersonalDetails show={showPersonalDetails} getPersonalDetails={getPersonalDetails} />
             <ParentDetails show={showParentDetails} getParentDetails={getParentDetails} goBack={back2PersonalDetails} />
             <LessonDetails show={showLessonDetails} getLessonDetails={getLessonDetails} goBack={back2ParentDetails} apiUrl={props.apiUrl} />

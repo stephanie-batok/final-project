@@ -89,14 +89,14 @@ export default function LessonDetails(props) {
                     <label>פרטי השיעור</label>
                 </Grid>
                 <Grid item>
-                    <TextField select label="בחר מדריך קבוע" variant="outlined" onChange={(e) => register({name:"instructor_id", value: e.target.value, required: true})} style={{width:"25ch"}}>
+                    <TextField select label="* בחר מדריך קבוע" variant="outlined" onChange={(e) => register({name:"instructor_id", value: e.target.value, required: true})} style={{width:"25ch"}}>
                         {instructors.map((i) =>(
                         <MenuItem value={i.id}>{i.first_name+" "+i.last_name}</MenuItem>
                         ))}
                     </TextField>
                 </Grid>
                 <Grid item>
-                    <TextField select label="בחר סוס קבוע" variant="outlined" onChange={(e) => register({name:"horse_id", value: e.target.value, required: true})} style={{width:"25ch"}}>
+                    <TextField select label="* בחר סוס קבוע" variant="outlined" onChange={(e) => register({name:"horse_id", value: e.target.value, required: true})} style={{width:"25ch"}}>
                         <MenuItem value={0}>ללא סוס קבוע</MenuItem>
                         {horses.map((h) =>(
                         <MenuItem value={h.id}>{h.name}</MenuItem>
@@ -208,6 +208,9 @@ export default function LessonDetails(props) {
                             }}
                         />
                     </Grid>
+                </Grid>
+                <Grid item>
+                    <label style={{fontSize:"12px", color:"red"}}>* שדות המסומנים בכוכבית (*) הינם שדות חובה.</label>
                 </Grid>
                 <Grid container item justify="center" alignItems="center" xs={12}>
                     <Grid item>

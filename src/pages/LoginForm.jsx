@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 import logo from '../horse-club-logo.png';
 
 
-
 export default function LoginForm(props) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -39,7 +38,8 @@ export default function LoginForm(props) {
             })
             .then(
               (result) => {
-                  localStorage.setItem('id', result);
+                alert(result);
+                localStorage.setItem('id', result);
               },
               (error) => {
                 alert(error);
@@ -68,27 +68,27 @@ export default function LoginForm(props) {
                 <h4>כניסה למערכת</h4>
             </Grid>
             <Grid item>
-            <TextField value={email} onChange={e => setEmail(e.target.value)} label="דואר אלקטרוני" variant="outlined" />
+                <TextField value={email} onChange={e => setEmail(e.target.value)} label="דואר אלקטרוני" variant="outlined" />
             </Grid>
             <Grid item>
-            <TextField value={password} onChange={e => setPassword(e.target.value)} label="סיסמה" variant="outlined" />
+                <TextField value={password} onChange={e => setPassword(e.target.value)} label="סיסמה" variant="outlined" />
             </Grid>
             <Grid item>
-            <FormControlLabel
-                control={
-                <Checkbox
-                    checked={checked}
-                    onChange={() =>
-                        setChecked(!checked)
+                <FormControlLabel
+                    control={
+                    <Checkbox
+                        checked={checked}
+                        onChange={() =>
+                            setChecked(!checked)
+                        }
+                        color="primary"
+                    />
                     }
-                    color="primary"
+                    label="זכור אותי"
                 />
-                }
-                label="זכור אותי"
-            />
             </Grid>
             <Grid item>
-            <Button variant="outlined" color="primary" onClick={btn_LogIn}>התחבר</Button>
+                <Button variant="outlined" color="primary" onClick={btn_LogIn}>התחבר</Button>
             </Grid>
         </Grid>
     )

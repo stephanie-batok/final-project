@@ -1,22 +1,16 @@
 import './App.css';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  withRouter
-} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route, withRouter} from 'react-router-dom';
 
-
-import LoginForm from './components/LoginForm';
-import HomePage from './pages/HomePage';
+import LoginForm from './pages/LoginForm';
 import RidersPage from './pages/RidersPage';
-import AddRider from './pages/AddRider';
+import AddRider from './pages/AddRider/AddRider';
 import EditRider from './pages/EditRider';
 import ViewRider from './pages/ViewRider';
 import Schedule from './pages/Schedule';
 import Header from './components/Header';
-import Horses from './pages/Horses';
-import AddHorse from './pages/AddHorse';
+import HorsesPage from './pages/HorsesPage';
+import AddHorse from './pages/AddHorse/AddHorse';
+import EditHorse from './pages/EditHorse';
 
 
 const apiUrl="http://proj.ruppin.ac.il/bgroup19/prod/api/";
@@ -31,9 +25,6 @@ function App() {
             </Route>
             <div>
                 <Header/>
-                <Route path="/Home" >
-                  <HomePage apiUrl={apiUrl}/>
-                </Route>
                 <Route path="/Riders" >
                   <RidersPage apiUrl={apiUrl}/>
                 </Route>
@@ -49,11 +40,14 @@ function App() {
                 <Route path="/Schedule" >
                   <Schedule apiUrl={apiUrl}/>
                 </Route>
-                <Route path="/Horses" >
-                  <Horses apiUrl={apiUrl}/>
+                <Route path="/HorsesPage" >
+                  <HorsesPage apiUrl={apiUrl}/>
                 </Route>
                 <Route path="/AddHorse" >
                   <AddHorse apiUrl={apiUrl}/>
+                </Route>
+                <Route path="/EditHorse/:id" >
+                  <EditHorse apiUrl={apiUrl}/>
                 </Route>
             </div>
         </Switch>
