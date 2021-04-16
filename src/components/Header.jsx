@@ -1,6 +1,7 @@
 import React from 'react';
 import {Navbar, Nav , NavDropdown} from 'react-bootstrap';
 import logo from '../horse-club-logo.png';
+import {Link} from 'react-router-dom';
 
 
 export default function Header(props) {
@@ -12,16 +13,18 @@ export default function Header(props) {
             &nbsp;&nbsp;&nbsp;&nbsp;
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="navbar-right">
-                    <Nav.Link href="/Schedule">יומן</Nav.Link>
+                    <NavDropdown title="יומן" id="basic-nav-dropdown">
+                        <NavDropdown.Item ><Link className="nav-link" to="/Schedule">צפייה ביומן</Link></NavDropdown.Item>
+                    </NavDropdown>
                     &nbsp;&nbsp;
                     <NavDropdown title="רוכבים" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="/Riders">צפייה ברוכבים</NavDropdown.Item>
-                        <NavDropdown.Item href="/AddRider">רוכב חדש</NavDropdown.Item>
+                        <NavDropdown.Item ><Link className="nav-link" to="/Riders">צפייה ברוכבים</Link></NavDropdown.Item>
+                        <NavDropdown.Item ><Link className="nav-link" to="/AddRider">רוכב חדש</Link></NavDropdown.Item>
                     </NavDropdown>
                     &nbsp;&nbsp;
                     <NavDropdown title="סוסים" id="basic-nav-dropdown">
-                        <NavDropdown.Item href="/HorsesPage">צפייה בסוסים</NavDropdown.Item>
-                        <NavDropdown.Item href="/AddHorse">סוס חדש</NavDropdown.Item>
+                        <NavDropdown.Item ><Link className="nav-link" to="/HorsesPage">צפייה בסוסים</Link></NavDropdown.Item>
+                        <NavDropdown.Item ><Link className="nav-link" to="/AddHorse">סוס חדש</Link></NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
             </Navbar.Collapse>

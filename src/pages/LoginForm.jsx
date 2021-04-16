@@ -9,7 +9,14 @@ export default function LoginForm(props) {
     const [password, setPassword] = useState('');
     const [allowd,setAllowd]= useState(localStorage.getItem('rememberMe'));
     const [checked, setChecked] = useState(false);
+
     const history = useHistory();
+
+    useEffect(() => {
+        if(allowd){
+            history.push('/Schedule');
+        }
+    },[allowd]);
 
     const btn_LogIn = () => {
 
@@ -46,12 +53,6 @@ export default function LoginForm(props) {
             }
         );
     }
-
-    useEffect(() => {
-        if(allowd){
-            history.push('/Schedule');
-        }
-    });
 
     return (
         <Grid

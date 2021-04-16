@@ -78,11 +78,14 @@ export default function HorsesPage(props) {
 
     const cancelSearch = () => {
         setSearched("");
-        requestSearch(searched);  
+        requestSearch(searched);
+        //setRows(horses);
     };
         
     const sortBy = () => {
+
     let arrayCopy = [...rows];
+    
     if(order==="acs"){
         setOrder("desc");
         arrayCopy.sort((a, b) => a.name.localeCompare(b.name));
