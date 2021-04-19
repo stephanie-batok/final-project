@@ -15,6 +15,7 @@ import HorsesPage from './pages/HorsesPage';
 import AddHorse from './pages/AddHorse/AddHorse';
 import EditHorse from './pages/EditHorse';
 import CustomTheme from './assets/CustomTheme';
+import EditLesson from './pages/EditLesson';
 
 // Configure JSS
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
@@ -55,6 +56,9 @@ function App() {
                   </Route>
                   <Route path="/EditHorse/:id" >
                     <EditHorse apiUrl={apiUrl}/>
+                  </Route>
+                  <Route path="/EditLesson/:id" >
+                    <EditLesson apiUrl={apiUrl}/>
                   </Route>
               </div>
           </Switch>

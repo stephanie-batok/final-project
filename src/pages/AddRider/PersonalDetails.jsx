@@ -1,38 +1,103 @@
 import React,{useState,useEffect} from 'react';
-import { useForm } from "react-hook-form";
-import {Button,Grid,TextField,MenuItem} from '@material-ui/core';
+import {Grid,TextField,Typography,MenuItem,Button} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
+
+const initialValues = {
+    id: "",
+    first_name:"",
+    last_name:"",
+    gender:"",
+    date_of_birth:"",
+    phone_number:"",
+    email:"",
+    password:"",
+    riding_type:"",
+    weight:0,
+    height:"0",
+    starting_date:"",
+    healthForm:""
+  };
+
+  const useStyles = makeStyles((theme) => ({
+    buttons: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+    },
+    button: {
+      marginTop: theme.spacing(3),
+      marginLeft: theme.spacing(1),
+    },
+  }));
 
 export default function PersonalDetails(props) {
-    const { register, handleSubmit} = useForm();
-    const [showPersonalDetails,setShowPersonalDetails] = useState("");
+    const [values, setValues] = useState(initialValues);
+    const [error, setError] =  useState("");
+    const classes = useStyles();
 
 
-    const onSubmit = (data) => {
-        props.getPersonalDetails(data);
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+                
+        setValues({
+          ...values,
+          [name]: value,
+        });
+    };
+
+
+    const handleNext = () => {
+        if(values.id!=="" && values.first_name!=="" && values.last_name!==""){
+            setError("");
+            props.getPersonalDetails(values);
+        }
+        else {
+            setError("אנא השלם את כל השדות המסומנים בכוכבית (*).")
+        }
     }
 
-    useEffect(()=>{
-        setShowPersonalDetails(props.show);
-    });
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Grid container spacing={3} style={{display:(showPersonalDetails?"block":"none")}}>
-                <Grid item>
-                    <label>פרטים אישיים</label>
+        <React.Fragment>
+            <Typography variant="h6" gutterBottom>
+                פרטים אישיים
+            </Typography>
+            <Grid container spacing={4}>
+                <Grid item xs={12} sm={6}>
+                    <TextField required
+                        value={values.first_name}
+                        name="first_name"
+                        label="שם פרטי"
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
                 </Grid>
-                <Grid item>
-                    <TextField name="first_name" inputRef={register({ required: true })} label="* שם פרטי" variant="outlined" />
+                <Grid item xs={12} sm={6}>
+                    <TextField required
+                        value={values.last_name}
+                        name="last_name"
+                        label="שם משפחה"
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
                 </Grid>
-                <Grid item>
-                    <TextField name="last_name" inputRef={register({ required: true })} label="* שם משפחה" variant="outlined" />
+                <Grid item xs={12} sm={6}>
+                    <TextField required
+                        value={values.id}
+                        name="id"
+                        label="תעודת זהות"
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
                 </Grid>
-                <Grid item>
-                    <TextField name="id" inputRef={register({ required: true })} label="* תעודת זהות" variant="outlined" />
-                </Grid>
-                <Grid item>
-                    <TextField select variant="outlined" label="* בחר מגדר" onChange={(e) => register({name:"gender", value: e.target.value, required: true})} style={{width:"24ch"}}>
+                <Grid item xs={12} sm={6}>
+                    <TextField select 
+                        name="gender"
+                        value={values.gender}
+                        label="בחר מגדר" 
+                        onChange={handleInputChange}
+                        fullWidth
+                        >
                         <MenuItem value="זכר">
                             זכר
                         </MenuItem>
@@ -41,20 +106,53 @@ export default function PersonalDetails(props) {
                         </MenuItem>
                     </TextField>
                 </Grid>
-                <Grid item>
-                    <TextField name="date_of_birth" style={{width:"24ch"}} InputLabelProps={{shrink:true}} type="date" inputRef={register({ required: true })} label="* תאריך לידה" variant="outlined" />
+                <Grid item xs={12} sm={6}>
+                    <TextField required
+                        type="date"
+                        value={values.date_of_birth}
+                        name="date_of_birth"
+                        label="תאריך לידה"
+                        onChange={handleInputChange}
+                        InputLabelProps={{shrink:true}}
+                        fullWidth
+                    />
                 </Grid>
-                <Grid item>
-                    <TextField name="phone" inputRef={register({ required: true })} label="* מספר טלפון" variant="outlined" />
+                <Grid item xs={12} sm={6}>
+                    <TextField required
+                        value={values.phone}
+                        name="phone"
+                        label="טלפון"
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
                 </Grid>
-                <Grid item>
-                    <TextField name="city" inputRef={register} label="עיר מגורים" variant="outlined" />
+                <Grid item xs={12}>
+                    <TextField
+                        value={values.address}
+                        name="address"
+                        label="כתובת"
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
                 </Grid>
-                <Grid item>
-                    <TextField name="address" inputRef={register} label="כתובת" variant="outlined" />
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        value={values.city}
+                        name="city"
+                        label="עיר מגורים"
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
                 </Grid>
-                <Grid item>
-                    <TextField select label="* בחר מגזר רכיבה" variant="outlined" onChange={(e) => register({name:"riding_type", value: e.target.value , required: true})} style={{width:"24ch"}}>
+                <Grid item xs={12} sm={6}>
+                    <TextField select 
+                        required
+                        value={values.riding_type}
+                        name="riding_type"
+                        label="בחר מגזר רכיבה" 
+                        onChange={handleInputChange} 
+                        fullWidth
+                        >
                         <MenuItem value="רכיבה ספורטיבית">
                         רכיבה ספורטיבית
                         </MenuItem>
@@ -63,35 +161,77 @@ export default function PersonalDetails(props) {
                         </MenuItem>
                     </TextField>
                 </Grid>
-                <Grid item>
-                    <TextField name="starting_date" style={{width:"24ch"}} InputLabelProps={{shrink:true}} type="date" inputRef={register({ required: true })} label="* תאריך רישום לחווה" variant="outlined" />
+                <Grid item xs={12} sm={6}>
+                    <TextField type="date"
+                        value={values.starting_date}
+                        name="starting_date"
+                        label="תאריך רישום לחווה"
+                        InputLabelProps={{shrink:true}}
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
                 </Grid>
-                <Grid item>
-                    <TextField name="height" inputRef={register} defaultValue={0} label="גובה" variant="outlined" />
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        value={values.height}
+                        name="height"
+                        label="גובה"
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
                 </Grid>
-                <Grid item>
-                    <TextField name="weight" inputRef={register} defaultValue={0} type="number" label="משקל" variant="outlined" />
+                <Grid item xs={12} sm={6}>
+                    <TextField type="number"
+                        value={values.weight}
+                        name="weight"
+                        label="משקל"
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
                 </Grid>
-                <Grid item>
-                    <TextField name="email" inputRef={register({ required: true })} label="* דואר אלקטרוני" variant="outlined" />
+                <Grid item xs={12} sm={6}>
+                    <TextField required
+                        value={values.email}
+                        name="email"
+                        label="דואר אלקטרוני"
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
                 </Grid>
-                <Grid item>
-                    <TextField name="password" inputRef={register({ required: true })} label="* סיסמה" variant="outlined" />
+                <Grid item xs={12} sm={6}>
+                    <TextField required
+                        value={values.password}
+                        name="password"
+                        label="סיסמה"
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
                 </Grid>
-                <Grid item>
-                    <TextField name="healthForm" inputRef={register} label="טופס הצהרת בריאות" variant="outlined" />
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        value={values.healthForm}
+                        name="healthForm"
+                        label="טופס הצהרת בריאות"
+                        onChange={handleInputChange}
+                        fullWidth
+                    />
                 </Grid>
-                <Grid item>
-                    <label style={{fontSize:"12px", color:"red"}}>* שדות המסומנים בכוכבית (*) הינם שדות חובה.</label>
-                </Grid>
-                <Grid item>
-                    <Button variant="outlined"
-                            color="primary"
-                            type="submit">
-                        שמור והמשך
-                    </Button>
+                <Grid item xs={12}>
+                    <Typography variant="h7" gutterBottom style={{color:"red"}}>
+                        {error}
+                    </Typography>
                 </Grid>
             </Grid>
-        </form>
+            <div className={classes.buttons}>
+                <Button
+                    variant="contained"
+                    color="primary" 
+                    onClick={handleNext} 
+                    className={classes.button}
+                    >
+                    שמור והמשך
+                </Button>
+            </div>
+        </React.Fragment>
     )
 }

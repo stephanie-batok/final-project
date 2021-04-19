@@ -1,13 +1,16 @@
 import React,{useState,useEffect} from 'react';
-import Paper from '@material-ui/core/Paper';
+import { useHistory} from "react-router-dom";
+import {Button,Grid,TextField,MenuItem,IconButton,Typography,Paper} from '@material-ui/core';
 import { ViewState, GroupingState,IntegratedGrouping } from '@devexpress/dx-react-scheduler';
-import {Scheduler,Resources, DayView, Appointments, WeekView, GroupingPanel} from '@devexpress/dx-react-scheduler-material-ui';
+import EditIcon from '@material-ui/icons/Edit';
+import {Scheduler,Resources, DayView, Appointments, MonthView, ViewSwitcher,GroupingPanel, DateNavigator,Toolbar,AppointmentTooltip} from '@devexpress/dx-react-scheduler-material-ui';
 
 
 export default function Schedule(props) {
     const [lessons,setLessons] = useState([]);
     const [schedulerData,setSchedulerData] = useState([]);
     const currentDate = Date.now();
+    const history = useHistory();
     const [resources,setResources] = useState([]);
     const [grouping,setGrouping]= useState([]);
     const [ren,setRen]= useState(false);
@@ -39,7 +42,9 @@ export default function Schedule(props) {
                         startDate: lesson.date+"T"+lesson.start_time,
                         endDate: lesson.date+"T"+lesson.end_time,
                         title:"תלמיד: "+lesson.rider_fullName,
-                        text:lesson.instructor_fullName+" "+ "מדריך",
+                        text:"מדריך: " +lesson.instructor_fullName,
+                        type:"סוג שיעור: "+lesson.lesson_type,
+                        horse:"סוס: "+lesson.horse_name,
                         id:lesson.lesson_id
                         });
                         
@@ -74,10 +79,54 @@ export default function Schedule(props) {
         getLessons();
     },[]);
 
+    const Appointment = ({
+        children, style, ...restProps
+      }) => (
+        <Appointments.Appointment
+          {...restProps}
+          style={{
+            ...style,
+            borderRadius: '8px',
+            justifyContent:"space-around"
+          }}
+        >
+          {children}
+        </Appointments.Appointment>
+    );
+
+    const Header = ({children, appointmentData, ...restProps}) => (
+        <AppointmentTooltip.Header
+          {...restProps}
+          appointmentData={appointmentData}
+        >
+          <IconButton
+            onClick={()=>btn_edit(appointmentData.id)}
+          >
+          <EditIcon/>
+          </IconButton>
+        </AppointmentTooltip.Header>
+    );
+
+    const Content = ({children, appointmentData, ...restProps}) => (
+        <AppointmentTooltip.Content {...restProps} appointmentData={appointmentData}>
+          <Grid container alignItems="center">
+            <Grid item xs={12}>
+                <Typography>{appointmentData.text}</Typography>
+                <Typography>{appointmentData.type}</Typography>
+                <Typography>{appointmentData.horse}</Typography>
+            </Grid>
+          </Grid>
+        </AppointmentTooltip.Content>
+    );
+
+    const btn_edit=(lesson_id)=>{
+        history.push("/EditLesson/"+lesson_id);
+    }
+
     return (
-        <Paper>
+        <Paper dir="ltr">
             {ren?<Scheduler
-             data={schedulerData}
+            data={schedulerData}
             >
                 <ViewState
                     defaultCurrentDate="2021-02-14"
@@ -86,7 +135,19 @@ export default function Schedule(props) {
                     grouping={grouping}
                 />
                 <DayView startDayHour={10} endDayHour={19}/>
-                <Appointments placeAppointmentsNextToEachOther/> 
+                <MonthView />
+                <Toolbar />
+                <ViewSwitcher />
+                <DateNavigator/>
+                <Appointments 
+                placeAppointmentsNextToEachOther
+                appointmentComponent={Appointment}
+                /> 
+                <AppointmentTooltip
+                    headerComponent={Header}
+                    contentComponent={Content}
+                    showCloseButton
+                />
                 {/* <IntegratedGrouping/>
                 <GroupingPanel/> */}
             </Scheduler>:null}

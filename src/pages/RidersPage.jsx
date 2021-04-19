@@ -9,11 +9,30 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import AddIcon from '@material-ui/icons/Add';
 import SearchBar from "material-ui-search-bar";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme)=>({
     table: {
       minWidth: 650,
     },
-  });
+    layout: {
+        width: 'auto',
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2),
+        [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        },
+    },
+    paper: {
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
+    padding: theme.spacing(2),
+    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+        marginTop: theme.spacing(6),
+        marginBottom: theme.spacing(6),
+        padding: theme.spacing(3),
+        },
+    },
+}));
 
 export default function RidersPage(props) {
     const [riders,setRiders] = useState([]);
@@ -24,7 +43,8 @@ export default function RidersPage(props) {
     const history = useHistory();
     const classes = useStyles();
 
-    const getRiders = () => {
+
+    useEffect(()=>{
         let apiUrl= props.apiUrl + "Rider/";
 
         fetch(apiUrl,
@@ -50,11 +70,6 @@ export default function RidersPage(props) {
                 alert(error);
             }
         );
-    }
-
-    useEffect(()=>{
-        getRiders();
-
     },[]);
 
     const btnAddRider=()=>{
@@ -115,92 +130,96 @@ export default function RidersPage(props) {
     
     return (
         <Container>
-            <Grid container justify="flex-end">
-                <Grid item xs={2}>
-                    <TextField style={{width:"25ch"}} select label="בחר מגזר רכיבה" value={ridingSector} onChange={handleRidingSectorChange}>
-                        <MenuItem value="הכל">
-                        הכל
-                        </MenuItem>
-                        <MenuItem value="רכיבה ספורטיבית">
-                            רכיבה ספורטיבית
-                        </MenuItem>
-                        <MenuItem value="רכיבה טיפולית">
-                            רכיבה טיפולית
-                        </MenuItem>
-                    </TextField>
-                </Grid>
-                <Grid item xs={2}>
-                    <IconButton aria-label="מיון">
-                        <FilterListIcon onClick={() => sortBy()} />
-                    </IconButton>
-                    <lable> מיון רוכבים </lable>
-                </Grid>
-            </Grid>
-            <br/><br/>
-            <Grid container justify="space-between" alignItems="baseline">
-                <Grid item xs={3}>
-                    <Button variant="outlined" color="primary" onClick={btnAddRider}>
-                        <AddIcon/>
-                         הוספת רוכב 
-                    </Button>
-                </Grid>
-                <Grid item xs={3}>
-                    <SearchBar
-                        value={searched}
-                        onChange={(searchVal) => requestSearch(searchVal)}
-                        onCancelSearch={() => cancelSearch()}
-                        style={{
-                            margin: '0 auto',
-                            maxWidth: 300,
-                            flexGrow:1
-                        }}
-                    />
-                </Grid>
-            </Grid>
-            <TableContainer component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
-                    <TableHead style={{background:"rgb(245 245 245)"}}>
-                        <TableRow>
-                            <TableCell component='th' align="right">שם משפחה</TableCell>
-                            <TableCell align="right">שם פרטי</TableCell>
-                            <TableCell align="right">טלפון</TableCell>
-                            <TableCell align="right">מדריך קבוע</TableCell>
-                            <TableCell align="right">יום קבוע</TableCell>
-                            <TableCell align="right">שעה קבועה</TableCell>
-                            <TableCell align="right">&nbsp;</TableCell>     
-                            <TableCell align="right">&nbsp;</TableCell>     
-                            <TableCell align="right">&nbsp;</TableCell>       
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows.map((rider) => (
-                            <TableRow key={rider.id}>
-                                <TableCell align="right">{rider.last_name}</TableCell>
-                                <TableCell align="right">{rider.first_name}</TableCell>
-                                <TableCell align="right">{rider.phone_number}</TableCell>
-                                <TableCell align="right">{rider.instructor_full_name}</TableCell>
-                                <TableCell align="right">{rider.regular_lessons.map((lesson)=>(lesson.day+" "))}</TableCell>
-                                <TableCell align="right">{rider.regular_lessons.map((lesson)=>(lesson.start_time+" "))}</TableCell>
-                                <TableCell align="right">
-                                    <IconButton aria-label="צפייה">  
-                                         <VisibilityOutlinedIcon onClick={() => btnView(rider.id)} />
-                                    </IconButton>
-                                </TableCell>
-                                <TableCell align="right">
-                                    <IconButton aria-label="עריכה"> 
-                                         <EditOutlineOutlinedIcon onClick={() => btnEditing(rider.id)} />
-                                    </IconButton>
-                                </TableCell>
-                                <TableCell align="right">
-                                    <IconButton aria-label="מחיקה">
-                                         <DeleteOutlineOutlinedIcon onClick={() => btnRemove(rider.id)} />
-                                    </IconButton>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <main className={classes.layout}>
+                <Paper className={classes.paper}>
+                    <Grid container justify="flex-end">
+                        <Grid item xs={2}>
+                            <TextField style={{width:"25ch"}} select label="בחר מגזר רכיבה" value={ridingSector} onChange={handleRidingSectorChange}>
+                                <MenuItem value="הכל">
+                                הכל
+                                </MenuItem>
+                                <MenuItem value="רכיבה ספורטיבית">
+                                    רכיבה ספורטיבית
+                                </MenuItem>
+                                <MenuItem value="רכיבה טיפולית">
+                                    רכיבה טיפולית
+                                </MenuItem>
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={2}>
+                            <IconButton aria-label="מיון">
+                                <FilterListIcon onClick={() => sortBy()} />
+                            </IconButton>
+                            <lable> מיון רוכבים </lable>
+                        </Grid>
+                    </Grid>
+                    <br/><br/>
+                    <Grid container justify="space-between" alignItems="baseline">
+                        <Grid item xs={3}>
+                            <Button variant="outlined" color="primary" onClick={btnAddRider}>
+                                <AddIcon/>
+                                הוספת רוכב 
+                            </Button>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <SearchBar
+                                value={searched}
+                                onChange={(searchVal) => requestSearch(searchVal)}
+                                onCancelSearch={() => cancelSearch()}
+                                style={{
+                                    margin: '0 auto',
+                                    maxWidth: 300,
+                                    flexGrow:1
+                                }}
+                            />
+                        </Grid>
+                    </Grid>
+                    <TableContainer component={Paper}>
+                        <Table className={classes.table} aria-label="simple table">
+                            <TableHead style={{background:"rgb(245 245 245)"}}>
+                                <TableRow>
+                                    <TableCell component='th' align="right">שם משפחה</TableCell>
+                                    <TableCell align="right">שם פרטי</TableCell>
+                                    <TableCell align="right">טלפון</TableCell>
+                                    <TableCell align="right">מדריך קבוע</TableCell>
+                                    <TableCell align="right">יום קבוע</TableCell>
+                                    <TableCell align="right">שעה קבועה</TableCell>
+                                    <TableCell align="right">&nbsp;</TableCell>     
+                                    <TableCell align="right">&nbsp;</TableCell>     
+                                    <TableCell align="right">&nbsp;</TableCell>       
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {rows.map((rider) => (
+                                    <TableRow key={rider.id}>
+                                        <TableCell align="right">{rider.last_name}</TableCell>
+                                        <TableCell align="right">{rider.first_name}</TableCell>
+                                        <TableCell align="right">{rider.phone_number}</TableCell>
+                                        <TableCell align="right">{rider.instructor_full_name}</TableCell>
+                                        <TableCell align="right">{rider.regular_lessons.map((lesson)=>(lesson.day+" "))}</TableCell>
+                                        <TableCell align="right">{rider.regular_lessons.map((lesson)=>(lesson.start_time+" "))}</TableCell>
+                                        <TableCell align="right">
+                                            <IconButton aria-label="צפייה">  
+                                                <VisibilityOutlinedIcon onClick={() => btnView(rider.id)} />
+                                            </IconButton>
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            <IconButton aria-label="עריכה"> 
+                                                <EditOutlineOutlinedIcon onClick={() => btnEditing(rider.id)} />
+                                            </IconButton>
+                                        </TableCell>
+                                        <TableCell align="right">
+                                            <IconButton aria-label="מחיקה">
+                                                <DeleteOutlineOutlinedIcon onClick={() => btnRemove(rider.id)} />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Paper>
+            </main>
        </Container>
     )
                     

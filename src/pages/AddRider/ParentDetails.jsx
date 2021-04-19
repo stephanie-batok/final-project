@@ -1,101 +1,106 @@
 import React,{useState,useEffect} from 'react';
 import { useForm } from "react-hook-form";
-import {Button,Grid,TextField,MenuItem} from '@material-ui/core';
+import {Button,Grid,TextField,MenuItem,Typography} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
+
+const useStyles = makeStyles((theme) => ({
+    buttons: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+    },
+    button: {
+      marginTop: theme.spacing(3),
+      marginLeft: theme.spacing(1),
+    },
+  }));
 
 export default function ParentDetails(props) {
-    const { register, handleSubmit} = useForm();
-    const [showParentDetails,setShowParentDetails] = useState(false);
+    const { register, getValues} = useForm();
+    const classes = useStyles();
 
 
-    const onSubmit = (data) => {
-        props.getParentDetails(data);
+    const handleBack = () => {
+        props.handleBack();
     }
-    
-    useEffect(()=>{
-        setShowParentDetails(props.show);
-    });
+
+    const handleNext = () => {
+        props.getParentDetails(getValues());
+    }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Grid container spacing={3} style={{display:(showParentDetails?"block":"none")}}>
-                <Grid item>
-                    <label>פרטי ההורים</label>
-                </Grid>
-                <Grid item>
-                    <label>פרטי הורה ראשון</label>
-                </Grid>
-                <Grid item>
-                    <TextField name="parent1_id" inputRef={register} label="תעודת זהות" variant="outlined" />
-                </Grid>
-                <Grid item>
-                <TextField name="parent1_first_name" inputRef={register} label="שם פרטי" variant="outlined" />
-                </Grid>
-                <Grid item>
-                    <TextField name="parent1_last_name" inputRef={register} label="שם משפחה" variant="outlined" />
-                </Grid>                    
-                <Grid item>
-                    <TextField select label="בחר מגדר" variant="outlined" onChange={(e) => register({name:"parent1_gender", value: e.target.value})} style={{width:"25ch"}}>
-                        <MenuItem value="זכר">
-                            זכר
-                        </MenuItem>
-                        <MenuItem value="נקבה">
-                            נקבה
-                        </MenuItem>
-                    </TextField>
-                </Grid>
-                <Grid item>
-                    <TextField name="parent1_phone" inputRef={register} label="מספר טלפון" variant="outlined" />
-                </Grid>
-                <Grid item>
-                    <TextField name="parent1_email" inputRef={register} label="דואר אלקטרוני" variant="outlined" />
-                </Grid>
-                <Grid item>
-                        <label>פרטי הורה שני</label>
-                </Grid>
-                <Grid item>
-                        <TextField name="parent2_id" inputRef={register} label="תעודת זהות" variant="outlined" />
-                </Grid>
-                <Grid item>
-                    <TextField name="parent2_first_name" inputRef={register} label="שם פרטי" variant="outlined" />
-                </Grid>
-                <Grid item>
-                    <TextField name="parent2_last_name" inputRef={register} label="שם משפחה" variant="outlined" />
-                </Grid>
-                <Grid item>
-                    <TextField select label="בחר מגדר" variant="outlined" onChange={(e) => register({name:"parent2_gender", value: e.target.value})} style={{width:"25ch"}}>
-                        <MenuItem value="זכר">
-                            זכר
-                        </MenuItem>
-                        <MenuItem value="נקבה">
-                            נקבה
-                        </MenuItem>
-                    </TextField>
-                </Grid>
-                <Grid item>
-                    <TextField name="parent2_phone" inputRef={register} label="מספר טלפון" variant="outlined" />
-                </Grid>
-                <Grid item>
-                    <TextField name="parent2_email" inputRef={register} label="דואר אלקטרוני" variant="outlined" />
-                </Grid>
-                <Grid container item justify="center" alignItems="center" xs={12}>
-                    <Grid item>
-                        <Button variant="outlined"
-                                color="primary"
-                                onClick={()=> props.goBack()}>
-                            חזור
-                        </Button>
+        <React.Fragment>
+            <Typography variant="h5" gutterBottom>
+                פרטי הורים
+            </Typography>
+            <form>
+                <Grid container spacing={4}>
+                    <Grid item xs={12}>
+                        <Typography variant="h7" gutterBottom>פרטי הורה ראשון</Typography>
                     </Grid>
-                    <Grid item>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Grid>
-                    <Grid item>
-                        <Button variant="outlined"
-                                color="primary"
-                                type="submit">
-                            שמור והמשך
-                        </Button>
+                    <Grid item xs={12} sm={6}>
+                    <TextField name="parent1_first_name" inputRef={register} label="שם פרטי" fullWidth />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField name="parent1_last_name" inputRef={register} label="שם משפחה" fullWidth />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField name="parent1_id" inputRef={register} label="תעודת זהות" fullWidth />
+                    </Grid>                    
+                    <Grid item xs={12} sm={6}>
+                        <TextField select label="בחר מגדר" onChange={(e) => register({name:"parent1_gender", value: e.target.value})} fullWidth>
+                            <MenuItem value="זכר">
+                                זכר
+                            </MenuItem>
+                            <MenuItem value="נקבה">
+                                נקבה
+                            </MenuItem>
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField name="parent1_phone" inputRef={register} label="מספר טלפון" fullWidth />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField name="parent1_email" inputRef={register} label="דואר אלקטרוני" fullWidth />
+                    </Grid>
+                    <Grid item xs={12}>
+                            <Typography variant="h7" gutterBottom>פרטי הורה שני</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                            <TextField name="parent2_id" inputRef={register} label="תעודת זהות" fullWidth />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField name="parent2_first_name" inputRef={register} label="שם פרטי" fullWidth />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField name="parent2_last_name" inputRef={register} label="שם משפחה" fullWidth />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField select label="בחר מגדר" onChange={(e) => register({name:"parent2_gender", value: e.target.value})} fullWidth>
+                            <MenuItem value="זכר">
+                                זכר
+                            </MenuItem>
+                            <MenuItem value="נקבה">
+                                נקבה
+                            </MenuItem>
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField name="parent2_phone" inputRef={register} label="מספר טלפון" fullWidth />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField name="parent2_email" inputRef={register} label="דואר אלקטרוני" fullWidth />
                     </Grid>
                 </Grid>
-            </Grid>
-        </form>
+                <div className={classes.buttons}>
+                    <Button onClick={handleBack} className={classes.button}>
+                        חזור
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={handleNext} className={classes.button}>
+                        שמור והמשך
+                    </Button>
+                </div>
+            </form>
+        </React.Fragment>
     )
 }

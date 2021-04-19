@@ -1,25 +1,64 @@
 import React,{useState,useEffect} from 'react';
-import {Container, Grid, IconButton} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import {Paper, Stepper, Step, StepLabel, Button, Link, Typography, Grid, IconButton} from '@material-ui/core';
 import {useHistory} from "react-router-dom";
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import PersonalDetails from './PersonalDetails';
 import ParentDetails from './ParentDetails';
 import LessonDetails from './LessonDetails';
 
+const useStyles = makeStyles((theme) => ({
+    layout: {
+      width: 'auto',
+      marginLeft: theme.spacing(2),
+      marginRight: theme.spacing(2),
+      [theme.breakpoints.up(600 + theme.spacing(2) * 2)]: {
+        width: 600,
+        marginLeft: 'auto',
+        marginRight: 'auto',
+      },
+    },
+    paper: {
+      marginTop: theme.spacing(3),
+      marginBottom: theme.spacing(3),
+      padding: theme.spacing(2),
+      [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+        marginTop: theme.spacing(6),
+        marginBottom: theme.spacing(6),
+        padding: theme.spacing(3),
+      },
+    },
+    stepper: {
+      padding: theme.spacing(3, 0, 5),
+    },
+    buttons: {
+        display: 'flex',
+        justifyContent: 'flex-start',
+    },
+    button: {
+    marginTop: theme.spacing(3),
+    marginLeft: theme.spacing(1),
+    },
+  }));
+
+const steps = ['פרטים אישיים', 'פרטי הורים', 'פרטי שיעור'];
+
 
 export default function AddRider(props) {
     const history = useHistory();
-    const [showPersonalDetails,setShowPersonalDetails] = useState(true);
-    const [personalDetails,setPersonalDetails]=useState("");
-    const [showParentDetails,setShowParentDetails] = useState(false);
-    const [parentDetails,setParentDetails]=useState("");
-    const [showLessonDetails,setShowLessonDetails] = useState(false);
+    const [personalDetails,setPersonalDetails] = useState("");
+    const [parentDetails,setParentDetails] = useState("");
     const [lessonDetails,setLessonDetails] = useState("");
-    const [isSubmitted,setIsSubmitted] = useState(false);
+    const [message, setMessage] = useState("");
 
+    const classes = useStyles();
+    const [activeStep, setActiveStep] = useState(0);
+
+    const handleBack = () => {
+        setActiveStep(activeStep - 1);
+    };
 
     const onSubmit = () => {
-        setIsSubmitted(false);
         let apiUrl= props.apiUrl + "Rider/";
 
         let newRider={                                  //create object to send in the body of POST method
@@ -95,49 +134,37 @@ export default function AddRider(props) {
             })
             .then(
               (result) => {
-                alert(result);
+                setMessage(result);
               },
               (error) => {
                 console.log("err post=", error);
-              });           
+        });           
 
     }
 
     const getPersonalDetails = (data) => {
         setPersonalDetails(data);
-        setShowPersonalDetails(false);
-        setShowParentDetails(true);
+        setActiveStep(activeStep + 1);
     }
 
     const getParentDetails = (data) => {
         setParentDetails(data);
-        setShowParentDetails(false);
-        setShowLessonDetails(true);
-    }
-
-    const back2PersonalDetails = () => {
-        setShowParentDetails(false);
-        setShowPersonalDetails(true);
+        setActiveStep(activeStep + 1);
     }
 
     const getLessonDetails = (data) => {
         setLessonDetails(data);
-        setIsSubmitted(true);
-    }
-
-    const back2ParentDetails = () => {
-        setShowLessonDetails(false);
-        setShowParentDetails(true);
+        setActiveStep(activeStep + 1);
     }
 
     useEffect(()=>{
-        if(isSubmitted){
+        if(activeStep===steps.length){
             onSubmit();
         }
-    });
+    },[activeStep]);
          
     return (
-        <Container>
+        <React.Fragment>
             <Grid container justify="flex-start">
                 <Grid item>
                     <IconButton aria-label="חזור"> 
@@ -146,9 +173,41 @@ export default function AddRider(props) {
                     <label>חזור</label>
                 </Grid>
             </Grid>
-            <PersonalDetails show={showPersonalDetails} getPersonalDetails={getPersonalDetails} />
-            <ParentDetails show={showParentDetails} getParentDetails={getParentDetails} goBack={back2PersonalDetails} />
-            <LessonDetails show={showLessonDetails} getLessonDetails={getLessonDetails} goBack={back2ParentDetails} apiUrl={props.apiUrl} />
-        </Container>
+            <main className={classes.layout}>
+                <Paper className={classes.paper}>
+                    <Typography component="h1" variant="h4" align="center">
+                        תלמיד חדש
+                    </Typography>
+                    <Stepper activeStep={activeStep} className={classes.stepper}>
+                        {steps.map((label) => (
+                        <Step key={label}>
+                            <StepLabel>{label}</StepLabel>
+                        </Step>
+                        ))}
+                    </Stepper>
+                        <React.Fragment>
+                            <div style={{display:(activeStep===0?"block":"none")}}>
+                                <PersonalDetails getPersonalDetails={getPersonalDetails} />
+                            </div>
+                            <div style={{display:(activeStep===1?"block":"none")}}>
+                                <ParentDetails getParentDetails={getParentDetails} handleBack={handleBack} />
+                            </div>
+                            <div style={{display:(activeStep===2?"block":"none")}}>
+                                <LessonDetails getLessonDetails={getLessonDetails} apiUrl={props.apiUrl} handleBack={handleBack} />
+                            </div>
+                            <div style={{display:(activeStep===3?"block":"none")}}>
+                                <Typography variant="h6" gutterBottom>
+                                    {message}
+                                </Typography>
+                                <div className={classes.buttons}>
+                                    <Button onClick={handleBack} className={classes.button}>
+                                        חזור
+                                    </Button>
+                                </div>
+                            </div>
+                        </React.Fragment>
+                </Paper>
+            </main>
+        </React.Fragment>
     )
 }
