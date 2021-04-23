@@ -7,7 +7,6 @@ import { StylesProvider, jssPreset, ThemeProvider } from '@material-ui/core/styl
 import LoginForm from './pages/LoginForm';
 import RidersPage from './pages/RidersPage';
 import AddRider from './pages/AddRider/AddRider';
-import EditRider from './pages/EditRider';
 import ViewRider from './pages/ViewRider';
 import Schedule from './pages/Schedule';
 import Header from './components/Header';
@@ -16,6 +15,7 @@ import AddHorse from './pages/AddHorse/AddHorse';
 import EditHorse from './pages/EditHorse';
 import CustomTheme from './assets/CustomTheme';
 import EditLesson from './pages/EditLesson';
+import EditRider from './pages/EditRider/EditRider';
 
 // Configure JSS
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });

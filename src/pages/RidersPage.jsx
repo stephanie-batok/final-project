@@ -178,37 +178,37 @@ export default function RidersPage(props) {
                         <Table className={classes.table} aria-label="simple table">
                             <TableHead style={{background:"rgb(245 245 245)"}}>
                                 <TableRow>
-                                    <TableCell component='th' align="right">שם משפחה</TableCell>
-                                    <TableCell align="right">שם פרטי</TableCell>
-                                    <TableCell align="right">טלפון</TableCell>
-                                    <TableCell align="right">מדריך קבוע</TableCell>
-                                    <TableCell align="right">יום קבוע</TableCell>
-                                    <TableCell align="right">שעה קבועה</TableCell>
-                                    <TableCell align="right">&nbsp;</TableCell>     
-                                    <TableCell align="right">&nbsp;</TableCell>     
-                                    <TableCell align="right">&nbsp;</TableCell>       
+                                    <TableCell component='th'>שם משפחה</TableCell>
+                                    <TableCell>שם פרטי</TableCell>
+                                    <TableCell align="center">טלפון</TableCell>
+                                    <TableCell>מדריך קבוע</TableCell>
+                                    <TableCell>יום קבוע</TableCell>
+                                    <TableCell >שעה קבועה</TableCell>
+                                    {/* <TableCell align="right">&nbsp;</TableCell>      */}
+                                    <TableCell>&nbsp;</TableCell>     
+                                    <TableCell>&nbsp;</TableCell>       
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {rows.map((rider) => (
-                                    <TableRow key={rider.id}>
-                                        <TableCell align="right">{rider.last_name}</TableCell>
-                                        <TableCell align="right">{rider.first_name}</TableCell>
-                                        <TableCell align="right">{rider.phone_number}</TableCell>
-                                        <TableCell align="right">{rider.instructor_full_name}</TableCell>
-                                        <TableCell align="right">{rider.regular_lessons.map((lesson)=>(lesson.day+" "))}</TableCell>
-                                        <TableCell align="right">{rider.regular_lessons.map((lesson)=>(lesson.start_time+" "))}</TableCell>
-                                        <TableCell align="right">
+                                    <TableRow onDoubleClick={() => btnEditing(rider.id)} key={rider.id}>
+                                        <TableCell >{rider.last_name}</TableCell>
+                                        <TableCell>{rider.first_name}</TableCell>
+                                        <TableCell align="center">{rider.phone_number}</TableCell>
+                                        <TableCell>{rider.instructor_full_name}</TableCell>
+                                        <TableCell>{rider.regular_lessons.map((lesson)=>(lesson.day+" "))}</TableCell>
+                                        <TableCell>{rider.regular_lessons.map((lesson)=>(lesson.start_time+" "))}</TableCell>
+                                        {/* <TableCell align="right">
                                             <IconButton aria-label="צפייה">  
                                                 <VisibilityOutlinedIcon onClick={() => btnView(rider.id)} />
                                             </IconButton>
-                                        </TableCell>
-                                        <TableCell align="right">
+                                        </TableCell> */}
+                                        <TableCell>
                                             <IconButton aria-label="עריכה"> 
                                                 <EditOutlineOutlinedIcon onClick={() => btnEditing(rider.id)} />
                                             </IconButton>
                                         </TableCell>
-                                        <TableCell align="right">
+                                        <TableCell>
                                             <IconButton aria-label="מחיקה">
                                                 <DeleteOutlineOutlinedIcon onClick={() => btnRemove(rider.id)} />
                                             </IconButton>

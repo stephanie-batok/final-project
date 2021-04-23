@@ -11,8 +11,8 @@ export default function Schedule(props) {
     const [schedulerData,setSchedulerData] = useState([]);
     const currentDate = Date.now();
     const history = useHistory();
-    const [resources,setResources] = useState([]);
-    const [grouping,setGrouping]= useState([]);
+    // const [resources,setResources] = useState([]);
+    // const [grouping,setGrouping]= useState([]);
     const [ren,setRen]= useState(false);
 
     const getLessons = () => {
@@ -35,7 +35,7 @@ export default function Schedule(props) {
             .then(
                 (result) => {
                     let tempSchedulerData = [];
-                    let tempInstructors = [];
+                    // let tempInstructors = [];
 
                     result.map((lesson) => {
                         tempSchedulerData.push({
@@ -125,32 +125,34 @@ export default function Schedule(props) {
 
     return (
         <Paper dir="ltr">
-            {ren?<Scheduler
-            data={schedulerData}
+            {ren?
+            <Scheduler
+              data={schedulerData}
             >
                 <ViewState
                     defaultCurrentDate="2021-02-14"
                 />
-                <GroupingState
+                {/* <GroupingState
                     grouping={grouping}
-                />
+                /> */}
                 <DayView startDayHour={10} endDayHour={19}/>
                 <MonthView />
                 <Toolbar />
                 <ViewSwitcher />
                 <DateNavigator/>
                 <Appointments 
-                placeAppointmentsNextToEachOther
-                appointmentComponent={Appointment}
+                  placeAppointmentsNextToEachOther
+                  appointmentComponent={Appointment}
                 /> 
                 <AppointmentTooltip
-                    headerComponent={Header}
-                    contentComponent={Content}
-                    showCloseButton
+                  headerComponent={Header}
+                  contentComponent={Content}
+                  showCloseButton
                 />
                 {/* <IntegratedGrouping/>
                 <GroupingPanel/> */}
-            </Scheduler>:null}
+            </Scheduler>
+            :null}
         </Paper>
     )
 }

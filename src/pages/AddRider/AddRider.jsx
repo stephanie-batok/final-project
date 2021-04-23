@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper, Stepper, Step, StepLabel, Button, Link, Typography, Grid, IconButton} from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import {useHistory} from "react-router-dom";
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import PersonalDetails from './PersonalDetails';
@@ -50,7 +51,7 @@ export default function AddRider(props) {
     const [parentDetails,setParentDetails] = useState("");
     const [lessonDetails,setLessonDetails] = useState("");
     const [message, setMessage] = useState("");
-
+    const [status,setStatus] = useState("");
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
 
@@ -129,12 +130,22 @@ export default function AddRider(props) {
               console.log('res=', res);
               console.log('res.status', res.status);
               console.log('res.ok', res.ok);
-             
+              if(res.ok){
+                setStatus("ok");
+              }
+              else{
+                setStatus("no");
+              }
               return res.json()
             })
             .then(
               (result) => {
-                setMessage(result);
+                if(typeof(result) === "object"){
+                    setMessage(result.Message);
+                }
+                else{
+                    setMessage(result);
+                }
               },
               (error) => {
                 console.log("err post=", error);
@@ -175,7 +186,7 @@ export default function AddRider(props) {
             </Grid>
             <main className={classes.layout}>
                 <Paper className={classes.paper}>
-                    <Typography component="h1" variant="h4" align="center">
+                    <Typography component="h4" variant="h4" align="center">
                         תלמיד חדש
                     </Typography>
                     <Stepper activeStep={activeStep} className={classes.stepper}>
@@ -196,9 +207,7 @@ export default function AddRider(props) {
                                 <LessonDetails getLessonDetails={getLessonDetails} apiUrl={props.apiUrl} handleBack={handleBack} />
                             </div>
                             <div style={{display:(activeStep===3?"block":"none")}}>
-                                <Typography variant="h6" gutterBottom>
-                                    {message}
-                                </Typography>
+                                <Alert severity={status==="ok"?"success":"error"}>{message}</Alert>
                                 <div className={classes.buttons}>
                                     <Button onClick={handleBack} className={classes.button}>
                                         חזור

@@ -166,7 +166,7 @@ export default function EditHorse(props) {
                             </TextField>
                         </Grid>
                         <Grid item xs={12}>
-                            <Button variant="outlined"
+                            <Button variant="contained"
                                     color="primary"
                                     type="submit">
                                 שמור שינויים

@@ -79,7 +79,6 @@ export default function HorsesPage(props) {
     const cancelSearch = () => {
         setSearched("");
         requestSearch(searched);
-        //setRows(horses);
     };
         
     const sortBy = () => {
@@ -129,37 +128,37 @@ export default function HorsesPage(props) {
                 <Table className={classes.table} aria-label="simple table">
                     <TableHead style={{background:"rgb(245 245 245)"}}>
                         <TableRow>
-                            <TableCell component='th' align="right">שם הסוס</TableCell>
-                            <TableCell align="right">מין</TableCell>
-                            <TableCell align="right">גודל</TableCell>
-                            <TableCell align="right">רמת רכיבה נדרשת</TableCell>
-                            <TableCell align="right">אופי הסוס</TableCell>
-                            <TableCell align="right">רכיבה טיפולית</TableCell>
-                            <TableCell align="right">&nbsp;</TableCell>     
-                            <TableCell align="right">&nbsp;</TableCell>     
-                            <TableCell align="right">&nbsp;</TableCell>       
+                            <TableCell component='th'>שם הסוס</TableCell>
+                            <TableCell>מין</TableCell>
+                            <TableCell>גודל</TableCell>
+                            <TableCell>אופי הסוס</TableCell>
+                            <TableCell>רכיבה טיפולית</TableCell>
+                            <TableCell>רמת רכיבה נדרשת</TableCell>
+                            {/* <TableCell align="right">&nbsp;</TableCell>      */}
+                            <TableCell>&nbsp;</TableCell>     
+                            <TableCell>&nbsp;</TableCell>       
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {rows.map((horse) => (
-                            <TableRow key={horse.id}>
-                                <TableCell align="right">{horse.name}</TableCell>
-                                <TableCell align="right">{horse.gender}</TableCell>
-                                <TableCell align="right">{horse.size}</TableCell>
-                                <TableCell align="right">{horse.required_rank}</TableCell>
-                                <TableCell align="right">{horse.temper}</TableCell>
-                                <TableCell align="right">{horse.therapeutic_riding?"מתאים":"לא מתאים"}</TableCell>
-                                <TableCell align="right">
+                            <TableRow onDoubleClick={() => btnEditing(horse.id)} key={horse.id}>
+                                <TableCell>{horse.name}</TableCell>
+                                <TableCell>{horse.gender}</TableCell>
+                                <TableCell>{horse.size}</TableCell>
+                                <TableCell>{horse.temper}</TableCell>
+                                <TableCell>{horse.therapeutic_riding?"מתאים":"לא מתאים"}</TableCell>
+                                <TableCell>{horse.required_rank}</TableCell>
+                                {/* <TableCell align="right">
                                     <IconButton aria-label="צפייה">  
                                          <VisibilityOutlinedIcon onClick={() => btnView(horse.id)} />
                                     </IconButton>
-                                </TableCell>
-                                <TableCell align="right">
+                                </TableCell> */}
+                                <TableCell>
                                     <IconButton aria-label="עריכה"> 
                                          <EditOutlineOutlinedIcon onClick={() => btnEditing(horse.id)} />
                                     </IconButton>
                                 </TableCell>
-                                <TableCell align="right">
+                                <TableCell>
                                     <IconButton aria-label="מחיקה">
                                          <DeleteOutlineOutlinedIcon onClick={() => btnRemove(horse.id)} />
                                     </IconButton>
