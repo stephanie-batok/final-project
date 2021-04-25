@@ -5,8 +5,8 @@ import Alert from '@material-ui/lab/Alert';
 import {useHistory} from "react-router-dom";
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import PersonalDetails from './PersonalDetails';
-import ParentDetails from './ParentDetails';
-import LessonDetails from './LessonDetails';
+import PersonalFiles from './PersonalFiles';
+
 
 const useStyles = makeStyles((theme) => ({
     layout: {
@@ -40,29 +40,30 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginLeft: theme.spacing(1),
     },
-  }));
-
-const steps = ['פרטים אישיים', 'פרטי הורים', 'פרטי שיעור'];
+}));
 
 
-export default function AddRider(props) {
+const steps = ["פרטים אישיים","טפסים"];
+
+
+export default function AddInstructor(props) {
     const history = useHistory();
     const [personalDetails,setPersonalDetails] = useState("");
-    const [parentDetails,setParentDetails] = useState("");
-    const [lessonDetails,setLessonDetails] = useState("");
+    const [personalFiles,setPersonalFiles] = useState("");
     const [message, setMessage] = useState("");
     const [status,setStatus] = useState("");
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
 
+    
     const handleBack = () => {
         setActiveStep(activeStep - 1);
     };
 
     const onSubmit = () => {
-        let apiUrl= props.apiUrl + "Rider/";
+        let apiUrl= props.apiUrl + "Worker/";
 
-        let newRider={                                  //create object to send in the body of POST method
+        let newInstructor={                                  //create object to send in the body of POST method
             "id": personalDetails["id"],
             "first_name": personalDetails["first_name"],
             "last_name": personalDetails["last_name"],
@@ -71,58 +72,21 @@ export default function AddRider(props) {
             "phone_number": personalDetails["phone_number"],
             "email":personalDetails["email"],
             "password": personalDetails["password"],
-            "riding_type":personalDetails["riding_type"],
-            "weight":parseInt(personalDetails["weight"]),
-            "height": parseFloat(personalDetails["height"]),
-            "starting_date":personalDetails["starting_date"],
-            "healthForm":personalDetails["healthForm"],
             "city":personalDetails["city"],
-            "address":personalDetails["address"],
-            "instructor_id":lessonDetails["instructor_id"],
-            "horse_id":lessonDetails["horse_id"],
-            "parents":[
-                {
-                    "id": parentDetails["parent1_id"],
-                    "first_name": parentDetails["parent1_first_name"],
-                    "last_name": parentDetails["parent1_last_name"],
-                    "gender": parentDetails["parent1_gender"],
-                    "phone_number": parentDetails["parent1_phone_number"],
-                    "email":parentDetails["parent1_email"]
-                },
-                {
-                    "id": parentDetails["parent2_id"],
-                    "first_name": parentDetails["parent2_first_name"],
-                    "last_name": parentDetails["parent2_last_name"],
-                    "gender": parentDetails["parent2_gender"],
-                    "phone_number":parentDetails["parent2_phone_number"],
-                    "email":parentDetails["parent2_email"]
-                }
-            ],
-            "regular_lessons":[
-                {
-                    "day":lessonDetails["day"],
-                    "start_time":lessonDetails["start_time"],
-                    "end_time":lessonDetails["end_time"],
-                    "lesson_type":lessonDetails["lesson_type"],
-                    "price":parseInt(lessonDetails["price"]),
-                    "funding_source":lessonDetails["funding_source"]
-                },
-                {
-                    "day":lessonDetails["day2"],
-                    "start_time":lessonDetails["start_time2"],
-                    "end_time":lessonDetails["end_time2"],
-                    "lesson_type":lessonDetails["lesson_type2"],
-                    "price":parseInt(lessonDetails["price2"]),
-                    "funding_source":lessonDetails["funding_source2"]
-                }
-            ]
-        }
-        console.log(newRider);
+            "address":personalDetails["address"]
+
+            // Don't
+            //forget
+            //add
+            //files!!!!!!!
         
-        fetch(apiUrl,                                    //add new rider to db with POST method
+        }
+        console.log(newInstructor);
+        
+        fetch(apiUrl,                                    //add new instructor to db with POST method
             {
               method: 'POST',
-              body: JSON.stringify(newRider),
+              body: JSON.stringify(newInstructor),
               headers: new Headers({
                 'Content-Type': 'application/json; charset=UTF-8',
                 'Accept': 'application/json; charset=UTF-8',
@@ -160,13 +124,8 @@ export default function AddRider(props) {
         setActiveStep(activeStep + 1);
     }
 
-    const getParentDetails = (data) => {
-        setParentDetails(data);
-        setActiveStep(activeStep + 1);
-    }
-
-    const getLessonDetails = (data) => {
-        setLessonDetails(data);
+    const getPersonalFiles = (data) => {
+        setPersonalFiles(data);
         setActiveStep(activeStep + 1);
     }
 
@@ -175,7 +134,7 @@ export default function AddRider(props) {
             onSubmit();
         }
     },[activeStep]);
-         
+
     return (
         <React.Fragment>
             <Grid container justify="flex-start">
@@ -189,7 +148,7 @@ export default function AddRider(props) {
             <main className={classes.layout}>
                 <Paper className={classes.paper}>
                     <Typography component="h4" variant="h4" align="center">
-                        תלמיד חדש
+                        מדריך חדש
                     </Typography>
                     <Stepper activeStep={activeStep} className={classes.stepper}>
                         {steps.map((label) => (
@@ -203,19 +162,16 @@ export default function AddRider(props) {
                                 <PersonalDetails getPersonalDetails={getPersonalDetails} />
                             </div>
                             <div style={{display:(activeStep===1?"block":"none")}}>
-                                <ParentDetails getParentDetails={getParentDetails} handleBack={handleBack} />
+                                <PersonalFiles getPersonalFiles={getPersonalFiles} handleBack={handleBack} />
                             </div>
                             <div style={{display:(activeStep===2?"block":"none")}}>
-                                <LessonDetails getLessonDetails={getLessonDetails} apiUrl={props.apiUrl} handleBack={handleBack} />
-                            </div>
-                            <div style={{display:(activeStep===3?"block":"none")}}>
                                 <Alert severity={status==="ok"?"success":"error"}>{message}</Alert>
                                 <div className={classes.buttons}>
                                     <Button onClick={handleBack} className={classes.button}>
                                         חזור
                                     </Button>
-                                    <Button variant="contained" color="primary" onClick={()=>{history.push('/AddRider')}} className={classes.button}>
-                                        תלמיד חדש
+                                    <Button variant="contained" color="primary" onClick={()=>{history.push('/AddInstructor')}} className={classes.button}>
+                                        מדריך חדש
                                     </Button>
                                 </div>
                             </div>
@@ -223,5 +179,6 @@ export default function AddRider(props) {
                 </Paper>
             </main>
         </React.Fragment>
+        
     )
 }

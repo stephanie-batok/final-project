@@ -12,10 +12,15 @@ import Schedule from './pages/Schedule';
 import Header from './components/Header';
 import HorsesPage from './pages/HorsesPage';
 import AddHorse from './pages/AddHorse/AddHorse';
-import EditHorse from './pages/EditHorse';
+import EditHorse from './pages/EditHorse/EditHorse';
 import CustomTheme from './assets/CustomTheme';
 import EditLesson from './pages/EditLesson';
 import EditRider from './pages/EditRider/EditRider';
+import AddLeasson from './pages/AddLeasson';
+import InstructorsPage from './pages/InstructorsPage';
+import AddInstructor from './pages/AddInstructor/AddInstructor';
+import EditInstructor from './pages/EditInstructor';
+
 
 // Configure JSS
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
@@ -59,6 +64,18 @@ function App() {
                   </Route>
                   <Route path="/EditLesson/:id" >
                     <EditLesson apiUrl={apiUrl}/>
+                  </Route>
+                  <Route path="/AddLesson" >
+                    <AddLeasson apiUrl={apiUrl}/>
+                  </Route>
+                  <Route path="/InstructorsPage" >
+                    <InstructorsPage apiUrl={apiUrl}/>
+                  </Route>
+                  <Route path="/AddInstructor" >
+                    <AddInstructor apiUrl={apiUrl}/>
+                  </Route>
+                  <Route path="/EditInstructor/:id" >
+                    <EditInstructor apiUrl={apiUrl}/>
                   </Route>
               </div>
           </Switch>

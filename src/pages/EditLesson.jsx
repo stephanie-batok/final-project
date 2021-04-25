@@ -134,6 +134,8 @@ export default function EditLesson(props) {
         let lesson_type = getValues('lesson_type');
         let funding_source = getValues('funding_source');
         let was_present = getValues('was_present');
+        let charge_type = getValues('charge_type');
+
 
 
         let newLesson={                                  //create object to send in the body of Put method
@@ -147,6 +149,7 @@ export default function EditLesson(props) {
           "lesson_type": lesson_type===undefined?lesson.lesson_type:data.lesson_type,
           "price": data.price,
           "funding_source": funding_source===undefined?lesson.funding_source:data.funding_source,
+          "charge_type": charge_type===undefined?lesson.charge_type:data.charge_type,
           "was_present": was_present===undefined?lesson.was_present:data.was_present,
           "comments": data.comments
         }

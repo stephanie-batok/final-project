@@ -12,6 +12,8 @@ const initialValues = {
     phone_number:"",
     email:"",
     password:"",
+    city:"",
+    address:"",
     riding_type:"",
     weight:0,
     height:"0",
@@ -217,7 +219,7 @@ export default function PersonalDetails(props) {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography variant="h7" gutterBottom style={{color:"red"}}>
+                    <Typography gutterBottom style={{color:"red"}}>
                         {error}
                     </Typography>
                 </Grid>

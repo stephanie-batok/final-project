@@ -76,16 +76,14 @@ export default function LoginForm(props) {
             </Grid>
             <Grid item>
                 <FormControlLabel
+                    label="זכור אותי"
                     control={
                     <Checkbox
                         checked={checked}
-                        onChange={() =>
-                            setChecked(!checked)
-                        }
+                        onChange={() => setChecked(!checked)}
                         color="primary"
                     />
                     }
-                    label="זכור אותי"
                 />
             </Grid>
             <Grid item>

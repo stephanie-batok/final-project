@@ -1,13 +1,14 @@
 import React,{useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory} from "react-router-dom";
-import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Container,Button,Grid,IconButton,TextField,MenuItem} from '@material-ui/core';
+import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Container,Button,Grid,IconButton,MenuItem,TextField} from '@material-ui/core';
 import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import EditOutlineOutlinedIcon from '@material-ui/icons/EditOutlined';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import AddIcon from '@material-ui/icons/Add';
 import SearchBar from "material-ui-search-bar";
+
 
 const useStyles = makeStyles((theme)=>({
     table: {
@@ -34,19 +35,18 @@ const useStyles = makeStyles((theme)=>({
     },
 }));
 
-export default function RidersPage(props) {
-    const [riders,setRiders] = useState([]);
+
+export default function InstructorsPage(props) {
+    const [instructors,setInstructors] = useState([]);
     const [rows, setRows] = useState([]);
     const [searched, setSearched] = useState("");
     const [order, setOrder] = useState("acs");
-    const [ridingSector, setRidingSector] = useState("הכל");
     const [active, setActive] = useState("הכל");
     const history = useHistory();
     const classes = useStyles();
 
-
     useEffect(()=>{
-        let apiUrl= props.apiUrl + "Rider/";
+        let apiUrl= props.apiUrl + "Worker/Instructor";
 
         fetch(apiUrl,
             {
@@ -64,129 +64,103 @@ export default function RidersPage(props) {
             })
             .then(
               (result) => {
-                  setRiders(result);
-                  console.log('====================================');
-                  console.log(result);
-                  console.log('====================================');
+                  setInstructors(result);
                   setRows(result);
               },
               (error) => {
-                alert(error);
+                console.log(error);
             }
         );
     },[]);
 
-    const btnAddRider=()=>{
-        history.push('/AddRider');
+    const btnAddInstructor=()=>{
+        history.push('/AddInstructor');
     }
 
-    const btnEditing=(rider_id)=>{
-        history.push("/EditRider/"+rider_id);
+    const btnView=(instructor_id)=>{
+        
     }
 
-    const btnRemove=(rider_id)=>{
+    const btnEditing=(instructor_id)=>{
+        history.push("/EditInstructor/"+instructor_id);
+    }
+
+    const btnRemove=(instructor_id)=>{
         
     }
 
     const requestSearch = (searchedVal) => {
-        const filteredRows = riders.filter((rider) => {
-          return rider.first_name.includes(searchedVal);
+        const filteredRows = instructors.filter((instructor) => {
+          return instructor.first_name.includes(searchedVal);
         });
         setRows(filteredRows);
     };
 
     const cancelSearch = () => {
         setSearched("");
-        requestSearch(searched);  
+        requestSearch(searched);
     };
         
     const sortBy = () => {
-    let arrayCopy = [...rows];
-    if(order==="acs"){
-        setOrder("desc");
-        arrayCopy.sort((a, b) => a.last_name.localeCompare(b.last_name));
-    }
-    else{
-        setOrder("acs");
-        arrayCopy.sort((a, b) => b.last_name.localeCompare(a.last_name));
-    }
-    setRows(arrayCopy);
-    };
+        let arrayCopy = [...rows];
 
-    const handleRidingSectorChange = (event) => {
-        
-        setRidingSector(event.target.value);
-        
-        if(event.target.value!=="הכל"){
-            const filteredRows = riders.filter((rider) => {
-                return rider.riding_type.includes(event.target.value);
-            });
-            setRows(filteredRows);
+        if(order==="acs"){
+            setOrder("desc");
+            arrayCopy.sort((a, b) => a.last_name.localeCompare(b.last_name));
         }
         else{
-            setRows(riders);
+            setOrder("acs");
+            arrayCopy.sort((a, b) => b.last_name.localeCompare(a.last_name));
         }
-    }
+        setRows(arrayCopy);
+    };
 
     const handleActiveChange = (event) => {
         setActive(event.target.value);
-        
+
         if(event.target.value!=="הכל"){
-            const filteredRows = riders.filter((rider) => {
-                return rider.isActive===event.target.value;
+            const filteredRows = instructors.filter((instructor) => {
+                return instructor.isAllowed===event.target.value;
             });
             setRows(filteredRows);
         }
         else{
-            setRows(riders);
+            setRows(instructors);
         }
-
     }
-    
+
+
     return (
         <Container>
             <main className={classes.layout}>
                 <Paper className={classes.paper}>
                     <Grid container justify="space-between">
-                        <Grid item xs={4} sm={4} md={3} lg={2}>
-                            <TextField select label="בחר מגזר רכיבה" value={ridingSector} onChange={handleRidingSectorChange} fullWidth>
+                        <Grid item xs={5} sm={4} md={3} lg={2}>
+                            <TextField select label="בחר סטאטוס מדריכים" value={active} onChange={handleActiveChange} fullWidth>
                                 <MenuItem value="הכל">
-                                הכל
-                                </MenuItem>
-                                <MenuItem value="רכיבה ספורטיבית">
-                                    רכיבה ספורטיבית
-                                </MenuItem>
-                                <MenuItem value="רכיבה טיפולית">
-                                    רכיבה טיפולית
-                                </MenuItem>
-                            </TextField>
-                        </Grid>
-                        <Grid item xs={4} sm={4} md={3} lg={2}>
-                            <TextField select label="בחר סטאטוס רוכבים" value={active} onChange={handleActiveChange} fullWidth>
-                                <MenuItem value="הכל">
-                                    כל הרוכבים
+                                    כל המדריכים
                                 </MenuItem>
                                 <MenuItem value={true}>
-                                    רוכבים פעילים
+                                    מדריכים פעילים
                                 </MenuItem>
                                 <MenuItem value={false}>
-                                    רוכבים לא פעילים
+                                    מדריכים לא פעילים
                                 </MenuItem>
                             </TextField>
                         </Grid>
-                        <Grid item xs={4} sm={4} md={3} lg={2}>
+                        <Grid item xs={5} sm={4} md={3} lg={2}>
                             <IconButton aria-label="מיון">
                                 <FilterListIcon onClick={() => sortBy()} />
                             </IconButton>
-                            <lable> מיון רוכבים </lable>
+                            <lable> מיון מדריכים </lable>                 
                         </Grid>
                     </Grid>
                     <br/><br/>
                     <Grid container justify="space-between" alignItems="baseline">
                         <Grid item xs={4} sm={4} md={3} lg={3}>
-                            <Button color="primary" onClick={btnAddRider}>
+                            <Button color="primary" onClick={btnAddInstructor}>
                                 <AddIcon/>
-                                הוספת רוכב 
+                                הוספת מדריך
                             </Button>
                         </Grid>
                         <Grid item xs={5} sm={5} md={4} lg={3}>
@@ -209,23 +183,23 @@ export default function RidersPage(props) {
                                     <TableCell component='th'>שם משפחה</TableCell>
                                     <TableCell>שם פרטי</TableCell>
                                     <TableCell align="center">טלפון</TableCell>
-                                    <TableCell>מדריך קבוע</TableCell>
-                                    <TableCell>יום קבוע</TableCell>
-                                    <TableCell >שעה קבועה</TableCell>
+                                    <TableCell>מין</TableCell>
+                                    <TableCell>כתובת מייל</TableCell>
+                                    <TableCell >תאריך לידה</TableCell>
                                     {/* <TableCell align="right">&nbsp;</TableCell>      */}
                                     <TableCell>&nbsp;</TableCell>     
                                     <TableCell>&nbsp;</TableCell>       
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.map((rider) => (
-                                    <TableRow onDoubleClick={() => btnEditing(rider.id)} key={rider.id}>
-                                        <TableCell >{rider.last_name}</TableCell>
-                                        <TableCell>{rider.first_name}</TableCell>
-                                        <TableCell align="center">{rider.phone_number}</TableCell>
-                                        <TableCell>{rider.instructor_full_name}</TableCell>
-                                        <TableCell>{rider.regular_lessons.map((lesson)=>(lesson.day+" "))}</TableCell>
-                                        <TableCell>{rider.regular_lessons.map((lesson)=>(lesson.start_time+" "))}</TableCell>
+                                {rows.map((instructor) => (
+                                    <TableRow onDoubleClick={() => btnEditing(instructor.id)} key={instructor.id}>
+                                        <TableCell >{instructor.last_name}</TableCell>
+                                        <TableCell>{instructor.first_name}</TableCell>
+                                        <TableCell align="center">{instructor.phone_number}</TableCell>
+                                        <TableCell>{instructor.gender}</TableCell>
+                                        <TableCell>{instructor.email}</TableCell>
+                                        <TableCell>{instructor.date_of_birth}</TableCell>
                                         {/* <TableCell align="right">
                                             <IconButton aria-label="צפייה">  
                                                 <VisibilityOutlinedIcon onClick={() => btnView(rider.id)} />
@@ -233,12 +207,12 @@ export default function RidersPage(props) {
                                         </TableCell> */}
                                         <TableCell>
                                             <IconButton aria-label="עריכה"> 
-                                                <EditOutlineOutlinedIcon onClick={() => btnEditing(rider.id)} />
+                                                <EditOutlineOutlinedIcon onClick={() => btnEditing(instructor.id)} />
                                             </IconButton>
                                         </TableCell>
                                         <TableCell>
                                             <IconButton aria-label="מחיקה">
-                                                <DeleteOutlineOutlinedIcon onClick={() => btnRemove(rider.id)} />
+                                                <DeleteOutlineOutlinedIcon onClick={() => btnRemove(instructor.id)} />
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
@@ -250,5 +224,4 @@ export default function RidersPage(props) {
             </main>
        </Container>
     )
-                    
 }

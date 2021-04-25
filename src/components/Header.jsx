@@ -15,6 +15,7 @@ export default function Header(props) {
                 <Nav className="navbar-right">
                     <NavDropdown title="יומן" id="basic-nav-dropdown">
                         <NavDropdown.Item ><Link className="nav-link" to="/Schedule">צפייה ביומן</Link></NavDropdown.Item>
+                        <NavDropdown.Item ><Link className="nav-link" to="/AddLesson">שיעור חדש</Link></NavDropdown.Item>
                     </NavDropdown>
                     &nbsp;&nbsp;
                     <NavDropdown title="רוכבים" id="basic-nav-dropdown">
@@ -25,6 +26,11 @@ export default function Header(props) {
                     <NavDropdown title="סוסים" id="basic-nav-dropdown">
                         <NavDropdown.Item ><Link className="nav-link" to="/HorsesPage">צפייה בסוסים</Link></NavDropdown.Item>
                         <NavDropdown.Item ><Link className="nav-link" to="/AddHorse">סוס חדש</Link></NavDropdown.Item>
+                    </NavDropdown>
+                    &nbsp;&nbsp;
+                    <NavDropdown title="מדריכים" id="basic-nav-dropdown">
+                        <NavDropdown.Item ><Link className="nav-link" to="/InstructorsPage">צפייה במדריכים</Link></NavDropdown.Item>
+                        <NavDropdown.Item ><Link className="nav-link" to="/AddInstructor">מדריך חדש</Link></NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
             </Navbar.Collapse>

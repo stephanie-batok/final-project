@@ -1,93 +1,96 @@
 import React,{useState,useEffect} from 'react';
 import { useForm } from "react-hook-form";
-import {Button,Grid,TextField,MenuItem} from '@material-ui/core';
+import {Button,Grid,TextField,MenuItem,Typography} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+
+const useStyles = makeStyles((theme) => ({
+    buttons: {
+      display: 'flex',
+      justifyContent: 'flex-end',
+    },
+    button: {
+      marginTop: theme.spacing(3),
+      marginLeft: theme.spacing(1),
+    },
+}));
 
 
 export default function HorseRestrictions(props) {
-    const { register, handleSubmit} = useForm();
-    const [showHorseRestrictions,setShowHorseRestrictions] = useState(false);
+    const { register, getValues} = useForm();
+    const classes = useStyles();
 
 
-    const onSubmit = (data) => {
-        props.getHorseRestrictions(data);
+    const handleBack = () => {
+        props.handleBack();
     }
-    
-    useEffect(()=>{
-        setShowHorseRestrictions(props.show);
-    });
+
+    const handleNext = () => {
+        props.getHorseRestrictions(getValues());
+    }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Grid container spacing={3} style={{display:(showHorseRestrictions?"block":"none")}}>
-                <Grid item>
-                    <label>מגבלות הסוס</label>
-                </Grid>
-                <Grid item>
-                    <TextField name="min_weight" inputRef={register} label="משקל מינימאלי" type="number" variant="outlined" />
-                </Grid>
-                <Grid item>
-                    <TextField name="max_weight" inputRef={register} label="משקל מקסימאלי" type="number" variant="outlined" />
-                </Grid>
-                <Grid item>
-                    <TextField name="min_height" inputRef={register} label="גובה מינימאלי" variant="outlined" />
-                </Grid>      
-                <Grid item>
-                    <TextField name="max_height" inputRef={register} label="גובה מקסימאלי" variant="outlined" />
-                </Grid>    
-                <Grid item>
-                    <TextField name="required_rank" inputRef={register({ required: true })} label="* רמת רכיבה נדרשת" type="number" inputProps={{min:"0", max:"5", step:"1"}} style={{width:"25ch"}} variant="outlined" />
-                </Grid>                  
-                <Grid item>
-                    <TextField select label="התאמה לרכיבה טיפולית" variant="outlined" onChange={(e) => register({name:"therapeutic_riding", value: e.target.value, required: true})} style={{width:"25ch"}}>
-                        <MenuItem value={true}>
-                            מתאים
-                        </MenuItem>
-                        <MenuItem value={false}>
-                            לא מתאים
-                        </MenuItem>
-                    </TextField>
-                </Grid>
-                <Grid item>
-                    <TextField select label="מבצע קפיצות?" variant="outlined" onChange={(e) => register({name:"can_jump", value: e.target.value})} style={{width:"25ch"}}>
-                        <MenuItem value={true}>
-                            כן
-                        </MenuItem>
-                        <MenuItem value={false}>
-                            לא
-                        </MenuItem>
-                    </TextField>
-                </Grid>
-                <Grid item>
-                    <TextField select label="* מצב בריאותי" variant="outlined" onChange={(e) => register({name:"is_qualified", value: e.target.value, required: true})} style={{width:"25ch"}}>
-                        <MenuItem value={true}>
-                            כשיר לרכיבה
-                        </MenuItem>
-                        <MenuItem value={false}>
-                            לא כשיר לרכיבה
-                        </MenuItem>
-                    </TextField>
-                </Grid>
-                <Grid item>
-                    <label style={{fontSize:"12px", color:"red"}}>* שדות המסומנים בכוכבית (*) הינם שדות חובה.</label>
-                </Grid>
-                <Grid container item justify="center" alignItems="center" xs={12}>
-                    <Grid item>
-                        <Button variant="outlined"
-                                color="primary"
-                                onClick={()=> props.goBack()}>
-                            חזור
-                        </Button>
+        <React.Fragment>
+            <Typography variant="h5" gutterBottom>
+                מגבלות הסוס
+            </Typography>
+            <form>
+                <Grid container spacing={4}>
+                    <Grid item xs={12} sm={6}>
+                        <TextField name="min_weight" inputRef={register} label="משקל מינימאלי" type="number" fullWidth />
                     </Grid>
-                    <Grid item>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Grid>
-                    <Grid item>
-                        <Button variant="outlined"
-                                color="primary"
-                                type="submit">
-                            סיום רישום
-                        </Button>
+                    <Grid item xs={12} sm={6}>
+                        <TextField name="max_weight" inputRef={register} label="משקל מקסימאלי" type="number" fullWidth />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField name="min_height" inputRef={register} label="גובה מינימאלי" fullWidth />
+                    </Grid>      
+                    <Grid item xs={12} sm={6}>
+                        <TextField name="max_height" inputRef={register} label="גובה מקסימאלי" fullWidth />
+                    </Grid>    
+                    <Grid item xs={12} sm={6}>
+                        <TextField name="required_rank" inputRef={register({ required: true })} label="* רמת רכיבה נדרשת" type="number" inputProps={{min:"0", max:"5", step:"1"}} fullWidth />
+                    </Grid>                  
+                    <Grid item xs={12} sm={6}>
+                        <TextField select label="התאמה לרכיבה טיפולית" onChange={(e) => register({name:"therapeutic_riding", value: e.target.value, required: true})} fullWidth>
+                            <MenuItem value={true}>
+                                מתאים
+                            </MenuItem>
+                            <MenuItem value={false}>
+                                לא מתאים
+                            </MenuItem>
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField select label="מבצע קפיצות?" onChange={(e) => register({name:"can_jump", value: e.target.value})} fullWidth>
+                            <MenuItem value={true}>
+                                כן
+                            </MenuItem>
+                            <MenuItem value={false}>
+                                לא
+                            </MenuItem>
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField select label="* מצב בריאותי" onChange={(e) => register({name:"is_qualified", value: e.target.value, required: true})} fullWidth>
+                            <MenuItem value={true}>
+                                כשיר לרכיבה
+                            </MenuItem>
+                            <MenuItem value={false}>
+                                לא כשיר לרכיבה
+                            </MenuItem>
+                        </TextField>
                     </Grid>
                 </Grid>
-            </Grid>
-        </form>
+                <div className={classes.buttons}>
+                    <Button onClick={handleBack} className={classes.button}>
+                        חזור
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={handleNext} className={classes.button}>
+                        סיום רישום
+                    </Button>
+                </div>
+            </form>
+        </React.Fragment>
     )
 }

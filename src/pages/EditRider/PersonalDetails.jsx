@@ -24,7 +24,6 @@ export default function PersonalDetails(props) {
           "first_name":data.first_name,
           "last_name":data.last_name,
           "id":rider.id,
-          "last_name":data.last_name,
           "gender": gender===undefined?rider.gender:data.gender,
           "date_of_birth":data.date_of_birth,
           "phone_number":data.phone_number,

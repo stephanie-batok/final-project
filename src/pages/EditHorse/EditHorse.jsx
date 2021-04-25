@@ -1,12 +1,11 @@
 import React,{useState,useEffect} from 'react';
+import { useForm } from "react-hook-form";
 import { useParams,useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import {Grid,IconButton,Typography,Paper,Tabs,Tab} from '@material-ui/core';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import PersonalDetails from './PersonalDetails';
-import ParentDetails from './ParentDetails';
-import LessonDetails from './LessonDetails';
-
+import HorseDetails from './HorseDetails';
+import HorseRestrictions from './HorseRestrictions';
 
 const useStyles = makeStyles((theme) => ({
     layout: {
@@ -29,19 +28,18 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(3),
       },
     }
-  }));
+}));
 
-export default function EditRider(props) {
+
+export default function EditHorse(props) {
     let { id } = useParams();
     const history = useHistory();
+    const [horse,setHorse] = useState("");
     const classes = useStyles();
     const [tab, setTab] = useState(0);
-    const [rider,setRider] = useState("");
-    const [addLesson,setAddLesson] = useState(false);
-
 
     useEffect(()=>{
-        let apiUrl= props.apiUrl + "Rider/";
+        let apiUrl= props.apiUrl + "Horse/";
 
         fetch(apiUrl+"/"+id,
             {
@@ -59,17 +57,16 @@ export default function EditRider(props) {
             })
             .then(
               (result) => {
-                  setRider(result);
-                  if(result.regular_lessons.length===1){
-                        setAddLesson(true);
-                  }
+                  console.log('====================================');
+                  console.log(result);
+                  console.log('====================================');
+                  setHorse(result);
               },
               (error) => {
                 alert(error);
             }
         );
     },[]);
-
 
     return (
         <React.Fragment>
@@ -81,25 +78,23 @@ export default function EditRider(props) {
                     <label>חזור</label>
                 </Grid>
             </Grid>
-            {rider!==""?
-                <main className={classes.layout}>
-                    <Paper className={classes.paper}>
-                        <Tabs
-                            value={tab}
-                            onChange={(event, newTab) => setTab(newTab)}
-                            indicatorColor="primary"
-                            textColor="primary"
-                        >
-                            <Tab label="פרטים אישיים" />
-                            <Tab label="פרטי הורים" />
-                            <Tab label="פרטי שיעור" />
-                        </Tabs>
-                        <br/>
-                        {tab===0 && <PersonalDetails apiUrl={props.apiUrl} rider={rider}/>}
-                        {tab===1 && <ParentDetails apiUrl={props.apiUrl} rider={rider}/>}
-                        {tab===2 && <LessonDetails apiUrl={props.apiUrl} rider={rider} addLesson={addLesson}/>}
-                    </Paper>
-                </main>:null}
+            {horse!==""?
+            <main className={classes.layout}>
+                <Paper className={classes.paper}>
+                    <Tabs
+                        value={tab}
+                        onChange={(event, newTab) => setTab(newTab)}
+                        indicatorColor="primary"
+                        textColor="primary"
+                    >
+                        <Tab label="פרטי הסוס" />
+                        <Tab label="מגבלות הסוס" />
+                    </Tabs>
+                    <br/>
+                    {tab===0 && <HorseDetails apiUrl={props.apiUrl} horse={horse}/>}
+                    {tab===1 && <HorseRestrictions apiUrl={props.apiUrl} horse={horse}/>}
+                </Paper>
+            </main>:null}
         </React.Fragment>
     )
 }
