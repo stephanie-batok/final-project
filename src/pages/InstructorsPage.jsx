@@ -1,8 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory} from "react-router-dom";
-import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Container,Button,Grid,IconButton,MenuItem,TextField} from '@material-ui/core';
-import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
+import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Container,Button,Grid,IconButton,TextField,MenuItem,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from '@material-ui/core';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import EditOutlineOutlinedIcon from '@material-ui/icons/EditOutlined';
 import FilterListIcon from '@material-ui/icons/FilterList';
@@ -41,7 +40,9 @@ export default function InstructorsPage(props) {
     const [rows, setRows] = useState([]);
     const [searched, setSearched] = useState("");
     const [order, setOrder] = useState("acs");
-    const [active, setActive] = useState("הכל");
+    const [active, setActive] = useState("");
+    const [open, setOpen] = useState(false);
+    const [chosenInstructor,setChosenInstructor] = useState("");
     const history = useHistory();
     const classes = useStyles();
 
@@ -66,6 +67,7 @@ export default function InstructorsPage(props) {
               (result) => {
                   setInstructors(result);
                   setRows(result);
+                  setActive(true);
               },
               (error) => {
                 console.log(error);
@@ -73,21 +75,56 @@ export default function InstructorsPage(props) {
         );
     },[]);
 
+    useEffect(() => {
+        if(active!=="הכל"){
+            const filteredRows = instructors.filter((instructor) => {
+                return instructor.isAllowed===active;
+            });
+            setRows(filteredRows);
+        }
+        else{
+            setRows(instructors);
+        }
+    },[active]);
+
     const btnAddInstructor=()=>{
         history.push('/AddInstructor');
-    }
-
-    const btnView=(instructor_id)=>{
-        
     }
 
     const btnEditing=(instructor_id)=>{
         history.push("/EditInstructor/"+instructor_id);
     }
+                                                                     //Delete instructor dialog
+    const handleClickOpen = (instructor_id) => {
+        setChosenInstructor(instructor_id);    
+        setOpen(true);
+    };
 
-    const btnRemove=(instructor_id)=>{
-        
-    }
+    const deleteInstructor = () => {
+        let apiUrl= props.apiUrl + "Worker/";
+        fetch(apiUrl+chosenInstructor,                               //delete instructor - turn isAllowed into false
+            {
+                method: 'DELETE',
+                headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Accept': 'application/json; charset=UTF-8',
+                })
+            })
+            .then(res => {
+                console.log('res=', res);
+                console.log('res.status', res.status);
+                console.log('res.ok', res.ok);
+                return res.json()
+            })
+            .then(
+                (result) => {
+                    console.log(result);
+                },
+                (error) => {
+                console.log("err post=", error);
+        });  
+        setOpen(false);
+    };  
 
     const requestSearch = (searchedVal) => {
         const filteredRows = instructors.filter((instructor) => {
@@ -115,28 +152,13 @@ export default function InstructorsPage(props) {
         setRows(arrayCopy);
     };
 
-    const handleActiveChange = (event) => {
-        setActive(event.target.value);
-
-        if(event.target.value!=="הכל"){
-            const filteredRows = instructors.filter((instructor) => {
-                return instructor.isAllowed===event.target.value;
-            });
-            setRows(filteredRows);
-        }
-        else{
-            setRows(instructors);
-        }
-    }
-
-
     return (
         <Container>
             <main className={classes.layout}>
                 <Paper className={classes.paper}>
                     <Grid container justify="space-between">
                         <Grid item xs={5} sm={4} md={3} lg={2}>
-                            <TextField select label="בחר סטאטוס מדריכים" value={active} onChange={handleActiveChange} fullWidth>
+                            <TextField select label="בחר סטאטוס מדריכים" value={active} onChange={(event)=> setActive(event.target.value)} fullWidth>
                                 <MenuItem value="הכל">
                                     כל המדריכים
                                 </MenuItem>
@@ -186,7 +208,6 @@ export default function InstructorsPage(props) {
                                     <TableCell>מין</TableCell>
                                     <TableCell>כתובת מייל</TableCell>
                                     <TableCell >תאריך לידה</TableCell>
-                                    {/* <TableCell align="right">&nbsp;</TableCell>      */}
                                     <TableCell>&nbsp;</TableCell>     
                                     <TableCell>&nbsp;</TableCell>       
                                 </TableRow>
@@ -200,11 +221,6 @@ export default function InstructorsPage(props) {
                                         <TableCell>{instructor.gender}</TableCell>
                                         <TableCell>{instructor.email}</TableCell>
                                         <TableCell>{instructor.date_of_birth}</TableCell>
-                                        {/* <TableCell align="right">
-                                            <IconButton aria-label="צפייה">  
-                                                <VisibilityOutlinedIcon onClick={() => btnView(rider.id)} />
-                                            </IconButton>
-                                        </TableCell> */}
                                         <TableCell>
                                             <IconButton aria-label="עריכה"> 
                                                 <EditOutlineOutlinedIcon onClick={() => btnEditing(instructor.id)} />
@@ -212,7 +228,7 @@ export default function InstructorsPage(props) {
                                         </TableCell>
                                         <TableCell>
                                             <IconButton aria-label="מחיקה">
-                                                <DeleteOutlineOutlinedIcon onClick={() => btnRemove(instructor.id)} />
+                                                <DeleteOutlineOutlinedIcon onClick={() => handleClickOpen(instructor.id)} />
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
@@ -220,6 +236,23 @@ export default function InstructorsPage(props) {
                             </TableBody>
                         </Table>
                     </TableContainer>
+                    <Dialog open={open} onClose={()=>setOpen(false)}>
+                        <DialogTitle id="alert-dialog-title">מחיקת מדריך</DialogTitle>
+                        <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            <br/>האם אתה בטוח שתרצה למחוק מדריך זה?
+                            פרטי המדריך יישמרו בסטאטוס לא פעיל.
+                        </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={()=>setOpen(false)} color="primary">
+                            ביטול
+                        </Button>
+                        <Button onClick={deleteInstructor} color="primary" autoFocus>
+                            אישור
+                        </Button>
+                        </DialogActions>
+                    </Dialog>
                 </Paper>
             </main>
        </Container>

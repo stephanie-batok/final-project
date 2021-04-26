@@ -41,13 +41,13 @@ export default function PersonalDetails(props) {
             <form>
                 <Grid container spacing={4}>
                     <Grid item xs={12} sm={6}>
-                    <TextField name="first_name" inputRef={register} label="שם פרטי" fullWidth />
+                    <TextField name="first_name" inputRef={register} label="*שם פרטי" fullWidth />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField name="last_name" inputRef={register} label="שם משפחה" fullWidth />
+                        <TextField name="last_name" inputRef={register} label="*שם משפחה" fullWidth />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField name="id" inputRef={register} label="תעודת זהות" fullWidth />
+                        <TextField name="id" inputRef={register} label="*תעודת זהות" fullWidth />
                     </Grid>                    
                     <Grid item xs={12} sm={6}>
                         <TextField select label="בחר מגדר" onChange={(e) => register({name:"gender", value: e.target.value})} fullWidth>

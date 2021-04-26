@@ -31,9 +31,6 @@ export default function HorseRestrictions(props) {
 
     return (
         <React.Fragment>
-            <Typography variant="h5" gutterBottom>
-                מגבלות הסוס
-            </Typography>
             <form>
                 <Grid container spacing={4}>
                     <Grid item xs={12} sm={6}>

@@ -1,8 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory} from "react-router-dom";
-import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Container,Button,Grid,IconButton,MenuItem,TextField} from '@material-ui/core';
-import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
+import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Container,Button,Grid,IconButton,TextField,MenuItem,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from '@material-ui/core';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import EditOutlineOutlinedIcon from '@material-ui/icons/EditOutlined';
 import FilterListIcon from '@material-ui/icons/FilterList';
@@ -40,7 +39,9 @@ export default function HorsesPage(props) {
     const [rows, setRows] = useState([]);
     const [searched, setSearched] = useState("");
     const [order, setOrder] = useState("acs");
-    const [active, setActive] = useState("הכל");
+    const [active, setActive] = useState("");
+    const [open, setOpen] = useState(false);
+    const [chosenHorse,setChosenHorse] = useState("");
     const history = useHistory();
     const classes = useStyles();
 
@@ -66,6 +67,7 @@ export default function HorsesPage(props) {
               (result) => {
                   setHorses(result);
                   setRows(result);
+                  setActive(true);
               },
               (error) => {
                 alert(error);
@@ -73,21 +75,56 @@ export default function HorsesPage(props) {
         );
     },[]);
 
+    useEffect(() => {
+        if(active!=="הכל"){
+            const filteredRows = horses.filter((horse) => {
+                return horse.is_active===active;
+            });
+            setRows(filteredRows);
+        }
+        else {
+            setRows(horses);
+        }
+    },[active]);
+
     const btnAddHorse=()=>{
         history.push('/AddHorse');
-    }
-
-    const btnView=(horse_id)=>{
-        
     }
 
     const btnEditing=(horse_id)=>{
         history.push("/EditHorse/"+horse_id);
     }
+                                                                //Delete horse dialog
+    const handleClickOpen = (horse_id) => {
+        setChosenHorse(horse_id);    
+        setOpen(true);
+    };
 
-    const btnRemove=(horse_id)=>{
-        
-    }
+    const deleteHorse = () => {
+    let apiUrl= props.apiUrl + "Horse/";
+        fetch(apiUrl+chosenHorse,                               //delete horse - turn is_active into false
+            {
+                method: 'DELETE',
+                headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Accept': 'application/json; charset=UTF-8',
+                })
+            })
+            .then(res => {
+                console.log('res=', res);
+                console.log('res.status', res.status);
+                console.log('res.ok', res.ok);
+                return res.json()
+            })
+            .then(
+                (result) => {
+                    console.log(result);
+                },
+                (error) => {
+                console.log("err post=", error);
+        });  
+        setOpen(false);
+    };   
 
     const requestSearch = (searchedVal) => {
         const filteredRows = horses.filter((horse) => {
@@ -114,21 +151,6 @@ export default function HorsesPage(props) {
         }
         setRows(arrayCopy);
     };
-
-    const handleActiveChange = (event) => {
-        setActive(event.target.value);
-
-        if(event.target.value!=="הכל"){
-            const filteredRows = horses.filter((horse) => {
-                return horse.is_active===event.target.value;
-            });
-            setRows(filteredRows);
-        }
-        else{
-            setRows(horses);
-        }
-
-    }
     
     return (
         <Container>
@@ -136,7 +158,7 @@ export default function HorsesPage(props) {
                 <Paper className={classes.paper}>
                     <Grid container justify="space-between">
                         <Grid item xs={5} sm={4} md={3} lg={2}>
-                            <TextField select label="בחר סטאטוס סוסים" value={active} onChange={handleActiveChange} fullWidth>
+                            <TextField select label="בחר סטאטוס סוסים" value={active} onChange={(event)=> setActive(event.target.value)} fullWidth>
                                 <MenuItem value="הכל">
                                     כל הסוסים
                                 </MenuItem>
@@ -186,7 +208,6 @@ export default function HorsesPage(props) {
                                     <TableCell>אופי הסוס</TableCell>
                                     <TableCell>רכיבה טיפולית</TableCell>
                                     <TableCell>רמת רכיבה נדרשת</TableCell>
-                                    {/* <TableCell align="right">&nbsp;</TableCell>      */}
                                     <TableCell>&nbsp;</TableCell>     
                                     <TableCell>&nbsp;</TableCell>       
                                 </TableRow>
@@ -200,11 +221,6 @@ export default function HorsesPage(props) {
                                         <TableCell>{horse.temper}</TableCell>
                                         <TableCell>{horse.therapeutic_riding?"מתאים":"לא מתאים"}</TableCell>
                                         <TableCell>{horse.required_rank}</TableCell>
-                                        {/* <TableCell align="right">
-                                            <IconButton aria-label="צפייה">  
-                                                <VisibilityOutlinedIcon onClick={() => btnView(horse.id)} />
-                                            </IconButton>
-                                        </TableCell> */}
                                         <TableCell>
                                             <IconButton aria-label="עריכה"> 
                                                 <EditOutlineOutlinedIcon onClick={() => btnEditing(horse.id)} />
@@ -212,7 +228,7 @@ export default function HorsesPage(props) {
                                         </TableCell>
                                         <TableCell>
                                             <IconButton aria-label="מחיקה">
-                                                <DeleteOutlineOutlinedIcon onClick={() => btnRemove(horse.id)} />
+                                                <DeleteOutlineOutlinedIcon onClick={() => handleClickOpen(horse.id)} />
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
@@ -220,6 +236,23 @@ export default function HorsesPage(props) {
                             </TableBody>
                         </Table>
                     </TableContainer>
+                    <Dialog open={open} onClose={()=>setOpen(false)}>
+                        <DialogTitle id="alert-dialog-title">מחיקת סוס</DialogTitle>
+                        <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            <br/>האם אתה בטוח שתרצה למחוק סוס זה?
+                            פרטי הסוס יישמרו בסטאטוס לא פעיל.
+                        </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={()=>setOpen(false)} color="primary">
+                            ביטול
+                        </Button>
+                        <Button onClick={deleteHorse} color="primary" autoFocus>
+                            אישור
+                        </Button>
+                        </DialogActions>
+                    </Dialog>
                 </Paper>
             </main>
        </Container>

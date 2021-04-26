@@ -1,13 +1,13 @@
 import React,{useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory} from "react-router-dom";
-import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Container,Button,Grid,IconButton,TextField,MenuItem} from '@material-ui/core';
-import VisibilityOutlinedIcon from '@material-ui/icons/VisibilityOutlined';
+import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Container,Button,Grid,IconButton,TextField,MenuItem,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from '@material-ui/core';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import EditOutlineOutlinedIcon from '@material-ui/icons/EditOutlined';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import AddIcon from '@material-ui/icons/Add';
 import SearchBar from "material-ui-search-bar";
+
 
 const useStyles = makeStyles((theme)=>({
     table: {
@@ -40,14 +40,15 @@ export default function RidersPage(props) {
     const [searched, setSearched] = useState("");
     const [order, setOrder] = useState("acs");
     const [ridingSector, setRidingSector] = useState("הכל");
-    const [active, setActive] = useState("הכל");
+    const [active, setActive] = useState("");
+    const [open, setOpen] = useState(false);
+    const [chosenRider,setChosenRider] = useState("");
     const history = useHistory();
     const classes = useStyles();
 
 
     useEffect(()=>{
         let apiUrl= props.apiUrl + "Rider/";
-
         fetch(apiUrl,
             {
               method: 'GET',
@@ -65,16 +66,26 @@ export default function RidersPage(props) {
             .then(
               (result) => {
                   setRiders(result);
-                  console.log('====================================');
-                  console.log(result);
-                  console.log('====================================');
                   setRows(result);
+                  setActive(true);
               },
               (error) => {
                 alert(error);
             }
         );
     },[]);
+
+    useEffect(() => {
+        if(active!=="הכל"){
+            const filteredRows = riders.filter((rider) => {
+                return rider.isActive===active;
+            });
+            setRows(filteredRows);
+        }
+        else{
+            setRows(riders);
+        }
+    },[active]);
 
     const btnAddRider=()=>{
         history.push('/AddRider');
@@ -83,11 +94,39 @@ export default function RidersPage(props) {
     const btnEditing=(rider_id)=>{
         history.push("/EditRider/"+rider_id);
     }
+                                                                //Delete rider dialog
+    const handleClickOpen = (rider_id) => {
+        setChosenRider(rider_id);    
+        setOpen(true);
+      };
+    
+      const deleteRider = () => {
 
-    const btnRemove=(rider_id)=>{
-        
-    }
-
+        let apiUrl= props.apiUrl + "Rider/";
+        fetch(apiUrl+chosenRider,                               //delete rider - turn isActive into false
+            {
+              method: 'DELETE',
+              headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Accept': 'application/json; charset=UTF-8',
+              })
+            })
+            .then(res => {
+              console.log('res=', res);
+              console.log('res.status', res.status);
+              console.log('res.ok', res.ok);
+              return res.json()
+            })
+            .then(
+              (result) => {
+                  console.log(result);
+              },
+              (error) => {
+                console.log("err post=", error);
+        });  
+        setOpen(false);
+    };                               
+                                                             //search rider by first name
     const requestSearch = (searchedVal) => {
         const filteredRows = riders.filter((rider) => {
           return rider.first_name.includes(searchedVal);
@@ -99,7 +138,7 @@ export default function RidersPage(props) {
         setSearched("");
         requestSearch(searched);  
     };
-        
+                                                            //order riders table by last name
     const sortBy = () => {
     let arrayCopy = [...rows];
     if(order==="acs"){
@@ -112,11 +151,9 @@ export default function RidersPage(props) {
     }
     setRows(arrayCopy);
     };
-
+                                                            //change riding sector
     const handleRidingSectorChange = (event) => {
-        
         setRidingSector(event.target.value);
-        
         if(event.target.value!=="הכל"){
             const filteredRows = riders.filter((rider) => {
                 return rider.riding_type.includes(event.target.value);
@@ -126,21 +163,6 @@ export default function RidersPage(props) {
         else{
             setRows(riders);
         }
-    }
-
-    const handleActiveChange = (event) => {
-        setActive(event.target.value);
-        
-        if(event.target.value!=="הכל"){
-            const filteredRows = riders.filter((rider) => {
-                return rider.isActive===event.target.value;
-            });
-            setRows(filteredRows);
-        }
-        else{
-            setRows(riders);
-        }
-
     }
     
     return (
@@ -162,7 +184,7 @@ export default function RidersPage(props) {
                             </TextField>
                         </Grid>
                         <Grid item xs={4} sm={4} md={3} lg={2}>
-                            <TextField select label="בחר סטאטוס רוכבים" value={active} onChange={handleActiveChange} fullWidth>
+                            <TextField select label="בחר סטאטוס רוכבים" value={active} onChange={(event)=> setActive(event.target.value)} fullWidth>
                                 <MenuItem value="הכל">
                                     כל הרוכבים
                                 </MenuItem>
@@ -208,11 +230,10 @@ export default function RidersPage(props) {
                                 <TableRow>
                                     <TableCell component='th'>שם משפחה</TableCell>
                                     <TableCell>שם פרטי</TableCell>
-                                    <TableCell align="center">טלפון</TableCell>
+                                    <TableCell>טלפון</TableCell>
                                     <TableCell>מדריך קבוע</TableCell>
                                     <TableCell>יום קבוע</TableCell>
                                     <TableCell >שעה קבועה</TableCell>
-                                    {/* <TableCell align="right">&nbsp;</TableCell>      */}
                                     <TableCell>&nbsp;</TableCell>     
                                     <TableCell>&nbsp;</TableCell>       
                                 </TableRow>
@@ -222,15 +243,10 @@ export default function RidersPage(props) {
                                     <TableRow onDoubleClick={() => btnEditing(rider.id)} key={rider.id}>
                                         <TableCell >{rider.last_name}</TableCell>
                                         <TableCell>{rider.first_name}</TableCell>
-                                        <TableCell align="center">{rider.phone_number}</TableCell>
+                                        <TableCell>{rider.phone_number}</TableCell>
                                         <TableCell>{rider.instructor_full_name}</TableCell>
                                         <TableCell>{rider.regular_lessons.map((lesson)=>(lesson.day+" "))}</TableCell>
                                         <TableCell>{rider.regular_lessons.map((lesson)=>(lesson.start_time+" "))}</TableCell>
-                                        {/* <TableCell align="right">
-                                            <IconButton aria-label="צפייה">  
-                                                <VisibilityOutlinedIcon onClick={() => btnView(rider.id)} />
-                                            </IconButton>
-                                        </TableCell> */}
                                         <TableCell>
                                             <IconButton aria-label="עריכה"> 
                                                 <EditOutlineOutlinedIcon onClick={() => btnEditing(rider.id)} />
@@ -238,7 +254,7 @@ export default function RidersPage(props) {
                                         </TableCell>
                                         <TableCell>
                                             <IconButton aria-label="מחיקה">
-                                                <DeleteOutlineOutlinedIcon onClick={() => btnRemove(rider.id)} />
+                                                <DeleteOutlineOutlinedIcon onClick={() => handleClickOpen(rider.id)} />
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
@@ -246,6 +262,23 @@ export default function RidersPage(props) {
                             </TableBody>
                         </Table>
                     </TableContainer>
+                    <Dialog open={open} onClose={()=>setOpen(false)}>
+                        <DialogTitle id="alert-dialog-title">מחיקת תלמיד</DialogTitle>
+                        <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            <br/>האם אתה בטוח שתרצה למחוק תלמיד זה?
+                            פרטי התלמיד יישמרו בסטאטוס לא פעיל.
+                        </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={()=>setOpen(false)} color="primary">
+                            ביטול
+                        </Button>
+                        <Button onClick={deleteRider} color="primary" autoFocus>
+                            אישור
+                        </Button>
+                        </DialogActions>
+                    </Dialog>
                 </Paper>
             </main>
        </Container>

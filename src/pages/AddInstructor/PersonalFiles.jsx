@@ -46,7 +46,7 @@ export default function PersonalFiles(props) {
                         חזור
                     </Button>
                     <Button variant="contained" color="primary" onClick={handleNext} className={classes.button}>
-                        שמור והמשך
+                        סיום רישום
                     </Button>
                 </div>
             </form>
