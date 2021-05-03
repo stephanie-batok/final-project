@@ -6,6 +6,8 @@ import {Grid,IconButton,Typography,Paper,Tabs,Tab} from '@material-ui/core';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import HorseDetails from './HorseDetails';
 import HorseRestrictions from './HorseRestrictions';
+import WarningIcon from '@material-ui/icons/Warning';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 const useStyles = makeStyles((theme) => ({
     layout: {
@@ -83,12 +85,13 @@ export default function EditHorse(props) {
                 <Paper className={classes.paper}>
                     <Tabs
                         value={tab}
+                        variant="fullWidth"
                         onChange={(event, newTab) => setTab(newTab)}
                         indicatorColor="primary"
                         textColor="primary"
                     >
-                        <Tab label="פרטי הסוס" />
-                        <Tab label="מגבלות הסוס" />
+                        <Tab icon={<AccountCircleIcon />} label="פרטי הסוס"/>
+                        <Tab icon={<WarningIcon />} label="מגבלות הסוס"/>
                     </Tabs>
                     <br/>
                     {tab===0 && <HorseDetails apiUrl={props.apiUrl} horse={horse}/>}

@@ -73,9 +73,7 @@ export default function HorseDetails(props) {
                 {horse!==""?
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid container spacing={4}>
-                        <Grid item xs={12}>
-                            <Typography variant="h6"><br/>פרטי הסוס</Typography>
-                        </Grid>
+                        <Grid item xs={12}></Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField name="name" defaultValue={horse.name} inputRef={register} label="שם הסוס" fullWidth />
                         </Grid>

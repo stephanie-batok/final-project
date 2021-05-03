@@ -81,9 +81,7 @@ export default function ParentDetails(props) {
             {rider!==""?
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={4}>
-                    <Grid item xs={12}>
-                        <Typography variant="h6"><br/>פרטי הורים</Typography>
-                    </Grid>
+                    <Grid item xs={12}></Grid>
                     {rider.parents.length>0?rider.parents.map((parent,key)=>(
                         <Grid container justify="center" spacing={3}>
                             <Grid item xs={12}>

@@ -1,23 +1,39 @@
 import React,{useState,useEffect} from 'react';
 import { useHistory} from "react-router-dom";
-import {Button,Grid,TextField,MenuItem,IconButton,Typography,Paper} from '@material-ui/core';
-import { ViewState, GroupingState,IntegratedGrouping } from '@devexpress/dx-react-scheduler';
+import { makeStyles } from '@material-ui/core/styles';
+import {Button,Grid,Fab,Tooltip,IconButton,Typography,Paper,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from '@material-ui/core';
+import { ViewState} from '@devexpress/dx-react-scheduler';
 import EditIcon from '@material-ui/icons/Edit';
-import {Scheduler,Resources, DayView, Appointments, MonthView, ViewSwitcher,GroupingPanel, DateNavigator,Toolbar,AppointmentTooltip} from '@devexpress/dx-react-scheduler-material-ui';
+import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
+import {Scheduler,DayView, Appointments, MonthView, ViewSwitcher,DateNavigator,Toolbar,AppointmentTooltip} from '@devexpress/dx-react-scheduler-material-ui';
 
+const useStyles = makeStyles((theme) => ({
+  fab: {
+    margin: theme.spacing(2),
+  },
+  absolute: {
+    position:'fixed',
+    left: theme.spacing(2),
+    bottom: theme.spacing(2),
+  },
+}));
 
 export default function Schedule(props) {
+    const classes = useStyles();
     const [lessons,setLessons] = useState([]);
+    const [trialLessons,setTrialLessons] = useState([]);
     const [schedulerData,setSchedulerData] = useState([]);
     const currentDate = Date.now();
     const history = useHistory();
-    // const [resources,setResources] = useState([]);
-    // const [grouping,setGrouping]= useState([]);
     const [ren,setRen]= useState(false);
+    const [open, setOpen] = useState(false);
+    const [chosenLesson,setChosenLesson] = useState("");
+    const [chosenLessonType,setChosenLessonType] = useState("");
+
 
     const getLessons = () => {
         let apiUrl= props.apiUrl + "Lesson/";
-
         fetch(apiUrl,
             {
               method: 'GET',
@@ -35,39 +51,19 @@ export default function Schedule(props) {
             .then(
                 (result) => {
                     let tempSchedulerData = [];
-                    // let tempInstructors = [];
-
                     result.map((lesson) => {
                         tempSchedulerData.push({
                         startDate: lesson.date+"T"+lesson.start_time,
                         endDate: lesson.date+"T"+lesson.end_time,
                         title:"תלמיד: "+lesson.rider_fullName,
                         text:"מדריך: " +lesson.instructor_fullName,
-                        type:"סוג שיעור: "+lesson.lesson_type,
+                        type:lesson.lesson_type,
                         horse:"סוס: "+lesson.horse_name,
                         id:lesson.lesson_id
                         });
-                        
-                        // tempInstructors.push({
-                        //     id:lesson.instructor_id,
-                        //     text:lesson.instructor_fullName,
-                        // });
-                    });
-                    // let instructors = [...new Map(tempInstructors.map(item => [item.id, item])).values()];
- 
+                    }); 
                     setLessons(result);
-                    // setResources([{
-                    //     fieldName: 'instructors',
-                    //     title: 'מדריכים',
-                    //     instances: instructors,
-                    //     allowMultiple: false
-                    // }]);
-                    // setGrouping([{
-                    //     resourceName: 'instructors'
-                    // }]);
                     setSchedulerData(tempSchedulerData);
-                    setRen(true);
-                    
                 },
               (error) => {
                 alert(error);
@@ -75,12 +71,52 @@ export default function Schedule(props) {
         )
     }
 
+    const getTrialLessons = () => {
+      let apiUrl= props.apiUrl + "TrialLesson/";
+
+      fetch(apiUrl,
+          {
+            method: 'GET',
+            headers: new Headers({
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Accept': 'application/json; charset=UTF-8',
+            })
+          })
+          .then(res => {
+            console.log('res=', res);
+            console.log('res.status', res.status);
+            console.log('res.ok', res.ok);
+            return res.json();
+          })
+          .then(
+              (result) => {
+                  result.map((lesson) => {
+                      schedulerData.push({
+                      startDate: lesson.date+"T"+lesson.start_time,
+                      endDate: lesson.date+"T"+lesson.end_time,
+                      title:"תלמיד: "+lesson.rider_fullName,
+                      text:"מדריך: " +lesson.instructor_fullName,
+                      type:lesson.lesson_type,
+                      horse:"סוס: "+lesson.horse_name,
+                      id:lesson.lesson_id
+                      });
+                  });
+                  setTrialLessons(result);
+                  setRen(true);
+              },
+            (error) => {
+              alert(error);
+          }
+      )
+  }
+
     useEffect(()=>{
         getLessons();
+        getTrialLessons();
     },[]);
 
     const Appointment = ({
-        children, style, ...restProps
+        children, style,appointmentData, ...restProps
       }) => (
         <Appointments.Appointment
           {...restProps}
@@ -99,10 +135,11 @@ export default function Schedule(props) {
           {...restProps}
           appointmentData={appointmentData}
         >
-          <IconButton
-            onClick={()=>btn_edit(appointmentData.id)}
-          >
-          <EditIcon/>
+          <IconButton onClick={(e)=>btn_delete(e,appointmentData.id,appointmentData.type)}>
+            <DeleteIcon/>
+          </IconButton>
+          <IconButton onClick={(e)=>btn_edit(e,appointmentData.id,appointmentData.type)}>
+            <EditIcon/>
           </IconButton>
         </AppointmentTooltip.Header>
     );
@@ -112,15 +149,61 @@ export default function Schedule(props) {
           <Grid container alignItems="center">
             <Grid item xs={12}>
                 <Typography>{appointmentData.text}</Typography>
-                <Typography>{appointmentData.type}</Typography>
+                <Typography>סוג שיעור: {appointmentData.type}</Typography>
                 <Typography>{appointmentData.horse}</Typography>
             </Grid>
           </Grid>
         </AppointmentTooltip.Content>
     );
 
-    const btn_edit=(lesson_id)=>{
-        history.push("/EditLesson/"+lesson_id);
+    const btn_edit=(e,lesson_id,lesson_type)=>{
+        console.log(lesson_type);
+
+        history.push("/EditLesson/"+lesson_id,{lesson_type:lesson_type});
+    }
+
+    const btnAddLesson = () => {
+       history.push("/AddLesson");
+    }
+
+    const btn_delete = (e,lesson_id,lesson_type) => {
+      setChosenLesson(lesson_id);      
+      setChosenLessonType(lesson_type);
+      setOpen(true);
+    }
+
+    const delete_lesson = () => {
+      let apiUrl;
+
+      if(chosenLessonType==="שיעור ניסיון"){
+        apiUrl= props.apiUrl + "TrialLesson/";
+      }
+      else {
+        apiUrl= props.apiUrl + "Lesson/";
+      }
+
+      fetch(apiUrl+chosenLesson,                               //delete Lesson
+          {
+            method: 'DELETE',
+            headers: new Headers({
+              'Content-Type': 'application/json; charset=UTF-8',
+              'Accept': 'application/json; charset=UTF-8',
+            })
+          })
+          .then(res => {
+            console.log('res=', res);
+            console.log('res.status', res.status);
+            console.log('res.ok', res.ok);
+            return res.json()
+          })
+          .then(
+            (result) => {
+                console.log(result);
+            },
+            (error) => {
+              console.log("err post=", error);
+      });  
+      setOpen(false);
     }
 
     return (
@@ -132,12 +215,9 @@ export default function Schedule(props) {
                 <ViewState
                     defaultCurrentDate="2021-02-14"
                 />
-                {/* <GroupingState
-                    grouping={grouping}
-                /> */}
-                <DayView startDayHour={10} endDayHour={19}/>
+                <DayView startDayHour={12} endDayHour={19}/>
                 <MonthView />
-                <Toolbar />
+                <Toolbar/>
                 <ViewSwitcher />
                 <DateNavigator/>
                 <Appointments 
@@ -149,10 +229,29 @@ export default function Schedule(props) {
                   contentComponent={Content}
                   showCloseButton
                 />
-                {/* <IntegratedGrouping/>
-                <GroupingPanel/> */}
             </Scheduler>
             :null}
+            <Tooltip title="שיעור חדש" aria-label="שיעור חדש">
+              <Fab color="default" className={classes.absolute}>
+                <AddIcon onClick={btnAddLesson}/>
+              </Fab>
+            </Tooltip>
+            <Dialog open={open} onClose={()=>setOpen(false)}>
+                <DialogTitle id="alert-dialog-title">מחיקת שיעור</DialogTitle>
+                <DialogContent>
+                  <DialogContentText id="alert-dialog-description">
+                      <br/>האם אתה בטוח שתרצה למחוק שיעור זה?
+                  </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={()=>setOpen(false)} color="primary">
+                      ביטול
+                  </Button>
+                  <Button onClick={delete_lesson} color="primary" autoFocus>
+                      אישור
+                  </Button>
+                </DialogActions>
+            </Dialog>
         </Paper>
     )
 }

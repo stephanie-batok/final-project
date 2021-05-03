@@ -170,9 +170,7 @@ export default function LessonDetails(props) {
             {rider!==""?
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={4}>
-                    <Grid item xs={12}>
-                        <Typography variant="h6"><br/>פרטי שיעורים קבועים</Typography>
-                    </Grid>
+                    <Grid item xs={12}></Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField select label="מדריך קבוע" defaultValue={rider.instructor_id} onChange={(e) => register({name:"instructor_id", value: e.target.value})} fullWidth>
                             {instructors!==""?instructors.map((i) =>(

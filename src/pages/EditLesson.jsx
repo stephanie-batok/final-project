@@ -34,7 +34,7 @@ export default function EditLesson(props) {
     let { id } = useParams();
     const history = useHistory();
     const classes = useStyles();    
-    const { register, handleSubmit,setValue,getValues} = useForm({mode: 'onBlur'});
+    const { register, handleSubmit,getValues} = useForm({mode: 'onBlur'});
     const [lesson,setLesson] = useState("");
     const [instructors,setInstructors] = useState("");
     const [horses,setHorses] = useState("");

@@ -1,8 +1,11 @@
 import React,{useState,useEffect} from 'react';
 import { useParams,useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
-import {Grid,IconButton,Typography,Paper,Tabs,Tab} from '@material-ui/core';
+import {Grid,IconButton,Paper,Tabs,Tab} from '@material-ui/core';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import PeopleIcon from '@material-ui/icons/People';
+import ClassIcon from '@material-ui/icons/Class';
 import PersonalDetails from './PersonalDetails';
 import ParentDetails from './ParentDetails';
 import LessonDetails from './LessonDetails';
@@ -89,13 +92,14 @@ export default function EditRider(props) {
                     <Paper className={classes.paper}>
                         <Tabs
                             value={tab}
+                            variant="fullWidth"
                             onChange={(event, newTab) => setTab(newTab)}
                             indicatorColor="primary"
                             textColor="primary"
                         >
-                            <Tab label="פרטים אישיים" />
-                            <Tab label="פרטי הורים" />
-                            <Tab label="פרטי שיעור" />
+                            <Tab icon={<AccountCircleIcon />} label="פרטים אישיים" />
+                            <Tab icon={<PeopleIcon />} label="פרטי הורים" />
+                            <Tab icon={<ClassIcon />} label="פרטי שיעור" />
                         </Tabs>
                         <br/>
                         {tab===0 && <PersonalDetails apiUrl={props.apiUrl} rider={rider}/>}

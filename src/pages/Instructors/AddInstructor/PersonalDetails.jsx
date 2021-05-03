@@ -35,9 +35,6 @@ export default function PersonalDetails(props) {
 
     return (
         <React.Fragment>
-            <Typography variant="h6" gutterBottom>
-                פרטים אישיים
-            </Typography>
             <form>
                 <Grid container spacing={4}>
                     <Grid item xs={12} sm={6}>

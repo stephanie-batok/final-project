@@ -1,9 +1,9 @@
 import React from 'react'
 
-export default function AddLeasson(props) {
+export default function Messages(props) {
     return (
         <div>
-            ADD LESSON
+            Messages
         </div>
     )
 }

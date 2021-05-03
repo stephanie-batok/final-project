@@ -76,9 +76,7 @@ export default function HorseRestrictions(props) {
             {horse!==""?
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid container spacing={4}>
-                    <Grid item xs={12}>
-                        <Typography variant="h6"><br/>מגבלות הסוס</Typography>
-                    </Grid>
+                    <Grid item xs={12}></Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField name="min_weight" type="number" defaultValue={horse.min_weight} inputRef={register} label="משקל מינימאלי" fullWidth />
                     </Grid>

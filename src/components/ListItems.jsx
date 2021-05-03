@@ -9,6 +9,7 @@ import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import {Icon} from '@iconify/react';
 import horseshoeIcon from '@iconify-icons/mdi/horseshoe';
+import EmailIcon from '@material-ui/icons/Email';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -112,6 +113,14 @@ export default function ListItems() {
                     </ListItem>
                 </List>
             </Collapse>
+            <ListItem button>
+                    <ListItemIcon>
+                        <EmailIcon />
+                    </ListItemIcon>
+                    <Link style={{ textDecoration:'none',color: "inherit"}} to="/Messages">
+                        <ListItemText primary="הודעות" />
+                    </Link>
+            </ListItem>
         </div>
     )
 }

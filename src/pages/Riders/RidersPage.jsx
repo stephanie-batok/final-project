@@ -101,7 +101,6 @@ export default function RidersPage(props) {
       };
     
       const deleteRider = () => {
-
         let apiUrl= props.apiUrl + "Rider/";
         fetch(apiUrl+chosenRider,                               //delete rider - turn isActive into false
             {

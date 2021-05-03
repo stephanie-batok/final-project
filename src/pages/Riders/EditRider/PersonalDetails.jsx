@@ -81,9 +81,7 @@ export default function PersonalDetails(props) {
                 {rider!==""?
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <Grid container spacing={4}>
-                        <Grid item xs={12}>
-                            <Typography variant="h6"><br/>פרטים אישיים</Typography>
-                        </Grid>
+                        <Grid item xs={12}></Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField name="first_name" defaultValue={rider.first_name} inputRef={register} label="שם פרטי" fullWidth />
                         </Grid>

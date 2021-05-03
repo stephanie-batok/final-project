@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import logo from '../horse-club-logo.png';
 import clsx from 'clsx';
 import { makeStyles,useTheme } from '@material-ui/core/styles';
@@ -55,9 +55,13 @@ export default function DrawerMenu(props) {
     const theme = useTheme()
     const [open, setOpen] = useState(props.open);
 
+    useEffect(() => {
+        props.toggleDrawer(open);
+    }, [open]);
+
 
     return (
-        <React.Fragment className={classes.root}>
+        <React.Fragment>
             <CssBaseline />
             <AppBar color="transparent" position="fix" className={clsx(classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
@@ -65,12 +69,12 @@ export default function DrawerMenu(props) {
                         color="inherit"
                         edge="end"
                         onClick={() => setOpen(true)}
-                        className={clsx(open && classes.hide)}
+                        className={clsx(classes.menuButton,open && classes.hide)}
                     >
                         <MenuIcon />
                     </IconButton>
                     &nbsp;&nbsp;
-                    <IconButton disabled={true} edge="end">
+                    <IconButton disabled={true} >
                         <img alt='logo' src={logo} style={{width:'3.5rem',height:'4rem'}}/>
                     </IconButton>
                 </Toolbar>
