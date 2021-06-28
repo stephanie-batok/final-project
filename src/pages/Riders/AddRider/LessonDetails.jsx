@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import apiUrl from '../../../global';
 import { useForm } from "react-hook-form";
 import {Button,Grid,TextField,MenuItem,Typography} from '@material-ui/core';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
@@ -41,9 +42,8 @@ export default function LessonDetails(props) {
     }, []);
 
     const getInstructors = () => {
-        let apiUrl= props.apiUrl + "Worker/Instructor";
 
-        fetch(apiUrl,
+        fetch(apiUrl+"Worker/Instructor",
             {
               method: 'GET',
               headers: new Headers({
@@ -68,9 +68,8 @@ export default function LessonDetails(props) {
     }
 
     const getHorses = () => {
-        let apiUrl= props.apiUrl + "Horse/";
 
-        fetch(apiUrl,
+        fetch(apiUrl+"Horse/",
             {
               method: 'GET',
               headers: new Headers({

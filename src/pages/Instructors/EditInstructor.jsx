@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import apiUrl from '../../global';
 import { useForm } from "react-hook-form";
 import { useParams,useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
@@ -42,9 +43,8 @@ export default function EditInstructor(props) {
 
 
     useEffect(()=>{
-        let apiUrl= props.apiUrl + "Worker/";
 
-        fetch(apiUrl+"/"+id,
+        fetch(apiUrl+"Worker/"+id,
             {
               method: 'GET',
               headers: new Headers({
@@ -87,10 +87,8 @@ export default function EditInstructor(props) {
           "isAllowed": isAllowed===undefined?instructor.isAllowed:data.isAllowed,
         }
         console.log(newPersonalDetails);
-
-        let apiUrl= props.apiUrl + "Worker/";
         
-        fetch(apiUrl+instructor.id,                                    //edit instructor's personal details in db with Put method
+        fetch(apiUrl+"Worker/"+instructor.id,                                    //edit instructor's personal details in db with Put method
             {
               method: 'PUT',
               body: JSON.stringify(newPersonalDetails),

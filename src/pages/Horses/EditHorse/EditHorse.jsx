@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import apiUrl from '../../../global';
 import { useForm } from "react-hook-form";
 import { useParams,useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
@@ -41,9 +42,8 @@ export default function EditHorse(props) {
     const [tab, setTab] = useState(0);
 
     useEffect(()=>{
-        let apiUrl= props.apiUrl + "Horse/";
 
-        fetch(apiUrl+"/"+id,
+        fetch(apiUrl+"Horse/"+id,
             {
               method: 'GET',
               headers: new Headers({
@@ -59,9 +59,6 @@ export default function EditHorse(props) {
             })
             .then(
               (result) => {
-                  console.log('====================================');
-                  console.log(result);
-                  console.log('====================================');
                   setHorse(result);
               },
               (error) => {
@@ -94,8 +91,8 @@ export default function EditHorse(props) {
                         <Tab icon={<WarningIcon />} label="מגבלות הסוס"/>
                     </Tabs>
                     <br/>
-                    {tab===0 && <HorseDetails apiUrl={props.apiUrl} horse={horse}/>}
-                    {tab===1 && <HorseRestrictions apiUrl={props.apiUrl} horse={horse}/>}
+                    {tab===0 && <HorseDetails horse={horse}/>}
+                    {tab===1 && <HorseRestrictions horse={horse}/>}
                 </Paper>
             </main>:null}
         </React.Fragment>

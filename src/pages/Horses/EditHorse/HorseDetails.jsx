@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import apiUrl from '../../../global';
 import { useForm } from "react-hook-form";
 import {Grid,TextField,MenuItem,Typography,Button} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
@@ -31,9 +32,8 @@ export default function HorseDetails(props) {
           "is_active": is_active===undefined?horse.is_active:data.is_active
         }
         console.log(newHorseDetails);
-        let apiUrl= props.apiUrl + "Horse/HorseDetails/";
         
-        fetch(apiUrl+horse.id,                                    //edit horse details in db with Put method
+        fetch(apiUrl+"Horse/HorseDetails/"+horse.id,                                    //edit horse details in db with Put method
             {
               method: 'PUT',
               body: JSON.stringify(newHorseDetails),
@@ -75,7 +75,7 @@ export default function HorseDetails(props) {
                     <Grid container spacing={4}>
                         <Grid item xs={12}></Grid>
                         <Grid item xs={12} sm={6}>
-                            <TextField name="name" defaultValue={horse.name} inputRef={register} label="שם הסוס" fullWidth />
+                            <TextField name="name" defaultValue={horse.name} InputProps={{readOnly: true}} label="שם הסוס" fullWidth />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField select defaultValue={horse.gender} label="מין הסוס" onChange={(e) => register({name:"gender", value: e.target.value})} fullWidth>

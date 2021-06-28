@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import apiUrl from '../../../global';
 import { useForm } from "react-hook-form";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
@@ -26,9 +27,8 @@ export default function LessonDetails(props) {
     },[]);
 
     const getInstructors = () => {
-        let apiUrl= props.apiUrl + "Worker/Instructor";
 
-        fetch(apiUrl,
+        fetch(apiUrl+"Worker/Instructor",
             {
               method: 'GET',
               headers: new Headers({
@@ -53,9 +53,8 @@ export default function LessonDetails(props) {
     }
 
     const getHorses = () => {
-        let apiUrl= props.apiUrl + "Horse/";
 
-        fetch(apiUrl,
+        fetch(apiUrl+"Horse/",
             {
               method: 'GET',
               headers: new Headers({
@@ -126,10 +125,8 @@ export default function LessonDetails(props) {
                 "regular_lessons":lessons,
             }
             console.log(newLessonDetails);
-
-            let apiUrl= props.apiUrl + "Rider/LessonDetails/";
         
-            fetch(apiUrl+rider.id,                                    //edit rider's Lesson Details in db with Put method
+            fetch(apiUrl+"Rider/LessonDetails/"+rider.id,                                    //edit rider's Lesson Details in db with Put method
                 {
                   method: 'PUT',
                   body: JSON.stringify(newLessonDetails),

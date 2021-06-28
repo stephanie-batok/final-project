@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import apiUrl from '../../global';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory} from "react-router-dom";
 import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Container,Button,Grid,IconButton,TextField,MenuItem,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from '@material-ui/core';
@@ -48,8 +49,8 @@ export default function RidersPage(props) {
 
 
     useEffect(()=>{
-        let apiUrl= props.apiUrl + "Rider/";
-        fetch(apiUrl,
+
+        fetch(apiUrl+"Rider/",
             {
               method: 'GET',
               headers: new Headers({
@@ -101,8 +102,8 @@ export default function RidersPage(props) {
       };
     
       const deleteRider = () => {
-        let apiUrl= props.apiUrl + "Rider/";
-        fetch(apiUrl+chosenRider,                               //delete rider - turn isActive into false
+          
+        fetch(apiUrl+"Rider/"+chosenRider,                               //delete rider - turn isActive into false
             {
               method: 'DELETE',
               headers: new Headers({

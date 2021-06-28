@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import apiUrl from '../../../global';
 import { useForm } from "react-hook-form";
 import {Button,Grid,TextField,MenuItem,Typography} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
@@ -38,10 +39,8 @@ export default function ParentDetails(props) {
           "parents": parents,
         }
         console.log(newParentDetails);
-
-        let apiUrl= props.apiUrl + "Rider/ParentDetails/";
         
-        fetch(apiUrl+rider.id,                                    //edit rider's parent details in db with Put method
+        fetch(apiUrl+"Rider/ParentDetails/"+rider.id,                                    //edit rider's parent details in db with Put method
             {
               method: 'PUT',
               body: JSON.stringify(newParentDetails),

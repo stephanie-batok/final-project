@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import apiUrl from '../../global';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper, Stepper, Step, StepLabel, Button, Link, Typography, Grid, IconButton} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
@@ -63,7 +64,6 @@ export default function AddLesson(props) {
 
         if(riderType==="rider"){
 
-            let apiUrl= props.apiUrl + "Lesson/";
             let newLesson={                                  //create object to send in the body of POST method
                 "rider_id":riderDetails,
                 "date":lessonDetails['date'],
@@ -81,7 +81,7 @@ export default function AddLesson(props) {
             }
             console.log(newLesson);
             
-            fetch(apiUrl,                                    //add new lesson to db with POST method
+            fetch(apiUrl+"Lesson/",                                    //add new lesson to db with POST method
                 {
                 method: 'POST',
                 body: JSON.stringify(newLesson),
@@ -114,6 +114,72 @@ export default function AddLesson(props) {
                 (error) => {
                     console.log("err post=", error);
                 });           
+        }
+        else if(riderType==="visitor"){
+
+            let newLesson={                                  //create object to send in the body of POST method
+                "visitor_id":riderDetails['id'],
+                "visitor":{
+                    "id":riderDetails['id'],
+                    "first_name":riderDetails['first_name'],
+                    "last_name":riderDetails['last_name'],
+                    "gender":riderDetails['gender'],
+                    "date_of_birth":riderDetails['date_of_birth'],
+                    "phone_number":riderDetails['phone_number'],
+                    "address":riderDetails['address'],
+                    "city":riderDetails['city'],
+                    "height":riderDetails['height'],
+                    "weight":riderDetails['weight'],
+                    "comments":riderDetails['comments'],
+                },
+                "date":lessonDetails['date'],
+                "start_time":lessonDetails['start_time'],
+                "end_time":lessonDetails['end_time'],
+                "instructor_id": lessonDetails['instructor_id'],
+                "horse_id": lessonDetails['horse_id'],
+                "field": lessonDetails['field'],
+                "lesson_type": lessonDetails['lesson_type'],
+                "price": lessonDetails['price'],
+                "funding_source": lessonDetails['funding_source'],
+                "charge_type": lessonDetails['charge_type'],
+                "was_present": lessonDetails['was_present'],
+                "comments": lessonDetails['comments']
+            }
+            console.log(newLesson);
+            
+            fetch(apiUrl+"TrialLesson/",                                    //add new lesson to db with POST method
+                {
+                method: 'POST',
+                body: JSON.stringify(newLesson),
+                headers: new Headers({
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    'Accept': 'application/json; charset=UTF-8',
+                })
+                })
+                .then(res => {
+                console.log('res=', res);
+                console.log('res.status', res.status);
+                console.log('res.ok', res.ok);
+                if(res.ok){
+                    setStatus("ok");
+                }
+                else{
+                    setStatus("no");
+                }
+                return res.json();
+                })
+                .then(
+                (result) => {
+                    if(typeof(result) === "object"){
+                        setMessage(result.Message);
+                    }
+                    else{
+                        setMessage(result);
+                    }
+                },
+                (error) => {
+                    console.log("err post=", error);
+                });   
         }
     }
 
@@ -162,10 +228,10 @@ export default function AddLesson(props) {
                     </Stepper>
                         <React.Fragment>
                             <div style={{display:(activeStep===0?"block":"none")}}>
-                                <RiderDetails getRiderType={getRiderType} getRiderDetails={getRiderDetails} apiUrl={props.apiUrl} />
+                                <RiderDetails getRiderType={getRiderType} getRiderDetails={getRiderDetails}/>
                             </div>
                             <div style={{display:(activeStep===1?"block":"none")}}>
-                                <LessonDetails getLessonDetails={getLessonDetails} handleBack={handleBack} apiUrl={props.apiUrl} />
+                                <LessonDetails getLessonDetails={getLessonDetails} handleBack={handleBack}/>
                             </div>
                             <div style={{display:(activeStep===2?"block":"none")}}>
                                 <Alert severity={status==="ok"?"success":"error"}>{message}</Alert>

@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import apiUrl from '../../global';
 import { useForm } from "react-hook-form";
 import { makeStyles } from '@material-ui/core/styles';
 import {Grid,Radio,FormControlLabel,FormControl,RadioGroup,FormLabel,MenuItem,TextField,Typography,Button} from '@material-ui/core';
@@ -26,8 +27,8 @@ export default function RiderDetails(props) {
     
 
     useEffect(()=>{
-        let apiUrl= props.apiUrl + "Rider/";
-        fetch(apiUrl,
+        
+        fetch(apiUrl+"Rider/",
             {
               method: 'GET',
               headers: new Headers({

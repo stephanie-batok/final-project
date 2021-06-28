@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import {Button,Grid,TextField,MenuItem,IconButton,Typography,Paper} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import apiUrl from '../global';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,8 +32,9 @@ const useStyles = makeStyles((theme) => ({
   }));
 
 export default function EditLesson(props) {
-    let { id } = useParams();
+    const { id } = useParams();
     const history = useHistory();
+    const  lessonType  = history.location.state.lesson_type;
     const classes = useStyles();    
     const { register, handleSubmit,getValues} = useForm({mode: 'onBlur'});
     const [lesson,setLesson] = useState("");
@@ -49,9 +51,16 @@ export default function EditLesson(props) {
     },[]);
 
     const getLesson = () => {
-        let apiUrl= props.apiUrl + "Lesson/";
 
-        fetch(apiUrl+id,
+        let LessonTypeUrl;
+        if(lessonType==="שיעור ניסיון"){
+          LessonTypeUrl= "TrialLesson/";
+        }
+        else {
+          LessonTypeUrl= "Lesson/";
+        }
+
+        fetch(apiUrl+LessonTypeUrl+id,
             {
               method: 'GET',
               headers: new Headers({
@@ -76,9 +85,8 @@ export default function EditLesson(props) {
         );
     }
     const getInstructors = () => {
-        let apiUrl= props.apiUrl + "Worker/Instructor";
 
-        fetch(apiUrl,
+        fetch(apiUrl+"Worker/Instructor",
             {
               method: 'GET',
               headers: new Headers({
@@ -103,9 +111,8 @@ export default function EditLesson(props) {
     }
 
     const getHorses = () => {
-        let apiUrl= props.apiUrl + "Horse/";
 
-        fetch(apiUrl,
+        fetch(apiUrl + "Horse/",
             {
               method: 'GET',
               headers: new Headers({
@@ -137,7 +144,6 @@ export default function EditLesson(props) {
         let charge_type = getValues('charge_type');
 
 
-
         let newLesson={                                  //create object to send in the body of Put method
           "lesson_id":lesson.lesson_id,
           "date":lesson.date,
@@ -154,10 +160,16 @@ export default function EditLesson(props) {
           "comments": data.comments
         }
         console.log(newLesson);
-        
-        let apiUrl= props.apiUrl + "Lesson/";
-        
-        fetch(apiUrl+id,                                    //edit lesson in db with Put method
+
+        let LessonTypeUrl;
+        if(lessonType==="שיעור ניסיון"){
+          LessonTypeUrl="TrialLesson/";
+        }
+        else {
+          LessonTypeUrl= "Lesson/";
+        }
+                
+        fetch(apiUrl+LessonTypeUrl+id,                                    //edit lesson in db with Put method
             {
               method: 'PUT',
               body: JSON.stringify(newLesson),
@@ -211,7 +223,7 @@ export default function EditLesson(props) {
                                     <Typography variant="h6">פרטי שיעור <br/></Typography>
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
-                                    <TextField name="rider_fullName" InputProps={{readOnly: true}} defaultValue={lesson.rider_fullName} inputRef={register} label="שם הרוכב" fullWidth />
+                                    <TextField name="rider_fullName" InputProps={{readOnly: true}} defaultValue={lessonType==="שיעור ניסיון"?lesson.visitor_fullName:lesson.rider_fullName} inputRef={register} label="שם הרוכב" fullWidth />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField name="date" type="date" InputProps={{readOnly: true}} defaultValue={lesson.date} inputRef={register} label="תאריך" fullWidth />
@@ -243,7 +255,8 @@ export default function EditLesson(props) {
                                 <Grid item xs={12} sm={6}>
                                     <TextField name="match_rank" InputProps={{readOnly: true}} defaultValue={lesson.match_rank} inputRef={register} label="רמת התאמה עם סוס" fullWidth />
                                 </Grid>
-                                <Grid item xs={12} sm={6}>
+                                
+                                {lessonType!=="שיעור ניסיון"?<Grid item xs={12} sm={6}>
                                     <TextField select label="סוג שיעור" defaultValue={lesson.lesson_type} onChange={(e) => register({name:"lesson_type", value: e.target.value})} fullWidth>
                                         <MenuItem value="פרטי">
                                             פרטי
@@ -252,7 +265,7 @@ export default function EditLesson(props) {
                                             קבוצתי
                                         </MenuItem>
                                     </TextField>
-                                </Grid>
+                                </Grid>:null}
                                 <Grid item xs={12} sm={6}>
                                     <TextField name="price" type="number" defaultValue={lesson.price} inputRef={register} label="תעריף" fullWidth />
                                 </Grid>

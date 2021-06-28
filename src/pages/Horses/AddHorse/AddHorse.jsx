@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import apiUrl from '../../../global';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper, Stepper, Step, StepLabel, Button, Link, Typography, Grid, IconButton} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
@@ -60,7 +61,6 @@ export default function AddHorse(props) {
     };
 
     const onSubmit = () => {
-        let apiUrl= props.apiUrl + "Horse/";
 
         let newHorse={                                  //create object to send in the body of POST method
             "name": horseDetails["name"],
@@ -79,7 +79,7 @@ export default function AddHorse(props) {
         }
         console.log(newHorse);
         
-        fetch(apiUrl,                                    //add new horse to db with POST method
+        fetch(apiUrl+"Horse/",                                    //add new horse to db with POST method
             {
               method: 'POST',
               body: JSON.stringify(newHorse),

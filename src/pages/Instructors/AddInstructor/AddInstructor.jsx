@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import apiUrl from '../../../global';
 import { makeStyles } from '@material-ui/core/styles';
 import {Paper, Stepper, Step, StepLabel, Button, Link, Typography, Grid, IconButton} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
@@ -61,7 +62,6 @@ export default function AddInstructor(props) {
     };
 
     const onSubmit = () => {
-        let apiUrl= props.apiUrl + "Worker/";
 
         let newInstructor={                                  //create object to send in the body of POST method
             "id": personalDetails["id"],
@@ -83,7 +83,7 @@ export default function AddInstructor(props) {
         }
         console.log(newInstructor);
         
-        fetch(apiUrl,                                    //add new instructor to db with POST method
+        fetch(apiUrl+"Worker/",                                    //add new instructor to db with POST method
             {
               method: 'POST',
               body: JSON.stringify(newInstructor),

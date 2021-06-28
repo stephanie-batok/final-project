@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import apiUrl from '../../../global';
 import { useParams,useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import {Grid,IconButton,Paper,Tabs,Tab} from '@material-ui/core';
@@ -44,9 +45,8 @@ export default function EditRider(props) {
 
 
     useEffect(()=>{
-        let apiUrl= props.apiUrl + "Rider/";
 
-        fetch(apiUrl+"/"+id,
+        fetch(apiUrl+"Rider/"+id,
             {
               method: 'GET',
               headers: new Headers({
@@ -63,15 +63,13 @@ export default function EditRider(props) {
             .then(
               (result) => {
                   setRider(result);
-                  console.log('====================================');
                   console.log(result);
-                  console.log('====================================');
                   if(result.regular_lessons.length===1){
                         setAddLesson(true);
                   }
               },
               (error) => {
-                alert(error);
+                console.log(error);
             }
         );
     },[]);
@@ -102,9 +100,9 @@ export default function EditRider(props) {
                             <Tab icon={<ClassIcon />} label="פרטי שיעור" />
                         </Tabs>
                         <br/>
-                        {tab===0 && <PersonalDetails apiUrl={props.apiUrl} rider={rider}/>}
-                        {tab===1 && <ParentDetails apiUrl={props.apiUrl} rider={rider}/>}
-                        {tab===2 && <LessonDetails apiUrl={props.apiUrl} rider={rider} addLesson={addLesson}/>}
+                        {tab===0 && <PersonalDetails rider={rider}/>}
+                        {tab===1 && <ParentDetails rider={rider}/>}
+                        {tab===2 && <LessonDetails rider={rider} addLesson={addLesson}/>}
                     </Paper>
                 </main>:null}
         </React.Fragment>

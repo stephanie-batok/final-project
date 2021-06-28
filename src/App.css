@@ -45,3 +45,11 @@
     transform: rotate(360deg);
   }
 }
+
+.right {
+  justify-content: flex-end !important;
+}
+
+.left {
+  justify-content: flex-start !important;
+}

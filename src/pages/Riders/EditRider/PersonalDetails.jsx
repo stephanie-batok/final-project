@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import apiUrl from '../../../global';
 import { useForm } from "react-hook-form";
 import {Grid,TextField,MenuItem,Typography,Button} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
@@ -39,9 +40,8 @@ export default function PersonalDetails(props) {
           "healthForm":data.healthForm
         }
         console.log(newPersonalDetails);
-        let apiUrl= props.apiUrl + "Rider/PersonalDetails/";
         
-        fetch(apiUrl+rider.id,                                    //edit rider personal details in db with Put method
+        fetch(apiUrl+"Rider/PersonalDetails/"+rider.id,                                    //edit rider personal details in db with Put method
             {
               method: 'PUT',
               body: JSON.stringify(newPersonalDetails),

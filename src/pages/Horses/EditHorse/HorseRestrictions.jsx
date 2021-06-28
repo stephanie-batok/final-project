@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import apiUrl from '../../../global';
 import { useForm } from "react-hook-form";
 import {Grid,TextField,MenuItem,Typography,Button} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
@@ -33,9 +34,8 @@ export default function HorseRestrictions(props) {
           "is_qualified": is_qualified===undefined?horse.is_qualified:data.is_qualified
         }
         console.log(newHorseRestrictions);
-        let apiUrl= props.apiUrl + "Horse/HorseRestrictions/";
         
-        fetch(apiUrl+horse.id,                                    //edit horse restrictions in db with Put method
+        fetch(apiUrl+"Horse/HorseRestrictions/"+horse.id,                                    //edit horse restrictions in db with Put method
             {
               method: 'PUT',
               body: JSON.stringify(HorseRestrictions),

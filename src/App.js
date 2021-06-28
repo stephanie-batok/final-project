@@ -23,7 +23,7 @@ import InstructorsPage from './pages/Instructors/InstructorsPage';
 import AddInstructor from './pages/Instructors/AddInstructor/AddInstructor';
 import EditInstructor from './pages/Instructors/EditInstructor';
 import DrawerMenu from './components/DrawerMenu';
-import Messages from './pages/Messages';
+import Messages from './pages/Messages/Messages';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -49,8 +49,6 @@ const useStyles = makeStyles((theme) => ({
 // Configure JSS
 const jss = create({ plugins: [...jssPreset().plugins, rtl()] });
 
-const apiUrl="http://proj.ruppin.ac.il/bgroup19/prod/api/";
-
 function App() {
   const classes = useStyles();
   const [open, setOpen] = useState("");
@@ -66,48 +64,48 @@ function App() {
         <div className="App">
           <Switch>
               <Route exact path="/" >
-                <LoginForm apiUrl={apiUrl}/>
+                <LoginForm/>
               </Route>
               <div className={clsx(classes.content, {[classes.contentShift]: !open})}>
                   <DrawerMenu toggleDrawer={toggleDrawer}/>
                   <Route path="/RidersPage" >
-                    <RidersPage apiUrl={apiUrl}/>
+                    <RidersPage/>
                   </Route>
                   <Route path="/AddRider" >
-                    <AddRider apiUrl={apiUrl}/>
+                    <AddRider/>
                   </Route>
                   <Route path="/EditRider/:id" >
-                    <EditRider apiUrl={apiUrl}/>
+                    <EditRider/>
                   </Route>
                   <Route path="/Schedule" >
-                    <Schedule apiUrl={apiUrl}/>
+                    <Schedule/>
                   </Route>
                   <Route path="/HorsesPage" >
-                    <HorsesPage apiUrl={apiUrl}/>
+                    <HorsesPage/>
                   </Route>
                   <Route path="/AddHorse" >
-                    <AddHorse apiUrl={apiUrl}/>
+                    <AddHorse/>
                   </Route>
                   <Route path="/EditHorse/:id" >
-                    <EditHorse apiUrl={apiUrl}/>
+                    <EditHorse/>
                   </Route>
                   <Route path="/EditLesson/:id" >
-                    <EditLesson apiUrl={apiUrl}/>
+                    <EditLesson/>
                   </Route>
                   <Route path="/AddLesson" >
-                    <AddLesson apiUrl={apiUrl}/>
+                    <AddLesson/>
                   </Route>
                   <Route path="/InstructorsPage" >
-                    <InstructorsPage apiUrl={apiUrl}/>
+                    <InstructorsPage/>
                   </Route>
                   <Route path="/AddInstructor" >
-                    <AddInstructor apiUrl={apiUrl}/>
+                    <AddInstructor />
                   </Route>
                   <Route path="/EditInstructor/:id" >
-                    <EditInstructor apiUrl={apiUrl}/>
+                    <EditInstructor />
                   </Route>
                   <Route path="/Messages" >
-                    <Messages apiUrl={apiUrl}/>
+                    <Messages/>
                   </Route>
               </div>
           </Switch>

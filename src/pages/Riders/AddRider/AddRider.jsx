@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import apiUrl from '../../../global';
 import {Paper, Stepper, Step, StepLabel, Button, Link, Typography, Grid, IconButton} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import {useHistory} from "react-router-dom";
@@ -60,7 +61,6 @@ export default function AddRider(props) {
     };
 
     const onSubmit = () => {
-        let apiUrl= props.apiUrl + "Rider/";
 
         let newRider={                                  //create object to send in the body of POST method
             "id": personalDetails["id"],
@@ -119,7 +119,7 @@ export default function AddRider(props) {
         }
         console.log(newRider);
         
-        fetch(apiUrl,                                    //add new rider to db with POST method
+        fetch(apiUrl+"Rider/",                                    //add new rider to db with POST method
             {
               method: 'POST',
               body: JSON.stringify(newRider),
@@ -206,7 +206,7 @@ export default function AddRider(props) {
                                 <ParentDetails getParentDetails={getParentDetails} handleBack={handleBack} />
                             </div>
                             <div style={{display:(activeStep===2?"block":"none")}}>
-                                <LessonDetails getLessonDetails={getLessonDetails} apiUrl={props.apiUrl} handleBack={handleBack} />
+                                <LessonDetails getLessonDetails={getLessonDetails} handleBack={handleBack} />
                             </div>
                             <div style={{display:(activeStep===3?"block":"none")}}>
                                 <Alert severity={status==="ok"?"success":"error"}>{message}</Alert>

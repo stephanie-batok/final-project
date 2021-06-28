@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import apiUrl from '../../global';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory} from "react-router-dom";
 import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Container,Button,Grid,IconButton,TextField,MenuItem,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from '@material-ui/core';
@@ -47,9 +48,8 @@ export default function InstructorsPage(props) {
     const classes = useStyles();
 
     useEffect(()=>{
-        let apiUrl= props.apiUrl + "Worker/Instructor";
 
-        fetch(apiUrl,
+        fetch(apiUrl+"Worker/Instructor",
             {
               method: 'GET',
               headers: new Headers({
@@ -101,8 +101,8 @@ export default function InstructorsPage(props) {
     };
 
     const deleteInstructor = () => {
-        let apiUrl= props.apiUrl + "Worker/";
-        fetch(apiUrl+chosenInstructor,                               //delete instructor - turn isAllowed into false
+        
+        fetch(apiUrl+"Worker/"+chosenInstructor,                               //delete instructor - turn isAllowed into false
             {
                 method: 'DELETE',
                 headers: new Headers({

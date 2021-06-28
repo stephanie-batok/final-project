@@ -1,4 +1,5 @@
 import React,{useState,useEffect} from 'react';
+import apiUrl from '../../global';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory} from "react-router-dom";
 import {Table,TableBody,TableCell,TableContainer,TablePagination,TableHead,TableRow,Paper,Container,Button,Grid,IconButton,TextField,MenuItem,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from '@material-ui/core';
@@ -47,9 +48,8 @@ export default function HorsesPage(props) {
 
 
     useEffect(()=>{
-        let apiUrl= props.apiUrl + "Horse/";
 
-        fetch(apiUrl,
+        fetch(apiUrl+"Horse/",
             {
               method: 'GET',
               headers: new Headers({
@@ -101,8 +101,8 @@ export default function HorsesPage(props) {
     };
 
     const deleteHorse = () => {
-    let apiUrl= props.apiUrl + "Horse/";
-        fetch(apiUrl+chosenHorse,                               //delete horse - turn is_active into false
+        
+        fetch(apiUrl+"Horse/"+chosenHorse,                               //delete horse - turn is_active into false
             {
                 method: 'DELETE',
                 headers: new Headers({
