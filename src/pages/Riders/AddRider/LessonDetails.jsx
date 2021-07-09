@@ -59,7 +59,9 @@ export default function LessonDetails(props) {
             })
             .then(
               (result) => {
-                  setInstructors(result);
+                  console.log(result)
+                  let activeInstructors = result.filter(x=> x.isAllowed);
+                  setInstructors(activeInstructors);
               },
               (error) => {
                 alert(error);
@@ -85,7 +87,8 @@ export default function LessonDetails(props) {
             })
             .then(
               (result) => {
-                  setHorses(result);
+                let activeHorses = result.filter(x=>x.is_active);
+                setHorses(activeHorses);
               },
               (error) => {
                 alert(error);
@@ -109,7 +112,7 @@ export default function LessonDetails(props) {
                         </TextField>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField select label="* בחר סוס קבוע" onChange={(e) => register({name:"horse_id", value: e.target.value, required: true})} fullWidth>
+                        <TextField select label="בחר סוס קבוע" onChange={(e) => register({name:"horse_id", value: e.target.value, required: true})} fullWidth>
                             <MenuItem value={0}>ללא סוס קבוע</MenuItem>
                             {horses.map((h) =>(
                             <MenuItem value={h.id}>{h.name}</MenuItem>
@@ -152,18 +155,18 @@ export default function LessonDetails(props) {
                     <Grid item xs={12} sm={6}>
                         <TextField name="start_time" fullWidth defaultValue="00:00" label="בחר שעת תחילת שיעור" type="time" inputRef={register}
                             inputProps={{ 
-                            step: 300, // 5 min
+                            step: 1800, // 30 min
                             }}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                             <TextField name="end_time" fullWidth defaultValue="00:00" label="בחר שעת סיום שיעור" type="time" inputRef={register}
                                 inputProps={{
-                                step: 300, // 5 min
+                                step: 1800, // 30 min
                                 }}
                             />
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    <Grid item xs={12}>
                         <Button
                             startIcon={addLesson?<AddCircleOutlineIcon />:<RemoveCircleOutlineIcon />} 
                             style={{color:(addLesson?'green':'red')}} 
@@ -174,7 +177,7 @@ export default function LessonDetails(props) {
                         </Button>
                     </Grid>
                     {addLesson? null:
-                    <Grid container spacing={4}>
+                    <>
                         <Grid item xs={12} sm={6}>
                             <TextField name="price2" type="number" inputRef={register} defaultValue={0} label="תעריף" fullWidth />
                         </Grid>
@@ -211,18 +214,18 @@ export default function LessonDetails(props) {
                         <Grid item xs={12} sm={6}>
                             <TextField name="start_time2" fullWidth defaultValue="00:00" label="בחר שעת תחילת שיעור" type="time" inputRef={register}
                                 inputProps={{
-                                step: 300, // 5 min
+                                step: 1800, // 30 min
                                 }}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField name="end_time2" fullWidth defaultValue="00:00" label="בחר שעת סיום שיעור" type="time" inputRef={register}
                                 inputProps={{
-                                step: 300, // 5 min
+                                step: 1800, // 30 min
                                 }}
                             />
                         </Grid>
-                    </Grid>}
+                    </>}
                 </Grid>:null}
                 <div className={classes.buttons}>
                     <Button onClick={handleBack} className={classes.button}>

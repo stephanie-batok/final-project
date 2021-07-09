@@ -6,7 +6,6 @@ import Alert from '@material-ui/lab/Alert';
 import {useHistory} from "react-router-dom";
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import PersonalDetails from './PersonalDetails';
-import PersonalFiles from './PersonalFiles';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -44,13 +43,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const steps = ["פרטים אישיים","טפסים"];
+const steps = ["פרטים אישיים"];
 
 
 export default function AddInstructor(props) {
     const history = useHistory();
     const [personalDetails,setPersonalDetails] = useState("");
-    const [personalFiles,setPersonalFiles] = useState("");
     const [message, setMessage] = useState("");
     const [status,setStatus] = useState("");
     const classes = useStyles();
@@ -73,13 +71,8 @@ export default function AddInstructor(props) {
             "email":personalDetails["email"],
             "password": personalDetails["password"],
             "city":personalDetails["city"],
-            "address":personalDetails["address"]
-
-            // Don't
-            //forget
-            //add
-            //files!!!!!!!
-        
+            "address":personalDetails["address"],
+            "starting_date":personalDetails["starting_date"],        
         }
         console.log(newInstructor);
         
@@ -116,16 +109,10 @@ export default function AddInstructor(props) {
               (error) => {
                 console.log("err post=", error);
         });           
-
     }
 
     const getPersonalDetails = (data) => {
         setPersonalDetails(data);
-        setActiveStep(activeStep + 1);
-    }
-
-    const getPersonalFiles = (data) => {
-        setPersonalFiles(data);
         setActiveStep(activeStep + 1);
     }
 
@@ -147,24 +134,15 @@ export default function AddInstructor(props) {
             </Grid>
             <main className={classes.layout}>
                 <Paper className={classes.paper}>
-                    <Typography component="h4" variant="h4" align="center">
+                    <Typography component="h4" variant="h4" align="center" >
                         מדריך חדש
                     </Typography>
-                    <Stepper activeStep={activeStep} className={classes.stepper}>
-                        {steps.map((label) => (
-                        <Step key={label}>
-                            <StepLabel>{label}</StepLabel>
-                        </Step>
-                        ))}
-                    </Stepper>
+                    <br/>
                         <React.Fragment>
                             <div style={{display:(activeStep===0?"block":"none")}}>
                                 <PersonalDetails getPersonalDetails={getPersonalDetails} />
                             </div>
                             <div style={{display:(activeStep===1?"block":"none")}}>
-                                <PersonalFiles getPersonalFiles={getPersonalFiles} handleBack={handleBack} />
-                            </div>
-                            <div style={{display:(activeStep===2?"block":"none")}}>
                                 <Alert severity={status==="ok"?"success":"error"}>{message}</Alert>
                                 <div className={classes.buttons}>
                                     <Button onClick={handleBack} className={classes.button}>

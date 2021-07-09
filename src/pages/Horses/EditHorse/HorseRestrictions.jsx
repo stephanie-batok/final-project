@@ -21,6 +21,7 @@ export default function HorseRestrictions(props) {
         let therapeutic_riding = getValues('therapeutic_riding');
         let can_jump = getValues('can_jump');
         let is_qualified = getValues('is_qualified');
+        let required_rank = getValues('required_rank');
 
 
         let newHorseRestrictions={                                  //create object to send in the body of Put method
@@ -28,17 +29,17 @@ export default function HorseRestrictions(props) {
           "max_weight":parseInt(data.max_weight),
           "min_height":parseFloat(data.min_height),
           "max_height":parseFloat(data.max_height),
-          "required_rank":parseInt(data.required_rank),
+          "required_rank": required_rank===undefined?horse.required_rank:parseInt(data.required_rank),
           "therapeutic_riding": therapeutic_riding===undefined?horse.therapeutic_riding:data.therapeutic_riding,
           "can_jump": can_jump===undefined?horse.can_jump:data.can_jump,
           "is_qualified": is_qualified===undefined?horse.is_qualified:data.is_qualified
         }
         console.log(newHorseRestrictions);
-        
+
         fetch(apiUrl+"Horse/HorseRestrictions/"+horse.id,                                    //edit horse restrictions in db with Put method
             {
               method: 'PUT',
-              body: JSON.stringify(HorseRestrictions),
+              body: JSON.stringify(newHorseRestrictions),
               headers: new Headers({
                 'Content-Type': 'application/json; charset=UTF-8',
                 'Accept': 'application/json; charset=UTF-8',

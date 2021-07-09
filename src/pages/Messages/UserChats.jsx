@@ -1,8 +1,7 @@
 import React,{useState,useEffect} from 'react';
-import {List,ListItem,ListItemText,ListItemAvatar,Avatar,Divider,Typography} from '@material-ui/core';
-import ImageIcon from '@material-ui/icons/Image';
+import {List,ListItem,ListItemText,ListItemAvatar,Avatar,Divider,Typography,ListItemSecondaryAction} from '@material-ui/core';
 import makeStyles from "@material-ui/core/styles/makeStyles";
-
+import {uplodedPicPath} from '../../global';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -38,24 +37,24 @@ export default function UserChats(props) {
                     <>
                     <ListItem onClick={chooseChat(chat.user_id2,chat.chat_num)} style={{backgroundColor:sendToId===chat.user_id2?"#b5bbdc36":"white"}}>
                         <ListItemAvatar>
-                            <Avatar>
-                                <ImageIcon />
-                            </Avatar>
+                            <Avatar src={uplodedPicPath+chat.user_profile2} />
                         </ListItemAvatar>
                         <ListItemText primary={chat.user_name2} secondary={chat.last_message} />
-                        <ListItemText edge="end" secondary={chat.dateStr===date?chat.timeStr.substring(0, 5):chat.dateStr} />
+                        <ListItemSecondaryAction edge="end" style={{fontSize:12,color:"gray",paddingBottom:16}}>
+                            {chat.dateStr===date?chat.timeStr.substring(0, 5):chat.dateStr}
+                        </ListItemSecondaryAction>
                     </ListItem>
                     <Divider/>
                     </>:
                     <>
                     <ListItem onClick={chooseChat(chat.user_id1,chat.chat_num)} style={{backgroundColor:sendToId===chat.user_id1?"#b5bbdc36":"white"}}>
                         <ListItemAvatar>
-                            <Avatar>
-                                <ImageIcon />
-                            </Avatar>
+                            <Avatar src={uplodedPicPath+chat.user_profile1} />
                         </ListItemAvatar>
                         <ListItemText primary={chat.user_name1} secondary={chat.last_message} />
-                        <ListItemText edge="end" secondary={chat.dateStr===date?chat.timeStr.substring(0, 5):chat.dateStr} />
+                        <ListItemSecondaryAction edge="end" style={{fontSize:12,color:"gray",paddingBottom:16}}>
+                            {chat.dateStr===date?chat.timeStr.substring(0, 5):chat.dateStr}
+                        </ListItemSecondaryAction>
                     </ListItem>
                     <Divider/>
                     </>

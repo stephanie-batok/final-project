@@ -9,22 +9,30 @@ import SendIcon from "@material-ui/icons/Send";
 
 const useStyles = makeStyles(theme => ({
     chatContainer:{
-      border: "0.5px solid gray",
       minHeight: 400,
       maxHeight: 400,
-      overflowY:"auto"
+      overflowY:"auto",
+      backgroundColor:"#e5ddd5bd"
     },
     bubbleContainer: {
       width: "100%",
       display:"grid",
     },
-    bubble: {
-      border: "0.5px solid black",
-      borderRadius: "10px",
-      margin: "5px",
+    bubbleLeft: {
+      border: "0.2px solid gray",
+      borderRadius: "15px",
+      margin: "8px",
       padding: "10px",
       display: "inline-block",
-      backgroundColor:"white"
+      backgroundColor:"#dcf8c6"
+    },
+    bubbleRight: {
+      border: "0.2px solid gray",
+      borderRadius: "15px",
+      margin: "8px",
+      padding: "10px",
+      display: "inline-block",
+      backgroundColor:"#c3e2e8f2"
     },
     dateStamp:{
       textAlign:"center",
@@ -45,7 +53,7 @@ export default function Chat(props) {
     useLayoutEffect(() => {
 
       if(sendToId!=="" && chat_num!==""){
-
+        setValue("");
         const unsubscribe = db.collection('chat_'+chat_num)
         .orderBy('createdAt', 'asc')
         .onSnapshot(snapshot => setMessages(
@@ -112,6 +120,7 @@ export default function Chat(props) {
           dateStr: new Date().toLocaleDateString(),
           timeStr: new Date().toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'}),
           last_message:value,
+          last_message_sent_by:my_id
         }
         
         fetch(apiUrl+"AppUser/Chats/",
@@ -174,16 +183,21 @@ export default function Chat(props) {
         }
     },[sendToToken]);
 
+    const handleKeypress = e => {
+      if(e.key==='Enter'){
+        onSend();
+      }
+    }
+
     return (
       <>
         <div className={classes.chatContainer}>
             {messages.length>0?messages.map((obj) => (
                 <div className={`${classes.bubbleContainer} ${email===obj.user._id?"right":"left"}`}>
-                    {/* <div className={classes.dateStamp}>{obj.createdAt.toLocaleDateString()===date?"היום":obj.createdAt.toLocaleDateString()}</div> */}
-                    <div className={classes.bubble}>
-                        <div className={classes.button}>
-                          <Typography>{obj.text}</Typography>
-                          <Typography style={{fontSize:"9px",textAlign:"left"}}>{(obj.createdAt.toLocaleDateString()===date?"היום":obj.createdAt.toLocaleDateString()) + " " + obj.createdAt.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'})}</Typography>
+                    <div className={email===obj.user._id?classes.bubbleLeft:classes.bubbleRight}>
+                        <div style={{display:"flex", flexDirection:"row"}}>
+                          <Typography style={{fontSize:"14px"}}>{obj.text}</Typography>
+                          <Typography style={{fontSize:"8px",textAlign:"left",paddingRight:30,paddingTop:10}}>{(obj.createdAt.toLocaleDateString()===date?"היום":obj.createdAt.toLocaleDateString()) + " " + obj.createdAt.toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'})}</Typography>
                         </div>
                     </div>
                 </div>
@@ -197,6 +211,7 @@ export default function Chat(props) {
               value={value}
               placeholder="הקלד/י הודעה"
               onChange={e => setValue(e.target.value)}
+              onKeyPress={handleKeypress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment>

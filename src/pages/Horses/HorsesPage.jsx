@@ -24,15 +24,30 @@ const useStyles = makeStyles((theme)=>({
         },
     },
     paper: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-    padding: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-        marginTop: theme.spacing(6),
-        marginBottom: theme.spacing(6),
-        padding: theme.spacing(3),
-        },
+        marginTop: theme.spacing(3),
+        marginBottom: theme.spacing(3),
+        padding: theme.spacing(2),
+        [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+            marginTop: theme.spacing(6),
+            marginBottom: theme.spacing(6),
+            padding: theme.spacing(3),
+            },
     },
+    tableBtn:{
+        display: 'flex',
+        flexDirection: 'column',
+        fontSize:12
+    },
+    tableHeader:{
+        fontWeight:"bold",
+        color:"#585858"
+    },
+    searchBar:{
+        margin: '0 auto',
+        maxWidth: 300,
+        flexGrow:1,
+        marginBottom:20
+    }
 }));
 
 export default function HorsesPage(props) {
@@ -171,10 +186,10 @@ export default function HorsesPage(props) {
                             </TextField>
                         </Grid>
                         <Grid item xs={5} sm={4} md={3} lg={2}>
-                            <IconButton aria-label="מיון">
-                                <FilterListIcon onClick={() => sortBy()} />
-                            </IconButton>
-                            <lable> מיון סוסים </lable>                 
+                        <IconButton classes={{label: classes.tableBtn}} aria-label="מיון">
+                            <FilterListIcon onClick={() => sortBy()} />
+                            <div className={classes.tableHeader}> מיון סוסים</div>
+                        </IconButton>              
                         </Grid>
                     </Grid>
                     <br/><br/>
@@ -190,11 +205,7 @@ export default function HorsesPage(props) {
                                 value={searched}
                                 onChange={(searchVal) => requestSearch(searchVal)}
                                 onCancelSearch={() => cancelSearch()}
-                                style={{
-                                    margin: '0 auto',
-                                    maxWidth: 300,
-                                    flexGrow:1
-                                }}
+                                className={classes.searchBar}
                             />
                         </Grid>
                     </Grid>
@@ -202,12 +213,12 @@ export default function HorsesPage(props) {
                         <Table className={classes.table} aria-label="simple table">
                             <TableHead style={{background:"rgb(245 245 245)"}}>
                                 <TableRow>
-                                    <TableCell component='th'>שם הסוס</TableCell>
-                                    <TableCell>מין</TableCell>
-                                    <TableCell>גודל</TableCell>
-                                    <TableCell>אופי הסוס</TableCell>
-                                    <TableCell>רכיבה טיפולית</TableCell>
-                                    <TableCell>רמת רכיבה נדרשת</TableCell>
+                                    <TableCell component='th' className={classes.tableHeader} >שם הסוס</TableCell>
+                                    <TableCell className={classes.tableHeader}>מין</TableCell>
+                                    <TableCell className={classes.tableHeader}>גודל</TableCell>
+                                    <TableCell className={classes.tableHeader}>אופי הסוס</TableCell>
+                                    <TableCell className={classes.tableHeader}>רכיבה טיפולית</TableCell>
+                                    <TableCell className={classes.tableHeader}>רמת רכיבה נדרשת</TableCell>
                                     <TableCell>&nbsp;</TableCell>     
                                     <TableCell>&nbsp;</TableCell>       
                                 </TableRow>
@@ -222,13 +233,15 @@ export default function HorsesPage(props) {
                                         <TableCell>{horse.therapeutic_riding?"מתאים":"לא מתאים"}</TableCell>
                                         <TableCell>{horse.required_rank}</TableCell>
                                         <TableCell>
-                                            <IconButton aria-label="עריכה"> 
+                                            <IconButton classes={{label: classes.tableBtn}} aria-label="עריכה"> 
                                                 <EditOutlineOutlinedIcon onClick={() => btnEditing(horse.id)} />
+                                                <div>עריכה</div>
                                             </IconButton>
                                         </TableCell>
                                         <TableCell>
-                                            <IconButton aria-label="מחיקה">
+                                            <IconButton classes={{label: classes.tableBtn}} aria-label="מחיקה">
                                                 <DeleteOutlineOutlinedIcon onClick={() => handleClickOpen(horse.id)} />
+                                                <div>מחיקה</div>
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
@@ -237,7 +250,7 @@ export default function HorsesPage(props) {
                         </Table>
                     </TableContainer>
                     <Dialog open={open} onClose={()=>setOpen(false)}>
-                        <DialogTitle id="alert-dialog-title">מחיקת סוס</DialogTitle>
+                        <DialogTitle style={{marginLeft:"auto"}} id="alert-dialog-title">מחיקת סוס</DialogTitle>
                         <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             <br/>האם אתה בטוח שתרצה למחוק סוס זה?

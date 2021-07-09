@@ -23,7 +23,7 @@ export default function PersonalDetails(props) {
 
 
     const handleNext = () => {
-        if(getValues('id')!=="" && getValues('first_name')!=="" && getValues('last_name')!==""){
+        if(getValues('id')!=="" && getValues('first_name')!=="" && getValues('last_name')!==""&& getValues('email')!==""&& getValues('password')!==""){
             setError("");
             props.getPersonalDetails(getValues());
         }
@@ -47,7 +47,7 @@ export default function PersonalDetails(props) {
                         <TextField name="id" inputRef={register} label="*תעודת זהות" fullWidth />
                     </Grid>                    
                     <Grid item xs={12} sm={6}>
-                        <TextField select label="בחר מגדר" onChange={(e) => register({name:"gender", value: e.target.value})} fullWidth>
+                        <TextField select label="*בחר מגדר" onChange={(e) => register({name:"gender", value: e.target.value})} fullWidth>
                             <MenuItem value="זכר">
                                 זכר
                             </MenuItem>
@@ -60,20 +60,22 @@ export default function PersonalDetails(props) {
                         <TextField name="phone" inputRef={register} label="מספר טלפון" fullWidth />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField name="date_of_birth" InputLabelProps={{shrink:true}} type="date" inputRef={register} label="תאריך לידה" fullWidth />
+                        <TextField name="date_of_birth" InputLabelProps={{shrink:true}} type="date" inputRef={register} label="*תאריך לידה" fullWidth />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField name="address" inputRef={register} label="כתובת" fullWidth />
                     </Grid>
-
                     <Grid item xs={12} sm={6}>
                         <TextField name="city" inputRef={register} label="עיר מגורים" fullWidth />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField name="email" inputRef={register} label="דואר אלקטרוני" fullWidth />
+                        <TextField name="starting_date" InputLabelProps={{shrink:true}} type="date" inputRef={register} label="תאריך תחילת עבודה" fullWidth />
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField name="password" inputRef={register} label="סיסמה" fullWidth />
+                        <TextField name="email" inputRef={register} label="*דואר אלקטרוני" fullWidth />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField name="password" inputRef={register} label="*סיסמה" fullWidth />
                     </Grid>
                     <Grid item xs={12}>
                         <Typography gutterBottom style={{color:"red"}}>

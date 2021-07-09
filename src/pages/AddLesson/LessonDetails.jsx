@@ -60,7 +60,8 @@ export default function LessonDetails(props) {
             })
             .then(
               (result) => {
-                  setInstructors(result);
+                let activeInstructors = result.filter(x=> x.isAllowed);
+                setInstructors(activeInstructors);
               },
               (error) => {
                 alert(error);
@@ -86,7 +87,8 @@ export default function LessonDetails(props) {
             })
             .then(
               (result) => {
-                  setHorses(result);
+                let activeHorses = result.filter(x=>x.is_active);
+                setHorses(activeHorses);
               },
               (error) => {
                 alert(error);
@@ -123,14 +125,14 @@ export default function LessonDetails(props) {
                     <Grid item xs={12} sm={6}>
                         <TextField name="start_time" fullWidth defaultValue="00:00" label="* בחר שעת תחילת שיעור" type="time" inputRef={register}
                             inputProps={{ 
-                            step: 300, // 5 min
+                            step: 1800, // 30 min
                             }}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                             <TextField name="end_time" fullWidth defaultValue="00:00" label="* בחר שעת סיום שיעור" type="time" inputRef={register}
                                 inputProps={{
-                                step: 300, // 5 min
+                                step: 1800, // 30 min
                                 }}
                             />
                     </Grid>

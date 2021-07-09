@@ -36,8 +36,7 @@ export default function PersonalDetails(props) {
           "address":data.address,
           "city":data.city,
           "starting_date":data.starting_date,
-          "isActive": isActive===undefined?rider.isActive:data.isActive,
-          "healthForm":data.healthForm
+          "isActive": isActive===undefined?rider.isActive:data.isActive
         }
         console.log(newPersonalDetails);
         
@@ -147,9 +146,6 @@ export default function PersonalDetails(props) {
                                 רוכב לא פעיל
                                 </MenuItem>
                             </TextField>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField name="healthForm" defaultValue={rider.healthForm} inputRef={register} label="טופס הצהרת בריאות" fullWidth />
                         </Grid>
                         {message!==""?
                         <Grid item xs={12}>

@@ -7,12 +7,12 @@ import {Button,Grid,TextField,MenuItem,Typography} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 
 
-
 export default function LessonDetails(props) {
     const { register, handleSubmit,getValues} = useForm({mode: 'onBlur'});
     const [instructors,setInstructors]=useState("");
     const [horses,setHorses]=useState("");
     const [addLesson,setAddLesson] = useState(props.addLesson);
+    const [addSecondLesson,setAddSecondLesson] = useState(false);
     const days =["ראשון","שני","שלישי","רביעי","חמישי","שישי"];
     const [rider,setRider] = useState("");
     const [error, setError] =  useState("");
@@ -21,6 +21,7 @@ export default function LessonDetails(props) {
 
 
     useEffect(()=>{
+        console.log(addLesson);
         setRider(props.rider);
         getInstructors();
         getHorses();
@@ -44,7 +45,8 @@ export default function LessonDetails(props) {
             })
             .then(
               (result) => {
-                  setInstructors(result);
+                let activeInstructors = result.filter(x => x.isAllowed);
+                setInstructors(activeInstructors);
               },
               (error) => {
                 alert(error);
@@ -70,7 +72,8 @@ export default function LessonDetails(props) {
             })
             .then(
               (result) => {
-                  setHorses(result);
+                  let activeHorses = result.filter(x=>x.is_active);
+                  setHorses(activeHorses);
               },
               (error) => {
                 alert(error);
@@ -188,8 +191,8 @@ export default function LessonDetails(props) {
                     <Grid container justify="center" spacing={4}>
                         <Grid item xs={12}>
                                 {key===0?
-                                <Typography variant="h7"><br/>פרטי שיעור ראשון</Typography>:
-                                <Typography variant="h7"><br/>פרטי שיעור שני</Typography>}
+                                <Typography variant="h6"><br/>פרטי שיעור ראשון</Typography>:
+                                <Typography variant="h6"><br/>פרטי שיעור שני</Typography>}
                             </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField name={"price"+key} defaultValue={regular_lesson.price} type="number" inputRef={register} label="תעריף" fullWidth />
@@ -227,14 +230,14 @@ export default function LessonDetails(props) {
                         <Grid item xs={12} sm={6}>
                             <TextField name={"start_time"+key} defaultValue={regular_lesson.start_time} fullWidth label="שעת התחלת שיעור" type="time" inputRef={register}
                                 inputProps={{ 
-                                step: 300, // 5 min
+                                step: 1800, // 30 min
                                 }}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField name={"end_time"+key} defaultValue={regular_lesson.end_time} fullWidth label="שעת סיום שיעור" type="time" inputRef={register}
                                 inputProps={{ 
-                                step: 300, // 5 min
+                                step: 1800, // 30 min
                                 }}
                             />
                         </Grid>
@@ -243,15 +246,22 @@ export default function LessonDetails(props) {
                 {addLesson?
                 <Grid container spacing={4}>
                     <Grid item xs={12}>
-                        <Button startIcon={<AddCircleOutlineIcon />} style={{color:'green'}} onClick={()=>{setAddLesson(false)}}>
+                        <Button
+                         startIcon={<AddCircleOutlineIcon />}
+                         style={{color:'green'}}
+                         onClick={()=>{
+                             setAddSecondLesson(true)
+                             setAddLesson(false)
+                            }}
+                        >
                         &nbsp;הוספת שיעור   
                         </Button>
                     </Grid>
                 </Grid>:null}
-                {addLesson? null:
+                {addSecondLesson?
                 <Grid container justify="center" spacing={3}>
                     <Grid item xs={12}>
-                        <label><br/>פרטי שיעור שני</label>
+                        <Typography variant="h6"><br/>פרטי שיעור שני</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField name="price1" type="number" inputRef={register} label="תעריף" fullWidth />
@@ -289,23 +299,30 @@ export default function LessonDetails(props) {
                     <Grid item xs={12} sm={6}>
                         <TextField name="start_time1" fullWidth label="בחר שעת התחלת שיעור*" defaultValue="00:00" type="time" inputRef={register}
                             inputProps={{ 
-                            step: 300, // 5 min
+                            step: 1800, // 30 min
                             }}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField name="end_time1" fullWidth label="בחר שעת סיום שיעור*" defaultValue="00:00" type="time" inputRef={register}
                             inputProps={{ 
-                            step: 300, // 5 min
+                            step: 1800, // 30 min
                             }}
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <Button startIcon={<RemoveCircleOutlineIcon />} style={{color:'red'}} onClick={()=>{setAddLesson(true)}}>
+                        <Button
+                            startIcon={<RemoveCircleOutlineIcon />}
+                            style={{color:'red'}}
+                            onClick={()=>{
+                                setAddLesson(true)
+                                setAddSecondLesson(false)
+                                }}
+                        >
                         &nbsp;הסר שיעור   
                         </Button>
                     </Grid>
-                </Grid>}
+                </Grid>:null}
                 <Grid container spacing={4}>
                     <Grid item xs={12}>
                         <Typography variant="h7" gutterBottom style={{color:"red"}}>

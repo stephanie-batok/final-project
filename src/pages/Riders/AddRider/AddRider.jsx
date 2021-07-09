@@ -75,7 +75,6 @@ export default function AddRider(props) {
             "weight":parseInt(personalDetails["weight"]),
             "height": parseFloat(personalDetails["height"]),
             "starting_date":personalDetails["starting_date"],
-            "healthForm":personalDetails["healthForm"],
             "city":personalDetails["city"],
             "address":personalDetails["address"],
             "instructor_id":lessonDetails["instructor_id"],

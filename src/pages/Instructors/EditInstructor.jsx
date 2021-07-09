@@ -24,8 +24,8 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: theme.spacing(3),
       padding: theme.spacing(2),
       [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-        marginTop: theme.spacing(6),
-        marginBottom: theme.spacing(6),
+        marginTop: theme.spacing(3),
+        marginBottom: theme.spacing(3),
         padding: theme.spacing(3),
       },
     }
@@ -80,6 +80,7 @@ export default function EditInstructor(props) {
           "gender": gender===undefined?instructor.gender:data.gender,
           "date_of_birth":data.date_of_birth,
           "phone_number":data.phone_number,
+          "starting_date":data.starting_date,
           "email":data.email,
           "password":data.password,
           "address":data.address,
@@ -167,11 +168,14 @@ export default function EditInstructor(props) {
                             <Grid item xs={12} sm={6}>
                                 <TextField name="phone_number" defaultValue={instructor.phone_number} inputRef={register} label="מספר טלפון" fullWidth />
                             </Grid>
-                            <Grid item xs={12}> 
+                            <Grid item xs={12} sm={6}> 
                                 <TextField name="address" defaultValue={instructor.address} inputRef={register} label="כתובת" fullWidth />
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField name="city" defaultValue={instructor.city} inputRef={register} label="עיר מגורים" fullWidth />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                                <TextField name="starting_date" defaultValue={instructor.starting_date} InputLabelProps={{shrink:true}} type="date" inputRef={register} label="תאריך התחלת עבודה" fullWidth />
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField name="email" defaultValue={instructor.email} inputRef={register} label="דואר אלקטרוני" fullWidth />

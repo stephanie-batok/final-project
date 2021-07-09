@@ -79,14 +79,14 @@ export default function ParentDetails(props) {
         <React.Fragment>
             {rider!==""?
             <form onSubmit={handleSubmit(onSubmit)}>
-                <Grid container spacing={4}>
+                <Grid container justify="center" spacing={4}>
                     <Grid item xs={12}></Grid>
                     {rider.parents.length>0?rider.parents.map((parent,key)=>(
-                        <Grid container justify="center" spacing={3}>
+                        <>
                             <Grid item xs={12}>
                                 {key===0?
-                                <Typography variant="h7"><br/>פרטי הורה ראשון</Typography>:
-                                <Typography variant="h7"><br/>פרטי הורה שני</Typography>}
+                                <Typography variant="h6"><br/>פרטי הורה ראשון</Typography>:
+                                <Typography variant="h6"><br/>פרטי הורה שני</Typography>}
                             </Grid>
                             <Grid item xs={12} sm={6}> 
                                 <TextField name={"parent_id"+key} InputProps={{readOnly: true}} defaultValue={parent.id} inputRef={register} label="תעודת זהות" fullWidth />
@@ -113,8 +113,8 @@ export default function ParentDetails(props) {
                             <Grid item xs={12} sm={6}>
                                 <TextField name={"parent_email"+key} defaultValue={parent.email} inputRef={register} label="דואר אלקטרוני" fullWidth />
                             </Grid>
-                        </Grid>)):
-                        <Grid container justify="center" spacing={3}>
+                        </>)):
+                        <>
                             <Grid item xs={12}>
                                 <Typography variant="h7"><br/>פרטי הורה ראשון</Typography>
                             </Grid>
@@ -171,7 +171,7 @@ export default function ParentDetails(props) {
                             <Grid item xs={12} sm={6}>
                                 <TextField name={"parent_email1"} inputRef={register} label="דואר אלקטרוני" fullWidth />
                             </Grid>
-                        </Grid>}
+                        </>}
                         {message!==""?
                         <Grid item xs={12}>
                             <Alert severity={status==="ok"?"success":"error"}>{message}</Alert>

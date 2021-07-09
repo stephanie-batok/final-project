@@ -1,12 +1,30 @@
 import React,{useState,useEffect} from 'react';
-import {Button,Grid,TextField,Checkbox,FormControlLabel} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import {Button,Grid,TextField,Checkbox,FormControlLabel,Paper, Container,InputAdornment} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
+import MailOutlinedIcon from '@material-ui/icons/MailOutlined';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useHistory } from "react-router-dom";
 import logo from '../horse-club-logo.png';
 import apiUrl from '../global';
 
+const useStyles = makeStyles((theme) => ({
+    paper: {
+      marginTop: theme.spacing(1),
+      marginBottom: theme.spacing(1),
+      padding: theme.spacing(2),
+      [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+        marginTop: theme.spacing(2),
+        marginBottom: theme.spacing(2),
+        marginRight: theme.spacing(50),
+        marginLeft: theme.spacing(50),
+        padding: theme.spacing(3),
+      },
+    }
+}));
 
 export default function LoginForm(props) {
+    const classes = useStyles();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMsg, setErrorMsg] = useState(false);
@@ -58,57 +76,94 @@ export default function LoginForm(props) {
                         setErrorMsg(result);                                   
                     }
                     else {
-                        localStorage.setItem('id', result);
+                        localStorage.setItem('id', result.id);
+                        localStorage.setItem('user', JSON.stringify(result));
                         localStorage.setItem('email', email);
+                        localStorage.setItem('name', result.first_name + " " + result.last_name);
                     }
                   },
                   (error) => {
                     setErrorMsg(error);
                 }
             );
-            
         }
 
+        if(password.trim() ===""){
+            setErrorMsg("יש להזין סיסמה");
+        }
+
+        if(email.trim() ===""){
+            setErrorMsg("יש להזין כתובת דואר אלקטרוני");
+        }
     }
 
     return (
-        <Grid
-            container
-            direction="column"
-            justify="space-evenly"
-            alignItems="center"
-            spacing={3}
-        >
-            <Grid item>
-                <br/>
-                <img src={logo} />
-                <br/><br/>
-                <h4>כניסה למערכת</h4>
-            </Grid>
-            <Grid item>
-                <TextField value={email} onChange={e => setEmail(e.target.value)} label="דואר אלקטרוני" variant="outlined" />
-            </Grid>
-            <Grid item>
-                <TextField value={password} type="password" onChange={e => setPassword(e.target.value)} label="סיסמה" variant="outlined" />
-            </Grid>
-            <Grid item>
-                <FormControlLabel
-                    label="זכור אותי"
-                    control={
-                    <Checkbox
-                        checked={checked}
-                        onChange={() => setChecked(!checked)}
-                        color="primary"
-                    />
-                    }
-                />
-            </Grid>
-            <Grid item> 
-                {errorMsg &&<Alert severity="error">{errorMsg}</Alert>}
-            </Grid>
-            <Grid item>
-                <Button variant="outlined" color="primary" onClick={btn_LogIn}>התחבר</Button>
-            </Grid>
-        </Grid>
+        <Container style={{backgroundColor:"#fafafa"}}>
+            <Paper className={classes.paper}>
+                <Grid
+                container
+                direction="column"
+                justify="space-evenly"
+                alignItems="center"
+                spacing={2}
+                >
+                    <Grid item>
+                        <br/>
+                        <img src={logo} />
+                        <br/><br/>
+                        <h4>כניסה למערכת</h4>
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            value={email}
+                            fullWidth
+                            onChange={e => setEmail(e.target.value)}
+                            label="דואר אלקטרוני"
+                            InputProps={{
+                                startAdornment: (
+                                  <InputAdornment position="start">
+                                    <MailOutlinedIcon style={{fontSize:18}} />
+                                  </InputAdornment>
+                                ),
+                              }}
+                            />
+                    </Grid>
+                    <Grid item>
+                        <TextField
+                            value={password}
+                            fullWidth
+                            type="password"
+                            onChange={e => setPassword(e.target.value)}
+                            label="סיסמה"
+                            InputProps={{
+                                startAdornment: (
+                                  <InputAdornment position="start">
+                                    <LockOutlinedIcon style={{fontSize:18}} />
+                                  </InputAdornment>
+                                ),
+                              }}
+                             />
+                    </Grid>
+                    <Grid item style={{fontSize:10}}>
+                        <FormControlLabel
+                            label="זכור אותי"
+                            control={
+                            <Checkbox
+                                checked={checked}
+                                onChange={() => setChecked(!checked)}
+                                color="primary"
+                            />
+                            }
+                        />
+                    </Grid>
+                    <Grid item> 
+                        {errorMsg &&<Alert severity="error">{errorMsg}</Alert>}
+                    </Grid>
+                    <Grid item>
+                        <Button variant="contained" color="primary" onClick={btn_LogIn}>התחבר</Button>
+                    </Grid>
+                </Grid>
+            </Paper>
+        </Container>
     )
 }

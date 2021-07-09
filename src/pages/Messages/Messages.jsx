@@ -14,13 +14,18 @@ const useStyles = makeStyles(theme => ({
   container: {
     display:"grid",
     overflow: "hidden",
-    gridTemplateColumns:"0.7fr 2fr"
+    gridTemplateColumns:"0.8fr 2fr",
+    backgroundColor:"white",
+    border:"1px solid gray",
+    borderRadius:5,
+    marginLeft:100,
+    marginRight:100
   },
   userChatsContainer:{
-    border: "0.5px solid gray",
     minHeight: 455,
     maxHeight: 455,
     overflow: "auto",
+    borderRight:"0.5px solid gray"
   }
 }));
 
@@ -81,7 +86,7 @@ export default function Messages(props) {
     }
 
     return (
-      <Container>
+      <Container disableGutters={false}>
         <br/>
         <div className={classes.container}>
           <div className={classes.userChatsContainer}>

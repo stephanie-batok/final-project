@@ -7,7 +7,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItems from './ListItems';
-
+import EmailIcon from '@material-ui/icons/Email';
+import { useHistory} from "react-router-dom";
 
 const drawerWidth = 240;
 
@@ -46,14 +47,20 @@ const useStyles = makeStyles((theme) => ({
         // necessary for content to be below app bar
         ...theme.mixins.toolbar,
         justifyContent: 'flex-start',
+    },
+    toolbar:{
+        display: 'flex',
     }
 }));
 
 
 export default function DrawerMenu(props) {
     const classes = useStyles();
+    const history = useHistory();
     const theme = useTheme()
     const [open, setOpen] = useState(props.open);
+    const [name, setName] = useState(localStorage.getItem("name"));
+
 
     useEffect(() => {
         props.toggleDrawer(open);
@@ -63,7 +70,7 @@ export default function DrawerMenu(props) {
     return (
         <React.Fragment>
             <CssBaseline />
-            <AppBar color="transparent" position="fix" className={clsx(classes.appBar, open && classes.appBarShift)}>
+            <AppBar color="transparent" position="relative" className={clsx(classes.appBar, open && classes.appBarShift)}>
                 <Toolbar className={classes.toolbar}>
                     <IconButton
                         color="inherit"
@@ -76,6 +83,10 @@ export default function DrawerMenu(props) {
                     &nbsp;&nbsp;
                     <IconButton disabled={true} >
                         <img alt='logo' src={logo} style={{width:'3.5rem',height:'4rem'}}/>
+                    </IconButton>
+                    <Typography style={{fontSize:14,fontWeight:"bold", paddingTop:20}}>שלום {name}</Typography>
+                    <IconButton style={{marginRight:"auto"}} color="primary" onClick={() => {history.push("/Messages")}}>
+                        <EmailIcon />
                     </IconButton>
                 </Toolbar>
             </AppBar>

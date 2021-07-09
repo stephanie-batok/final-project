@@ -17,8 +17,7 @@ const initialValues = {
     riding_type:"",
     weight:0,
     height:"0",
-    starting_date:"",
-    healthForm:""
+    starting_date:""
   };
 
   const useStyles = makeStyles((theme) => ({
@@ -49,7 +48,7 @@ export default function PersonalDetails(props) {
 
 
     const handleNext = () => {
-        if(values.id!=="" && values.first_name!=="" && values.last_name!==""){
+        if(values.id!=="" && values.first_name!=="" && values.last_name!=="" && values.email!=="" && values.password!=="" && values.gender!=="" && values.date_of_birth!==""){
             setError("");
             props.getPersonalDetails(values);
         }
@@ -94,6 +93,7 @@ export default function PersonalDetails(props) {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField select 
+                        required
                         name="gender"
                         value={values.gender}
                         label="בחר מגדר" 
@@ -205,15 +205,6 @@ export default function PersonalDetails(props) {
                         value={values.password}
                         name="password"
                         label="סיסמה"
-                        onChange={handleInputChange}
-                        fullWidth
-                    />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        value={values.healthForm}
-                        name="healthForm"
-                        label="טופס הצהרת בריאות"
                         onChange={handleInputChange}
                         fullWidth
                     />

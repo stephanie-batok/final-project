@@ -24,15 +24,30 @@ const useStyles = makeStyles((theme)=>({
         },
     },
     paper: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-    padding: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-        marginTop: theme.spacing(6),
-        marginBottom: theme.spacing(6),
-        padding: theme.spacing(3),
+        marginTop: theme.spacing(3),
+        marginBottom: theme.spacing(3),
+        padding: theme.spacing(2),
+        [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+            marginTop: theme.spacing(6),
+            marginBottom: theme.spacing(6),
+            padding: theme.spacing(3),
         },
     },
+    tableBtn:{
+        display: 'flex',
+        flexDirection: 'column',
+        fontSize:12
+    },
+    tableHeader:{
+        fontWeight:"bold",
+        color:"#585858"
+    },
+    searchBar:{
+        margin: '0 auto',
+        maxWidth: 300,
+        flexGrow:1,
+        marginBottom:20
+    }
 }));
 
 
@@ -171,10 +186,10 @@ export default function InstructorsPage(props) {
                             </TextField>
                         </Grid>
                         <Grid item xs={5} sm={4} md={3} lg={2}>
-                            <IconButton aria-label="מיון">
+                            <IconButton classes={{label: classes.tableBtn}} aria-label="מיון">
                                 <FilterListIcon onClick={() => sortBy()} />
-                            </IconButton>
-                            <lable> מיון מדריכים </lable>                 
+                                <div className={classes.tableHeader}> מיון מדריכים</div>
+                            </IconButton>           
                         </Grid>
                     </Grid>
                     <br/><br/>
@@ -190,11 +205,7 @@ export default function InstructorsPage(props) {
                                 value={searched}
                                 onChange={(searchVal) => requestSearch(searchVal)}
                                 onCancelSearch={() => cancelSearch()}
-                                style={{
-                                    margin: '0 auto',
-                                    maxWidth: 300,
-                                    flexGrow:1
-                                }}
+                                className={classes.searchBar}
                             />
                         </Grid>
                     </Grid>
@@ -202,12 +213,12 @@ export default function InstructorsPage(props) {
                         <Table className={classes.table} aria-label="simple table">
                             <TableHead style={{background:"rgb(245 245 245)"}}>
                                 <TableRow>
-                                    <TableCell component='th'>שם משפחה</TableCell>
-                                    <TableCell>שם פרטי</TableCell>
-                                    <TableCell align="center">טלפון</TableCell>
-                                    <TableCell>מין</TableCell>
-                                    <TableCell>כתובת מייל</TableCell>
-                                    <TableCell >תאריך לידה</TableCell>
+                                    <TableCell component='th' className={classes.tableHeader}>שם משפחה</TableCell>
+                                    <TableCell className={classes.tableHeader}>שם פרטי</TableCell>
+                                    <TableCell align="center" className={classes.tableHeader}>טלפון</TableCell>
+                                    <TableCell className={classes.tableHeader}>מין</TableCell>
+                                    <TableCell className={classes.tableHeader}>כתובת מייל</TableCell>
+                                    <TableCell className={classes.tableHeader}>תאריך לידה</TableCell>
                                     <TableCell>&nbsp;</TableCell>     
                                     <TableCell>&nbsp;</TableCell>       
                                 </TableRow>
@@ -222,13 +233,15 @@ export default function InstructorsPage(props) {
                                         <TableCell>{instructor.email}</TableCell>
                                         <TableCell>{instructor.date_of_birth}</TableCell>
                                         <TableCell>
-                                            <IconButton aria-label="עריכה"> 
+                                            <IconButton aria-label="עריכה" classes={{label: classes.tableBtn}} > 
                                                 <EditOutlineOutlinedIcon onClick={() => btnEditing(instructor.id)} />
+                                                <div>עריכה</div>
                                             </IconButton>
                                         </TableCell>
                                         <TableCell>
-                                            <IconButton aria-label="מחיקה">
+                                            <IconButton aria-label="מחיקה" classes={{label: classes.tableBtn}}>
                                                 <DeleteOutlineOutlinedIcon onClick={() => handleClickOpen(instructor.id)} />
+                                                <div>מחיקה</div>
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
@@ -237,7 +250,7 @@ export default function InstructorsPage(props) {
                         </Table>
                     </TableContainer>
                     <Dialog open={open} onClose={()=>setOpen(false)}>
-                        <DialogTitle id="alert-dialog-title">מחיקת מדריך</DialogTitle>
+                        <DialogTitle style={{marginLeft:"auto"}} id="alert-dialog-title">מחיקת מדריך</DialogTitle>
                         <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             <br/>האם אתה בטוח שתרצה למחוק מדריך זה?

@@ -76,6 +76,50 @@ export default function Schedule(props) {
       )
     },[]);
 
+    useEffect(() => {
+      // const interval = setInterval(() => {
+
+      //   let now = new Date();
+        
+      //   if(now.getDay()===5){
+      //     let start_date = new Date(now.setDate(now.getDate() + 1));
+      //     let str_start_date = start_date.getFullYear() + "-" + (start_date.getMonth() + 1) + "-" + start_date.getDate();
+
+      //     now = new Date();
+      //     let end_date = new Date(now.setDate(now.getDate() + 8));
+      //     let str_end_date =  end_date.getFullYear() + "-" + (end_date.getMonth() + 1) + "-" + end_date.getDate();
+
+
+      //     fetch(apiUrl+ "Lesson/Match/"+ str_start_date.toString(),
+      //       {
+      //         method: 'PUT',
+      //         body: JSON.stringify(str_end_date),
+      //         headers: new Headers({
+      //           'Content-Type': 'application/json; charset=UTF-8',
+      //           'Accept': 'application/json; charset=UTF-8',
+      //         })
+      //       })
+      //       .then(res => {
+      //         console.log('res=', res);
+      //         console.log('res.status', res.status);
+      //         console.log('res.ok', res.ok);
+      //         return res.json();
+      //       })
+      //       .then(
+      //           (result) => {
+      //             console.log(result);
+      //           },
+      //         (error) => {
+      //           alert(error);
+      //       }
+      //     )
+      //   }
+        
+      // }, 3600000);
+
+      // return () => clearInterval(interval);
+  },[]);
+
     useEffect(()=>{
 
       if(lessons.length>0){
@@ -119,15 +163,24 @@ export default function Schedule(props) {
     },[lessons]);
 
     const register = () => {
-
-      auth.onAuthStateChanged((user)=>{
-        if (user) {
-          let email = user.email;
-          auth.signInWithEmailAndPassword(email,localStorage.getItem('id'));
-        } else {
-          auth.createUserWithEmailAndPassword(localStorage.getItem('email'),localStorage.getItem('id'));
-        }
+      auth.createUserWithEmailAndPassword(localStorage.getItem('email'),localStorage.getItem('id'))
+      .then(() => {
+          console.log('User account created & signed in!');
+      })
+      .catch(error => {
+          if (error.code === 'auth/email-already-in-use'){
+              auth.signInWithEmailAndPassword(localStorage.getItem('email'),localStorage.getItem('id'));
+          }
       });
+
+      // auth.onAuthStateChanged((user)=>{
+      //   if (user) {
+      //     let email = user.email;
+      //     auth.signInWithEmailAndPassword(email,localStorage.getItem('id'));
+      //   } else {
+      //     auth.createUserWithEmailAndPassword(localStorage.getItem('email'),localStorage.getItem('id'));
+      //   }
+      // });
     }
 
     const Appointment = ({
@@ -246,12 +299,12 @@ export default function Schedule(props) {
             </Scheduler>
             :null}
             <Tooltip title="שיעור חדש" aria-label="שיעור חדש">
-              <Fab color="default" className={classes.absolute}>
-                <AddIcon onClick={btnAddLesson}/>
+              <Fab className={classes.absolute}>
+                <AddIcon onClick={btnAddLesson} />
               </Fab>
             </Tooltip>
             <Dialog open={open} onClose={()=>setOpen(false)}>
-                <DialogTitle id="alert-dialog-title">מחיקת שיעור</DialogTitle>
+                <DialogTitle style={{marginLeft:"auto"}} id="alert-dialog-title">מחיקת שיעור</DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-description">
                       <br/>האם אתה בטוח שתרצה למחוק שיעור זה?

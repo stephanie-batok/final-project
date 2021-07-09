@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {List,ListItem,ListItemText,ListItemAvatar,Avatar,Divider,Typography} from '@material-ui/core';
 import ImageIcon from '@material-ui/icons/Image';
-import apiUrl from '../../global';
+import apiUrl,{uplodedPicPath} from '../../global';
 import makeStyles from "@material-ui/core/styles/makeStyles";
 
 
@@ -22,7 +22,6 @@ export default function ContactList(props) {
 
 
     useEffect(() => {
-
         fetch(apiUrl+"SystemUser/",
             {
                 method: 'GET',
@@ -78,6 +77,7 @@ export default function ContactList(props) {
     useEffect(() => {
         if(chat_num!==""){
             props.openNewChat({sendToId:sendToId,chat_num:chat_num});
+            setSendToId("");
         }
     },[chat_num]);
 
@@ -88,6 +88,9 @@ export default function ContactList(props) {
                 {contacts.map((contact)=>(
                     <>
                     <ListItem onClick={go2Chat(contact.id)} style={{backgroundColor:sendToId===contact.id?"#b5bbdc36":"white"}}>
+                        <ListItemAvatar>
+                            <Avatar src={uplodedPicPath+contact.profileImg} />
+                        </ListItemAvatar>
                         <Typography>{contact.first_name+" "+contact.last_name}</Typography>
                     </ListItem>          
                     <Divider/>

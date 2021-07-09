@@ -102,7 +102,8 @@ export default function EditLesson(props) {
             })
             .then(
               (result) => {
-                  setInstructors(result);
+                let activeInstructors = result.filter(x=> x.isAllowed);
+                setInstructors(activeInstructors);
               },
               (error) => {
                 alert(error);
@@ -128,7 +129,8 @@ export default function EditLesson(props) {
             })
             .then(
               (result) => {
-                  setHorses(result);
+                let activeHorses = result.filter(x=>x.is_active);
+                setHorses(activeHorses);
               },
               (error) => {
                 alert(error);
@@ -246,15 +248,17 @@ export default function EditLesson(props) {
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField select label="סוס" defaultValue={lesson.horse_id}  onChange={(e) => register({name:"horse_id", value: e.target.value})} fullWidth>
-                                        <MenuItem value={0}>ללא סוס קבוע</MenuItem>
+                                        <MenuItem value={0}>ללא סוס</MenuItem>
                                         {horses!==""?horses.map((h) =>(
                                         <MenuItem value={h.id}>{h.name}</MenuItem>
                                         )):null}
                                     </TextField>
                                 </Grid>
+                                {lessonType!=="שיעור ניסיון"?
                                 <Grid item xs={12} sm={6}>
-                                    <TextField name="match_rank" InputProps={{readOnly: true}} defaultValue={lesson.match_rank} inputRef={register} label="רמת התאמה עם סוס" fullWidth />
-                                </Grid>
+                                    <TextField name="match_rank" InputProps={{readOnly: true}} defaultValue={lesson.match_rank.toString().substring(0,4)} inputRef={register} label="רמת התאמה עם סוס" fullWidth />
+                                </Grid>:
+                                null}
                                 
                                 {lessonType!=="שיעור ניסיון"?<Grid item xs={12} sm={6}>
                                     <TextField select label="סוג שיעור" defaultValue={lesson.lesson_type} onChange={(e) => register({name:"lesson_type", value: e.target.value})} fullWidth>

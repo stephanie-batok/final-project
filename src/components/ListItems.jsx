@@ -4,12 +4,12 @@ import {List,ListItem,ListItemIcon,ListItemText,Collapse} from '@material-ui/cor
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import PeopleIcon from '@material-ui/icons/People';
 import WorkIcon from '@material-ui/icons/Work';
+import EditIcon from '@material-ui/icons/Edit';
 import {Link} from 'react-router-dom';
 import ExpandLess from '@material-ui/icons/ExpandLess';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import {Icon} from '@iconify/react';
 import horseshoeIcon from '@iconify-icons/mdi/horseshoe';
-import EmailIcon from '@material-ui/icons/Email';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -115,10 +115,18 @@ export default function ListItems() {
             </Collapse>
             <ListItem button>
                     <ListItemIcon>
-                        <EmailIcon />
+                        <EditIcon/>
                     </ListItemIcon>
-                    <Link style={{ textDecoration:'none',color: "inherit"}} to="/Messages">
-                        <ListItemText primary="הודעות" />
+                    <Link style={{ textDecoration:'none',color: "inherit"}} to="/MatchCriteria">
+                        <ListItemText primary="ניהול שיבוץ" />
+                    </Link>
+            </ListItem>
+            <ListItem button onClick={() => {localStorage.clear()}}>
+                    <ListItemIcon>
+                        <span class="material-icons md-48">logout</span>
+                    </ListItemIcon>
+                    <Link style={{ textDecoration:'none',color: "inherit"}} to="">
+                        <ListItemText primary="התנתק/י" />
                     </Link>
             </ListItem>
         </div>

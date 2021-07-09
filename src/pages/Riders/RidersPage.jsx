@@ -24,15 +24,30 @@ const useStyles = makeStyles((theme)=>({
         },
     },
     paper: {
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
-    padding: theme.spacing(2),
-    [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
-        marginTop: theme.spacing(6),
-        marginBottom: theme.spacing(6),
-        padding: theme.spacing(3),
-        },
+        marginTop: theme.spacing(3),
+        marginBottom: theme.spacing(3),
+        padding: theme.spacing(2),
+        [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+            marginTop: theme.spacing(6),
+            marginBottom: theme.spacing(6),
+            padding: theme.spacing(3),
+            },
     },
+    tableBtn:{
+        display: 'flex',
+        flexDirection: 'column',
+        fontSize:12
+    },
+    tableHeader:{
+        fontWeight:"bold",
+        color:"#585858"
+    },
+    searchBar:{
+        margin: '0 auto',
+        maxWidth: 300,
+        flexGrow:1,
+        marginBottom:20
+    }
 }));
 
 export default function RidersPage(props) {
@@ -171,19 +186,6 @@ export default function RidersPage(props) {
                 <Paper className={classes.paper}>
                     <Grid container justify="space-between">
                         <Grid item xs={4} sm={4} md={3} lg={2}>
-                            <TextField select label="בחר מגזר רכיבה" value={ridingSector} onChange={handleRidingSectorChange} fullWidth>
-                                <MenuItem value="הכל">
-                                הכל
-                                </MenuItem>
-                                <MenuItem value="רכיבה ספורטיבית">
-                                    רכיבה ספורטיבית
-                                </MenuItem>
-                                <MenuItem value="רכיבה טיפולית">
-                                    רכיבה טיפולית
-                                </MenuItem>
-                            </TextField>
-                        </Grid>
-                        <Grid item xs={4} sm={4} md={3} lg={2}>
                             <TextField select label="בחר סטאטוס רוכבים" value={active} onChange={(event)=> setActive(event.target.value)} fullWidth>
                                 <MenuItem value="הכל">
                                     כל הרוכבים
@@ -197,10 +199,23 @@ export default function RidersPage(props) {
                             </TextField>
                         </Grid>
                         <Grid item xs={4} sm={4} md={3} lg={2}>
-                            <IconButton aria-label="מיון">
+                            <TextField select label="בחר מגזר רכיבה" value={ridingSector} onChange={handleRidingSectorChange} fullWidth>
+                                <MenuItem value="הכל">
+                                הכל
+                                </MenuItem>
+                                <MenuItem value="רכיבה ספורטיבית">
+                                    רכיבה ספורטיבית
+                                </MenuItem>
+                                <MenuItem value="רכיבה טיפולית">
+                                    רכיבה טיפולית
+                                </MenuItem>
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={4} sm={4} md={3} lg={2}>
+                            <IconButton classes={{label: classes.tableBtn}} aria-label="מיון">
                                 <FilterListIcon onClick={() => sortBy()} />
-                            </IconButton>
-                            <lable> מיון רוכבים </lable>
+                                <div className={classes.tableHeader}> מיון רוכבים</div>
+                            </IconButton>    
                         </Grid>
                     </Grid>
                     <br/><br/>
@@ -216,11 +231,7 @@ export default function RidersPage(props) {
                                 value={searched}
                                 onChange={(searchVal) => requestSearch(searchVal)}
                                 onCancelSearch={() => cancelSearch()}
-                                style={{
-                                    margin: '0 auto',
-                                    maxWidth: 300,
-                                    flexGrow:1
-                                }}
+                                className={classes.searchBar}
                             />
                         </Grid>
                     </Grid>
@@ -228,12 +239,12 @@ export default function RidersPage(props) {
                         <Table className={classes.table} aria-label="simple table">
                             <TableHead style={{background:"rgb(245 245 245)"}}>
                                 <TableRow>
-                                    <TableCell component='th'>שם משפחה</TableCell>
-                                    <TableCell>שם פרטי</TableCell>
-                                    <TableCell>טלפון</TableCell>
-                                    <TableCell>מדריך קבוע</TableCell>
-                                    <TableCell>יום קבוע</TableCell>
-                                    <TableCell >שעה קבועה</TableCell>
+                                    <TableCell component='th' className={classes.tableHeader}>שם משפחה</TableCell>
+                                    <TableCell className={classes.tableHeader}>שם פרטי</TableCell>
+                                    <TableCell className={classes.tableHeader}>טלפון</TableCell>
+                                    <TableCell className={classes.tableHeader}>מדריך קבוע</TableCell>
+                                    <TableCell className={classes.tableHeader}>יום קבוע</TableCell>
+                                    <TableCell className={classes.tableHeader}>שעה קבועה</TableCell>
                                     <TableCell>&nbsp;</TableCell>     
                                     <TableCell>&nbsp;</TableCell>       
                                 </TableRow>
@@ -248,13 +259,15 @@ export default function RidersPage(props) {
                                         <TableCell>{rider.regular_lessons.map((lesson)=>(lesson.day+" "))}</TableCell>
                                         <TableCell>{rider.regular_lessons.map((lesson)=>(lesson.start_time+" "))}</TableCell>
                                         <TableCell>
-                                            <IconButton aria-label="עריכה"> 
+                                            <IconButton classes={{label: classes.tableBtn}} aria-label="עריכה"> 
                                                 <EditOutlineOutlinedIcon onClick={() => btnEditing(rider.id)} />
+                                                <div>עריכה</div>
                                             </IconButton>
                                         </TableCell>
                                         <TableCell>
-                                            <IconButton aria-label="מחיקה">
+                                            <IconButton classes={{label: classes.tableBtn}} aria-label="מחיקה">
                                                 <DeleteOutlineOutlinedIcon onClick={() => handleClickOpen(rider.id)} />
+                                                <div>מחיקה</div>
                                             </IconButton>
                                         </TableCell>
                                     </TableRow>
@@ -263,7 +276,7 @@ export default function RidersPage(props) {
                         </Table>
                     </TableContainer>
                     <Dialog open={open} onClose={()=>setOpen(false)}>
-                        <DialogTitle id="alert-dialog-title">מחיקת תלמיד</DialogTitle>
+                        <DialogTitle style={{marginLeft:"auto"}} id="alert-dialog-title">מחיקת תלמיד</DialogTitle>
                         <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             <br/>האם אתה בטוח שתרצה למחוק תלמיד זה?
