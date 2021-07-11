@@ -256,8 +256,8 @@ export default function RidersPage(props) {
                                         <TableCell>{rider.first_name}</TableCell>
                                         <TableCell>{rider.phone_number}</TableCell>
                                         <TableCell>{rider.instructor_full_name}</TableCell>
-                                        <TableCell>{rider.regular_lessons.map((lesson)=>(lesson.day+" "))}</TableCell>
-                                        <TableCell>{rider.regular_lessons.map((lesson)=>(lesson.start_time+" "))}</TableCell>
+                                        <TableCell>{rider.regular_lessons.map((lesson,kay)=>(kay===1?", "+lesson.day:lesson.day+" "))}</TableCell>
+                                        <TableCell>{rider.regular_lessons.map((lesson,kay)=>(kay===1?", "+lesson.start_time:lesson.start_time+" "))}</TableCell>
                                         <TableCell>
                                             <IconButton classes={{label: classes.tableBtn}} aria-label="עריכה"> 
                                                 <EditOutlineOutlinedIcon onClick={() => btnEditing(rider.id)} />
@@ -276,7 +276,7 @@ export default function RidersPage(props) {
                         </Table>
                     </TableContainer>
                     <Dialog open={open} onClose={()=>setOpen(false)}>
-                        <DialogTitle style={{marginLeft:"auto"}} id="alert-dialog-title">מחיקת תלמיד</DialogTitle>
+                        <DialogTitle style={{marginLeft:"auto"}} id="alert-dialog-title"> <DeleteOutlineOutlinedIcon/> מחיקת תלמיד</DialogTitle>
                         <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             <br/>האם אתה בטוח שתרצה למחוק תלמיד זה?
@@ -284,7 +284,7 @@ export default function RidersPage(props) {
                         </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                        <Button onClick={()=>setOpen(false)} color="primary">
+                        <Button onClick={()=>setOpen(false)} color="secondary">
                             ביטול
                         </Button>
                         <Button onClick={deleteRider} color="primary" autoFocus>

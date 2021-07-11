@@ -85,8 +85,8 @@ export default function ParentDetails(props) {
                         <>
                             <Grid item xs={12}>
                                 {key===0?
-                                <Typography variant="h6"><br/>פרטי הורה ראשון</Typography>:
-                                <Typography variant="h6"><br/>פרטי הורה שני</Typography>}
+                                <Typography variant="h7"><br/>פרטי הורה ראשון</Typography>:
+                                <Typography variant="h7"><br/>פרטי הורה שני</Typography>}
                             </Grid>
                             <Grid item xs={12} sm={6}> 
                                 <TextField name={"parent_id"+key} InputProps={{readOnly: true}} defaultValue={parent.id} inputRef={register} label="תעודת זהות" fullWidth />

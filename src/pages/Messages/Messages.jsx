@@ -92,7 +92,7 @@ export default function Messages(props) {
           <div className={classes.userChatsContainer}>
             <Toolbar>
             <IconButton edge="start" color="inherit" onClick={() => setShow(!show)}>
-                {show?<ArrowForwardIcon/>:<ChatIcon />}
+                {show?<ArrowForwardIcon color="primary"/>:<ChatIcon color="primary" />}
             </IconButton>
             <Typography edge="end" variant="h6" style={{alignItems:"center"}}>
                   {show?"אנשי קשר":"שיחות"}

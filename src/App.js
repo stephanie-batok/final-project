@@ -25,6 +25,9 @@ import EditInstructor from './pages/Instructors/EditInstructor';
 import DrawerMenu from './components/DrawerMenu';
 import Messages from './pages/Messages/Messages';
 import MatchCriteria from './pages/MatchCriteria';
+import LessonFeedback from './pages/LessonFeedback';
+import UsersPage from './pages/Users/UsersPage';
+import AddUser from './pages/Users/AddUser/AddUser';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -110,6 +113,15 @@ function App() {
                   </Route>
                   <Route path="/MatchCriteria" >
                     <MatchCriteria/>
+                  </Route>
+                  <Route path="/LessonFeedback/:id" >
+                    <LessonFeedback/>
+                  </Route>
+                  <Route path="/UsersPage" >
+                    <UsersPage/>
+                  </Route>
+                  <Route path="/AddUser" >
+                    <AddUser/>
                   </Route>
               </div>
           </Switch>

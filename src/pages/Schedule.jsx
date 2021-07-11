@@ -4,11 +4,17 @@ import { makeStyles } from '@material-ui/core/styles';
 import {Button,Grid,Fab,Tooltip,IconButton,Typography,Paper,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from '@material-ui/core';
 import { ViewState} from '@devexpress/dx-react-scheduler';
 import EditIcon from '@material-ui/icons/Edit';
+import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddIcon from '@material-ui/icons/Add';
 import {Scheduler,DayView, Appointments, MonthView, ViewSwitcher,DateNavigator,Toolbar,AppointmentTooltip} from '@devexpress/dx-react-scheduler-material-ui';
 import apiUrl from '../global';
 import {auth} from '../fireB';
+import WorkIcon from '@material-ui/icons/Work';
+import FeedbackIcon from '@material-ui/icons/Feedback';
+import {Icon} from '@iconify/react';
+import horseshoeIcon from '@iconify-icons/mdi/horseshoe';
+import ClassIcon from '@material-ui/icons/Class';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -37,8 +43,6 @@ export default function Schedule(props) {
 
 
     useEffect(()=>{
-      register();
-
       fetch(apiUrl+"Lesson/",
           {
             method: 'GET',
@@ -75,50 +79,6 @@ export default function Schedule(props) {
           }
       )
     },[]);
-
-    useEffect(() => {
-      // const interval = setInterval(() => {
-
-      //   let now = new Date();
-        
-      //   if(now.getDay()===5){
-      //     let start_date = new Date(now.setDate(now.getDate() + 1));
-      //     let str_start_date = start_date.getFullYear() + "-" + (start_date.getMonth() + 1) + "-" + start_date.getDate();
-
-      //     now = new Date();
-      //     let end_date = new Date(now.setDate(now.getDate() + 8));
-      //     let str_end_date =  end_date.getFullYear() + "-" + (end_date.getMonth() + 1) + "-" + end_date.getDate();
-
-
-      //     fetch(apiUrl+ "Lesson/Match/"+ str_start_date.toString(),
-      //       {
-      //         method: 'PUT',
-      //         body: JSON.stringify(str_end_date),
-      //         headers: new Headers({
-      //           'Content-Type': 'application/json; charset=UTF-8',
-      //           'Accept': 'application/json; charset=UTF-8',
-      //         })
-      //       })
-      //       .then(res => {
-      //         console.log('res=', res);
-      //         console.log('res.status', res.status);
-      //         console.log('res.ok', res.ok);
-      //         return res.json();
-      //       })
-      //       .then(
-      //           (result) => {
-      //             console.log(result);
-      //           },
-      //         (error) => {
-      //           alert(error);
-      //       }
-      //     )
-      //   }
-        
-      // }, 3600000);
-
-      // return () => clearInterval(interval);
-  },[]);
 
     useEffect(()=>{
 
@@ -162,26 +122,23 @@ export default function Schedule(props) {
       }
     },[lessons]);
 
-    const register = () => {
-      auth.createUserWithEmailAndPassword(localStorage.getItem('email'),localStorage.getItem('id'))
-      .then(() => {
-          console.log('User account created & signed in!');
-      })
-      .catch(error => {
-          if (error.code === 'auth/email-already-in-use'){
-              auth.signInWithEmailAndPassword(localStorage.getItem('email'),localStorage.getItem('id'));
-          }
-      });
+    useEffect(() => {
+      let email = localStorage.getItem('email');
+      let id = localStorage.getItem('id');
 
-      // auth.onAuthStateChanged((user)=>{
-      //   if (user) {
-      //     let email = user.email;
-      //     auth.signInWithEmailAndPassword(email,localStorage.getItem('id'));
-      //   } else {
-      //     auth.createUserWithEmailAndPassword(localStorage.getItem('email'),localStorage.getItem('id'));
-      //   }
-      // });
-    }
+      if(email!==null && id!==null){
+        auth.createUserWithEmailAndPassword(email,id)
+        .then(() => {
+            console.log('User account created & signed in!');
+        })
+        .catch(error => {
+            if (error.code === 'auth/email-already-in-use'){
+                auth.signInWithEmailAndPassword(email,id);
+            }
+        });
+      }
+    }, [trialLessons]);
+
 
     const Appointment = ({
         children, style,appointmentData, ...restProps
@@ -198,7 +155,7 @@ export default function Schedule(props) {
         </Appointments.Appointment>
     );
 
-    const Header = ({children, appointmentData, ...restProps}) => (
+    const Header = ({children,style, appointmentData, ...restProps}) => (
         <AppointmentTooltip.Header
           {...restProps}
           appointmentData={appointmentData}
@@ -209,15 +166,38 @@ export default function Schedule(props) {
           <IconButton onClick={(e)=>btn_edit(e,appointmentData.id,appointmentData.type)}>
             <EditIcon/>
           </IconButton>
+          <IconButton onClick={(e)=>btn_feedback(e,appointmentData.id)}>
+            <FeedbackIcon/>
+          </IconButton>
         </AppointmentTooltip.Header>
     );
 
-    const Content = ({children, appointmentData, ...restProps}) => (
-        <AppointmentTooltip.Content {...restProps} appointmentData={appointmentData}>
-          <Grid container alignItems="center">
-            <Grid item xs={12}>
+    const Content = ({children,style, appointmentData, ...restProps}) => (
+        <AppointmentTooltip.Content
+         {...restProps}
+         appointmentData={appointmentData}
+         style={{
+          ...style,
+          textAlign:"right"
+        }}
+         >
+          <Grid container alignItems="flex-start">
+            <Grid item xs={2} style={{textAlign:"center",paddingTop:"10px"}}>
+                <WorkIcon fontSize="small" color="action"/>
+            </Grid>
+            <Grid item xs={10} style={{paddingTop:"10px"}}>
                 <Typography>{appointmentData.text}</Typography>
+            </Grid>
+            <Grid item xs={2} style={{textAlign:"center",paddingTop:"10px"}}>
+                <ClassIcon fontSize="small" color="action"/>
+            </Grid>
+            <Grid item xs={10} style={{paddingTop:"10px"}}>
                 <Typography>סוג שיעור: {appointmentData.type}</Typography>
+            </Grid>
+            <Grid item xs={2} style={{textAlign:"center",paddingTop:"10px"}}>
+              <Icon icon={horseshoeIcon} width="1.1rem" height="1.1rem" color="#757575"/>
+            </Grid>
+            <Grid item xs={10} style={{paddingTop:"10px"}}>
                 <Typography>{appointmentData.horse}</Typography>
             </Grid>
           </Grid>
@@ -231,6 +211,10 @@ export default function Schedule(props) {
 
     const btnAddLesson = () => {
        history.push("/AddLesson");
+    }
+
+    const btn_feedback = (e,lesson_id) =>{
+      history.push("/LessonFeedback/"+lesson_id);
     }
 
     const btn_delete = (e,lesson_id,lesson_type) => {
@@ -304,14 +288,14 @@ export default function Schedule(props) {
               </Fab>
             </Tooltip>
             <Dialog open={open} onClose={()=>setOpen(false)}>
-                <DialogTitle style={{marginLeft:"auto"}} id="alert-dialog-title">מחיקת שיעור</DialogTitle>
+                <DialogTitle style={{marginLeft:"auto"}} id="alert-dialog-title"> <DeleteOutlineOutlinedIcon/> מחיקת שיעור</DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-description">
                       <br/>האם אתה בטוח שתרצה למחוק שיעור זה?
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                  <Button onClick={()=>setOpen(false)} color="primary">
+                  <Button onClick={()=>setOpen(false)} color="secondary">
                       ביטול
                   </Button>
                   <Button onClick={delete_lesson} color="primary" autoFocus>

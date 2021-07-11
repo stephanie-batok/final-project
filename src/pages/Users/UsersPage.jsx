@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useHistory} from "react-router-dom";
 import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Container,Button,Grid,IconButton,TextField,MenuItem,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from '@material-ui/core';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
-import EditOutlineOutlinedIcon from '@material-ui/icons/EditOutlined';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import AddIcon from '@material-ui/icons/Add';
 import SearchBar from "material-ui-search-bar";
@@ -50,21 +49,20 @@ const useStyles = makeStyles((theme)=>({
     }
 }));
 
-
-export default function InstructorsPage(props) {
-    const [instructors,setInstructors] = useState([]);
+export default function UsersPage() {
+    const [users,setUsers] = useState([]);
     const [rows, setRows] = useState([]);
     const [searched, setSearched] = useState("");
     const [order, setOrder] = useState("acs");
     const [active, setActive] = useState("");
     const [open, setOpen] = useState(false);
-    const [chosenInstructor,setChosenInstructor] = useState("");
+    const [chosenUser,setChosenUser] = useState("");
     const history = useHistory();
     const classes = useStyles();
 
     useEffect(()=>{
 
-        fetch(apiUrl+"Worker/Instructor",
+        fetch(apiUrl+"SystemUser",
             {
               method: 'GET',
               headers: new Headers({
@@ -80,7 +78,7 @@ export default function InstructorsPage(props) {
             })
             .then(
               (result) => {
-                  setInstructors(result);
+                  setUsers(result);
                   setRows(result);
                   setActive(true);
               },
@@ -92,32 +90,29 @@ export default function InstructorsPage(props) {
 
     useEffect(() => {
         if(active!=="הכל"){
-            const filteredRows = instructors.filter((instructor) => {
-                return instructor.isAllowed===active;
+            const filteredRows = users.filter((user) => {
+                return user.isAllowed===active;
             });
             setRows(filteredRows);
         }
         else{
-            setRows(instructors);
+            setRows(users);
         }
     },[active]);
 
-    const btnAddInstructor=()=>{
-        history.push('/AddInstructor');
+    const btnAddUsers=()=>{
+        history.push('/AddUser');
     }
 
-    const btnEditing=(instructor_id)=>{
-        history.push("/EditInstructor/"+instructor_id);
-    }
-                                                                     //Delete instructor dialog
-    const handleClickOpen = (instructor_id) => {
-        setChosenInstructor(instructor_id);    
+                                                                     //Delete user dialog
+    const handleClickOpen = (user_id) => {
+        setChosenUser(user_id);    
         setOpen(true);
     };
 
-    const deleteInstructor = () => {
+    const deleteUser = () => {
         
-        fetch(apiUrl+"Worker/"+chosenInstructor,                               //delete instructor - turn isAllowed into false
+        fetch(apiUrl+"SystemUser/"+chosenUser,                               //delete user - turn isAllowed into false
             {
                 method: 'DELETE',
                 headers: new Headers({
@@ -142,8 +137,8 @@ export default function InstructorsPage(props) {
     };  
 
     const requestSearch = (searchedVal) => {
-        const filteredRows = instructors.filter((instructor) => {
-          return instructor.first_name.includes(searchedVal);
+        const filteredRows = users.filter((user) => {
+          return user.first_name.includes(searchedVal);
         });
         setRows(filteredRows);
     };
@@ -173,31 +168,31 @@ export default function InstructorsPage(props) {
                 <Paper className={classes.paper}>
                     <Grid container justify="space-between">
                         <Grid item xs={5} sm={4} md={3} lg={2}>
-                            <TextField select label="בחר סטאטוס מדריכים" value={active} onChange={(event)=> setActive(event.target.value)} fullWidth>
+                            <TextField select label="בחר סטאטוס משתמשים" value={active} onChange={(event)=> setActive(event.target.value)} fullWidth>
                                 <MenuItem value="הכל">
-                                    כל המדריכים
+                                    כל המשתמשים
                                 </MenuItem>
                                 <MenuItem value={true}>
-                                    מדריכים פעילים
+                                    משתמשים פעילים
                                 </MenuItem>
                                 <MenuItem value={false}>
-                                    מדריכים לא פעילים
+                                    משתמשים לא פעילים
                                 </MenuItem>
                             </TextField>
                         </Grid>
                         <Grid item xs={5} sm={4} md={3} lg={2}>
                             <IconButton classes={{label: classes.tableBtn}} aria-label="מיון">
                                 <FilterListIcon onClick={() => sortBy()} />
-                                <div className={classes.tableHeader}> מיון מדריכים</div>
+                                <div className={classes.tableHeader}> מיון משתמשים</div>
                             </IconButton>           
                         </Grid>
                     </Grid>
                     <br/><br/>
                     <Grid container justify="space-between" alignItems="baseline">
                         <Grid item xs={4} sm={4} md={3} lg={3}>
-                            <Button color="primary" onClick={btnAddInstructor}>
+                            <Button color="primary" onClick={btnAddUsers}>
                                 <AddIcon/>
-                                הוספת מדריך
+                                הוספת משתמש
                             </Button>
                         </Grid>
                         <Grid item xs={5} sm={5} md={4} lg={3}>
@@ -216,31 +211,26 @@ export default function InstructorsPage(props) {
                                     <TableCell component='th' className={classes.tableHeader}>שם משפחה</TableCell>
                                     <TableCell className={classes.tableHeader}>שם פרטי</TableCell>
                                     <TableCell align="center" className={classes.tableHeader}>טלפון</TableCell>
-                                    <TableCell className={classes.tableHeader}>מין</TableCell>
-                                    <TableCell className={classes.tableHeader}>כתובת מייל</TableCell>
-                                    <TableCell className={classes.tableHeader}>תאריך לידה</TableCell>
-                                    <TableCell>&nbsp;</TableCell>     
+                                    <TableCell align="center" className={classes.tableHeader}>תעודת זהות</TableCell>
+                                    <TableCell align="center" className={classes.tableHeader}>כתובת מייל</TableCell>
+                                    <TableCell className={classes.tableHeader}>סיסמה</TableCell>
+                                    <TableCell className={classes.tableHeader}>סוג משתמש</TableCell>
                                     <TableCell>&nbsp;</TableCell>       
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.map((instructor) => (
-                                    <TableRow onDoubleClick={() => btnEditing(instructor.id)} key={instructor.id}>
-                                        <TableCell >{instructor.last_name}</TableCell>
-                                        <TableCell>{instructor.first_name}</TableCell>
-                                        <TableCell align="center">{instructor.phone_number}</TableCell>
-                                        <TableCell>{instructor.gender}</TableCell>
-                                        <TableCell>{instructor.email}</TableCell>
-                                        <TableCell>{instructor.date_of_birth}</TableCell>
-                                        <TableCell>
-                                            <IconButton aria-label="עריכה" classes={{label: classes.tableBtn}} > 
-                                                <EditOutlineOutlinedIcon onClick={() => btnEditing(instructor.id)} />
-                                                <div>עריכה</div>
-                                            </IconButton>
-                                        </TableCell>
+                                {rows.map((user) => (
+                                    <TableRow key={user.id}>
+                                        <TableCell >{user.last_name}</TableCell>
+                                        <TableCell>{user.first_name}</TableCell>
+                                        <TableCell align="center">{user.phone_number}</TableCell>
+                                        <TableCell align="center">{user.id}</TableCell>
+                                        <TableCell align="center">{user.email}</TableCell>
+                                        <TableCell>{user.password}</TableCell>
+                                        <TableCell>{user.user_type}</TableCell>
                                         <TableCell>
                                             <IconButton aria-label="מחיקה" classes={{label: classes.tableBtn}}>
-                                                <DeleteOutlineOutlinedIcon onClick={() => handleClickOpen(instructor.id)} />
+                                                <DeleteOutlineOutlinedIcon onClick={() => handleClickOpen(user.id)} />
                                                 <div>מחיקה</div>
                                             </IconButton>
                                         </TableCell>
@@ -250,18 +240,18 @@ export default function InstructorsPage(props) {
                         </Table>
                     </TableContainer>
                     <Dialog open={open} onClose={()=>setOpen(false)}>
-                        <DialogTitle style={{marginLeft:"auto"}} id="alert-dialog-title"> <DeleteOutlineOutlinedIcon/> מחיקת מדריך</DialogTitle>
+                        <DialogTitle style={{marginLeft:"auto"}} id="alert-dialog-title"> <DeleteOutlineOutlinedIcon/> מחיקת משתמש</DialogTitle>
                         <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            <br/>האם אתה בטוח שתרצה למחוק מדריך זה?
-                            פרטי המדריך יישמרו בסטאטוס לא פעיל.
+                            <br/>האם אתה בטוח שתרצה למחוק משתמש זה?
+                            פרטי המשתמש יישמרו בסטאטוס לא פעיל.
                         </DialogContentText>
                         </DialogContent>
                         <DialogActions>
                         <Button onClick={()=>setOpen(false)} color="secondary">
                             ביטול
                         </Button>
-                        <Button onClick={deleteInstructor} color="primary" autoFocus>
+                        <Button onClick={deleteUser} color="primary" autoFocus>
                             אישור
                         </Button>
                         </DialogActions>

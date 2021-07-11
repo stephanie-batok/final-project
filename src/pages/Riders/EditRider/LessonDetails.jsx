@@ -189,11 +189,11 @@ export default function LessonDetails(props) {
                 </Grid>
                 {rider.regular_lessons.map((regular_lesson,key) =>(
                     <Grid container justify="center" spacing={4}>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} style={{fontWeight:"bold"}}>
                                 {key===0?
-                                <Typography variant="h6"><br/>פרטי שיעור ראשון</Typography>:
-                                <Typography variant="h6"><br/>פרטי שיעור שני</Typography>}
-                            </Grid>
+                                <Typography variant="h7"><br/>פרטי שיעור ראשון</Typography>:
+                                <Typography variant="h7"><br/>פרטי שיעור שני</Typography>}
+                        </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField name={"price"+key} defaultValue={regular_lesson.price} type="number" inputRef={register} label="תעריף" fullWidth />
                         </Grid>
@@ -261,7 +261,7 @@ export default function LessonDetails(props) {
                 {addSecondLesson?
                 <Grid container justify="center" spacing={3}>
                     <Grid item xs={12}>
-                        <Typography variant="h6"><br/>פרטי שיעור שני</Typography>
+                        <Typography variant="h7" style={{fontWeight:"bold"}}><br/>פרטי שיעור שני</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField name="price1" type="number" inputRef={register} label="תעריף" fullWidth />

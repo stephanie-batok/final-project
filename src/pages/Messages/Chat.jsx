@@ -22,6 +22,7 @@ const useStyles = makeStyles(theme => ({
       border: "0.2px solid gray",
       borderRadius: "15px",
       margin: "8px",
+      marginRight:"15px",
       padding: "10px",
       display: "inline-block",
       backgroundColor:"#dcf8c6"
@@ -29,6 +30,7 @@ const useStyles = makeStyles(theme => ({
     bubbleRight: {
       border: "0.2px solid gray",
       borderRadius: "15px",
+      marginLeft:"15px",
       margin: "8px",
       padding: "10px",
       display: "inline-block",

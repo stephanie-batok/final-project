@@ -44,6 +44,7 @@ export default function LoginForm(props) {
         if(email.trim()!=="" && password.trim()!==""){
 
             let err = "";
+            let allow = "";
     
             fetch(apiUrl+"SystemUser/"+email+"/"+password,
                 {
@@ -63,7 +64,7 @@ export default function LoginForm(props) {
                         localStorage.setItem('rememberMe', true);
                     }
                     err = false;
-                    setAllowd(true);
+                    allow = true;
                   }
                   else {
                     err = true;
@@ -76,10 +77,12 @@ export default function LoginForm(props) {
                         setErrorMsg(result);                                   
                     }
                     else {
-                        localStorage.setItem('id', result.id);
-                        localStorage.setItem('user', JSON.stringify(result));
-                        localStorage.setItem('email', email);
                         localStorage.setItem('name', result.first_name + " " + result.last_name);
+                        localStorage.setItem('id', result.id);
+                        localStorage.setItem('email', email);
+                        localStorage.setItem('user_type', result.user_type);
+                        localStorage.setItem('user', JSON.stringify(result));
+                        setAllowd(allow);
                     }
                   },
                   (error) => {

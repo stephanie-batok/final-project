@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react';
 import apiUrl from '../../global';
 import { makeStyles } from '@material-ui/core/styles';
 import { useHistory} from "react-router-dom";
-import {Table,TableBody,TableCell,TableContainer,TablePagination,TableHead,TableRow,Paper,Container,Button,Grid,IconButton,TextField,MenuItem,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from '@material-ui/core';
+import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Container,Button,Grid,IconButton,TextField,MenuItem,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from '@material-ui/core';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import EditOutlineOutlinedIcon from '@material-ui/icons/EditOutlined';
 import FilterListIcon from '@material-ui/icons/FilterList';
@@ -250,7 +250,8 @@ export default function HorsesPage(props) {
                         </Table>
                     </TableContainer>
                     <Dialog open={open} onClose={()=>setOpen(false)}>
-                        <DialogTitle style={{marginLeft:"auto"}} id="alert-dialog-title">מחיקת סוס</DialogTitle>
+                        
+                        <DialogTitle style={{marginLeft:"auto"}} id="alert-dialog-title"> <DeleteOutlineOutlinedIcon/> מחיקת סוס</DialogTitle>
                         <DialogContent>
                         <DialogContentText id="alert-dialog-description">
                             <br/>האם אתה בטוח שתרצה למחוק סוס זה?
@@ -258,7 +259,7 @@ export default function HorsesPage(props) {
                         </DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                        <Button onClick={()=>setOpen(false)} color="primary">
+                        <Button onClick={()=>setOpen(false)} color="secondary">
                             ביטול
                         </Button>
                         <Button onClick={deleteHorse} color="primary" autoFocus>

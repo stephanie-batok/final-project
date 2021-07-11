@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import apiUrl from '../../../global';
 import { makeStyles } from '@material-ui/core/styles';
-import {Paper, Stepper, Step, StepLabel, Button, Link, Typography, Grid, IconButton} from '@material-ui/core';
+import {Paper, Button, Typography, Grid, IconButton} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import {useHistory} from "react-router-dom";
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function AddInstructor(props) {
+export default function AddUser() {
     const steps = ["פרטים אישיים"];
     const history = useHistory();
     const [personalDetails,setPersonalDetails] = useState("");
@@ -59,11 +59,12 @@ export default function AddInstructor(props) {
 
     const onSubmit = () => {
 
-        let newInstructor={                                  //create object to send in the body of POST method
+        let newUser={                                  //create object to send in the body of POST method
             "id": personalDetails["id"],
             "first_name": personalDetails["first_name"],
             "last_name": personalDetails["last_name"],
             "gender": personalDetails["gender"],
+            "user_type":personalDetails["user_type"],
             "date_of_birth":personalDetails["date_of_birth"],
             "phone_number": personalDetails["phone_number"],
             "email":personalDetails["email"],
@@ -72,39 +73,39 @@ export default function AddInstructor(props) {
             "address":personalDetails["address"],
             "starting_date":personalDetails["starting_date"],        
         }
-        console.log(newInstructor);
+        console.log(newUser);
         
-        fetch(apiUrl+"Worker/",                                    //add new instructor to db with POST method
+        fetch(apiUrl+"SystemUser/",                                    //add new user to db with POST method
             {
-              method: 'POST',
-              body: JSON.stringify(newInstructor),
-              headers: new Headers({
+                method: 'POST',
+                body: JSON.stringify(newUser),
+                headers: new Headers({
                 'Content-Type': 'application/json; charset=UTF-8',
                 'Accept': 'application/json; charset=UTF-8',
-              })
+                })
             })
             .then(res => {
-              console.log('res=', res);
-              console.log('res.status', res.status);
-              console.log('res.ok', res.ok);
-              if(res.ok){
+                console.log('res=', res);
+                console.log('res.status', res.status);
+                console.log('res.ok', res.ok);
+                if(res.ok){
                 setStatus("ok");
-              }
-              else{
+                }
+                else{
                 setStatus("no");
-              }
-              return res.json()
+                }
+                return res.json()
             })
             .then(
-              (result) => {
+                (result) => {
                 if(typeof(result) === "object"){
                     setMessage(result.Message);
                 }
                 else{
                     setMessage(result);
                 }
-              },
-              (error) => {
+                },
+                (error) => {
                 console.log("err post=", error);
         });           
     }
@@ -133,7 +134,7 @@ export default function AddInstructor(props) {
             <main className={classes.layout}>
                 <Paper className={classes.paper}>
                     <Typography component="h4" variant="h4" align="center" >
-                        מדריך חדש
+                        משתמש חדש
                     </Typography>
                     <br/>
                         <React.Fragment>
@@ -146,15 +147,11 @@ export default function AddInstructor(props) {
                                     <Button onClick={handleBack} className={classes.button}>
                                         חזור
                                     </Button>
-                                    <Button variant="contained" color="primary" onClick={()=>{history.push('/AddInstructor')}} className={classes.button}>
-                                        מדריך חדש
-                                    </Button>
                                 </div>
                             </div>
                         </React.Fragment>
                 </Paper>
             </main>
         </React.Fragment>
-        
     )
 }

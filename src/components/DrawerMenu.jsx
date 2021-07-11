@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     },
     drawer: {
         width: drawerWidth,
-        flexShrink: 0,
+        flexShrink: 0
     },
     drawerPaper: {
         width: drawerWidth,
@@ -57,9 +57,9 @@ const useStyles = makeStyles((theme) => ({
 export default function DrawerMenu(props) {
     const classes = useStyles();
     const history = useHistory();
-    const theme = useTheme()
+    const theme = useTheme();
     const [open, setOpen] = useState(props.open);
-    const [name, setName] = useState(localStorage.getItem("name"));
+    const name = localStorage.getItem("name");
 
 
     useEffect(() => {
