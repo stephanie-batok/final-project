@@ -147,6 +147,9 @@ export default function AddUser() {
                                     <Button onClick={handleBack} className={classes.button}>
                                         חזור
                                     </Button>
+                                    <Button variant="contained" color="primary" onClick={()=>{window.location.reload(false)}} className={classes.button}>
+                                        משתמש חדש
+                                    </Button>
                                 </div>
                             </div>
                         </React.Fragment>

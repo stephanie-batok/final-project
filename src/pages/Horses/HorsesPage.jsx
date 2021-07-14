@@ -187,7 +187,7 @@ export default function HorsesPage(props) {
                         </Grid>
                         <Grid item xs={5} sm={4} md={3} lg={2}>
                         <IconButton classes={{label: classes.tableBtn}} aria-label="מיון">
-                            <FilterListIcon onClick={() => sortBy()} />
+                            <FilterListIcon color="primary" onClick={() => sortBy()} />
                             <div className={classes.tableHeader}> מיון סוסים</div>
                         </IconButton>              
                         </Grid>
@@ -203,6 +203,7 @@ export default function HorsesPage(props) {
                         <Grid item xs={5} sm={5} md={4} lg={3}>
                             <SearchBar
                                 value={searched}
+                                placeholder="חיפוש לפי שם הסוס"
                                 onChange={(searchVal) => requestSearch(searchVal)}
                                 onCancelSearch={() => cancelSearch()}
                                 className={classes.searchBar}
@@ -234,13 +235,13 @@ export default function HorsesPage(props) {
                                         <TableCell>{horse.required_rank}</TableCell>
                                         <TableCell>
                                             <IconButton classes={{label: classes.tableBtn}} aria-label="עריכה"> 
-                                                <EditOutlineOutlinedIcon onClick={() => btnEditing(horse.id)} />
+                                                <EditOutlineOutlinedIcon color="primary" onClick={() => btnEditing(horse.id)} />
                                                 <div>עריכה</div>
                                             </IconButton>
                                         </TableCell>
                                         <TableCell>
                                             <IconButton classes={{label: classes.tableBtn}} aria-label="מחיקה">
-                                                <DeleteOutlineOutlinedIcon onClick={() => handleClickOpen(horse.id)} />
+                                                <DeleteOutlineOutlinedIcon color="error" onClick={() => handleClickOpen(horse.id)} />
                                                 <div>מחיקה</div>
                                             </IconButton>
                                         </TableCell>

@@ -187,7 +187,7 @@ export default function InstructorsPage(props) {
                         </Grid>
                         <Grid item xs={5} sm={4} md={3} lg={2}>
                             <IconButton classes={{label: classes.tableBtn}} aria-label="מיון">
-                                <FilterListIcon onClick={() => sortBy()} />
+                                <FilterListIcon color="primary" onClick={() => sortBy()} />
                                 <div className={classes.tableHeader}> מיון מדריכים</div>
                             </IconButton>           
                         </Grid>
@@ -203,6 +203,7 @@ export default function InstructorsPage(props) {
                         <Grid item xs={5} sm={5} md={4} lg={3}>
                             <SearchBar
                                 value={searched}
+                                placeholder="חיפוש לפי שם פרטי"
                                 onChange={(searchVal) => requestSearch(searchVal)}
                                 onCancelSearch={() => cancelSearch()}
                                 className={classes.searchBar}
@@ -234,13 +235,13 @@ export default function InstructorsPage(props) {
                                         <TableCell>{instructor.date_of_birth}</TableCell>
                                         <TableCell>
                                             <IconButton aria-label="עריכה" classes={{label: classes.tableBtn}} > 
-                                                <EditOutlineOutlinedIcon onClick={() => btnEditing(instructor.id)} />
+                                                <EditOutlineOutlinedIcon color="primary" onClick={() => btnEditing(instructor.id)} />
                                                 <div>עריכה</div>
                                             </IconButton>
                                         </TableCell>
                                         <TableCell>
                                             <IconButton aria-label="מחיקה" classes={{label: classes.tableBtn}}>
-                                                <DeleteOutlineOutlinedIcon onClick={() => handleClickOpen(instructor.id)} />
+                                                <DeleteOutlineOutlinedIcon color="error" onClick={() => handleClickOpen(instructor.id)} />
                                                 <div>מחיקה</div>
                                             </IconButton>
                                         </TableCell>

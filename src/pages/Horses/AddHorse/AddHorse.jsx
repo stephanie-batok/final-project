@@ -165,7 +165,7 @@ export default function AddHorse(props) {
                                     <Button onClick={handleBack} className={classes.button}>
                                         חזור
                                     </Button>
-                                    <Button variant="contained" color="primary" onClick={()=>{history.push('/AddHorse')}} className={classes.button}>
+                                    <Button variant="contained" color="primary" onClick={()=>{window.location.reload(false)}} className={classes.button}>
                                         סוס חדש
                                     </Button>
                                 </div>

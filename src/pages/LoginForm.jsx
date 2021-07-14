@@ -5,7 +5,7 @@ import Alert from '@material-ui/lab/Alert';
 import MailOutlinedIcon from '@material-ui/icons/MailOutlined';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { useHistory } from "react-router-dom";
-import logo from '../horse-club-logo.png';
+import logo from '../new-logo.PNG';
 import apiUrl from '../global';
 
 const useStyles = makeStyles((theme) => ({
@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
       marginTop: theme.spacing(1),
       marginBottom: theme.spacing(1),
       padding: theme.spacing(2),
-      [theme.breakpoints.up(600 + theme.spacing(3) * 2)]: {
+      [theme.breakpoints.up(1100 + theme.spacing(3) * 2)]: {
         marginTop: theme.spacing(2),
         marginBottom: theme.spacing(2),
         marginRight: theme.spacing(50),
@@ -112,9 +112,9 @@ export default function LoginForm(props) {
                 >
                     <Grid item>
                         <br/>
-                        <img src={logo} />
+                        <img src={logo} style={{height:180,width:180}}/>
                         <br/><br/>
-                        <h4>כניסה למערכת</h4>
+                        <h5>כניסה למערכת</h5>
                     </Grid>
                     <Grid item>
                         <TextField
@@ -125,7 +125,7 @@ export default function LoginForm(props) {
                             InputProps={{
                                 startAdornment: (
                                   <InputAdornment position="start">
-                                    <MailOutlinedIcon style={{fontSize:18}} />
+                                    <MailOutlinedIcon color="primary" style={{fontSize:18,color:"#ca0763"}} />
                                   </InputAdornment>
                                 ),
                               }}
@@ -141,18 +141,19 @@ export default function LoginForm(props) {
                             InputProps={{
                                 startAdornment: (
                                   <InputAdornment position="start">
-                                    <LockOutlinedIcon style={{fontSize:18}} />
+                                    <LockOutlinedIcon style={{fontSize:18,color:"#ca0763"}} />
                                   </InputAdornment>
                                 ),
                               }}
                              />
                     </Grid>
-                    <Grid item style={{fontSize:10}}>
+                    <Grid item>
                         <FormControlLabel
                             label="זכור אותי"
                             control={
                             <Checkbox
                                 checked={checked}
+                                size="small"
                                 onChange={() => setChecked(!checked)}
                                 color="primary"
                             />
@@ -163,7 +164,7 @@ export default function LoginForm(props) {
                         {errorMsg &&<Alert severity="error">{errorMsg}</Alert>}
                     </Grid>
                     <Grid item>
-                        <Button variant="contained" color="primary" onClick={btn_LogIn}>התחבר</Button>
+                        <Button variant="contained" color="primary" style={{borderRadius:25,width:100}} onClick={btn_LogIn}>התחבר</Button>
                     </Grid>
                 </Grid>
             </Paper>

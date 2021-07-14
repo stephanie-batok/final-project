@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import logo from '../horse-club-logo.png';
+import logo from '../new-logo.PNG';
 import clsx from 'clsx';
 import { makeStyles,useTheme } from '@material-ui/core/styles';
 import {CssBaseline,Drawer,AppBar,Toolbar,List,IconButton,Typography} from '@material-ui/core';
@@ -82,7 +82,7 @@ export default function DrawerMenu(props) {
                     </IconButton>
                     &nbsp;&nbsp;
                     <IconButton disabled={true} >
-                        <img alt='logo' src={logo} style={{width:'3.5rem',height:'4rem'}}/>
+                        <img alt='logo' src={logo} style={{width:'4rem',height:'4rem'}}/>
                     </IconButton>
                     <Typography style={{fontSize:14,fontWeight:"bold", paddingTop:20}}>שלום {name}</Typography>
                     <IconButton style={{marginRight:"auto"}} color="primary" onClick={() => {history.push("/Messages")}}>

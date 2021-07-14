@@ -146,7 +146,7 @@ export default function AddInstructor(props) {
                                     <Button onClick={handleBack} className={classes.button}>
                                         חזור
                                     </Button>
-                                    <Button variant="contained" color="primary" onClick={()=>{history.push('/AddInstructor')}} className={classes.button}>
+                                    <Button variant="contained" color="primary" onClick={()=>{window.location.reload(false)}} className={classes.button}>
                                         מדריך חדש
                                     </Button>
                                 </div>

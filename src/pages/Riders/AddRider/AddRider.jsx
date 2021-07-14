@@ -213,7 +213,7 @@ export default function AddRider(props) {
                                     <Button onClick={handleBack} className={classes.button}>
                                         חזור
                                     </Button>
-                                    <Button variant="contained" color="primary" onClick={()=>{history.push('/AddRider')}} className={classes.button}>
+                                    <Button variant="contained" color="primary" onClick={()=>{window.location.reload(false)}} className={classes.button}>
                                         תלמיד חדש
                                     </Button>
                                 </div>

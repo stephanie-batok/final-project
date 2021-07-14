@@ -213,7 +213,7 @@ export default function RidersPage(props) {
                         </Grid>
                         <Grid item xs={4} sm={4} md={3} lg={2}>
                             <IconButton classes={{label: classes.tableBtn}} aria-label="מיון">
-                                <FilterListIcon onClick={() => sortBy()} />
+                                <FilterListIcon color="primary" onClick={() => sortBy()} />
                                 <div className={classes.tableHeader}> מיון רוכבים</div>
                             </IconButton>    
                         </Grid>
@@ -229,6 +229,7 @@ export default function RidersPage(props) {
                         <Grid item xs={5} sm={5} md={4} lg={3}>
                             <SearchBar
                                 value={searched}
+                                placeholder="חיפוש לפי שם פרטי"
                                 onChange={(searchVal) => requestSearch(searchVal)}
                                 onCancelSearch={() => cancelSearch()}
                                 className={classes.searchBar}
@@ -260,13 +261,13 @@ export default function RidersPage(props) {
                                         <TableCell>{rider.regular_lessons.map((lesson,kay)=>(kay===1?", "+lesson.start_time:lesson.start_time+" "))}</TableCell>
                                         <TableCell>
                                             <IconButton classes={{label: classes.tableBtn}} aria-label="עריכה"> 
-                                                <EditOutlineOutlinedIcon onClick={() => btnEditing(rider.id)} />
+                                                <EditOutlineOutlinedIcon color="primary" onClick={() => btnEditing(rider.id)} />
                                                 <div>עריכה</div>
                                             </IconButton>
                                         </TableCell>
                                         <TableCell>
                                             <IconButton classes={{label: classes.tableBtn}} aria-label="מחיקה">
-                                                <DeleteOutlineOutlinedIcon onClick={() => handleClickOpen(rider.id)} />
+                                                <DeleteOutlineOutlinedIcon color="error" onClick={() => handleClickOpen(rider.id)} />
                                                 <div>מחיקה</div>
                                             </IconButton>
                                         </TableCell>

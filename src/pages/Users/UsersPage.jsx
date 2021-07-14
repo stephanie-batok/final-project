@@ -182,7 +182,7 @@ export default function UsersPage() {
                         </Grid>
                         <Grid item xs={5} sm={4} md={3} lg={2}>
                             <IconButton classes={{label: classes.tableBtn}} aria-label="מיון">
-                                <FilterListIcon onClick={() => sortBy()} />
+                                <FilterListIcon color="primary" onClick={() => sortBy()} />
                                 <div className={classes.tableHeader}> מיון משתמשים</div>
                             </IconButton>           
                         </Grid>
@@ -198,6 +198,7 @@ export default function UsersPage() {
                         <Grid item xs={5} sm={5} md={4} lg={3}>
                             <SearchBar
                                 value={searched}
+                                placeholder="חיפוש לפי שם פרטי"
                                 onChange={(searchVal) => requestSearch(searchVal)}
                                 onCancelSearch={() => cancelSearch()}
                                 className={classes.searchBar}
@@ -230,7 +231,7 @@ export default function UsersPage() {
                                         <TableCell>{user.user_type}</TableCell>
                                         <TableCell>
                                             <IconButton aria-label="מחיקה" classes={{label: classes.tableBtn}}>
-                                                <DeleteOutlineOutlinedIcon onClick={() => handleClickOpen(user.id)} />
+                                                <DeleteOutlineOutlinedIcon color="error" onClick={() => handleClickOpen(user.id)} />
                                                 <div>מחיקה</div>
                                             </IconButton>
                                         </TableCell>
