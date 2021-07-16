@@ -65,7 +65,7 @@ export default function PersonalDetails(props) {
                         </TextField>
                     </Grid>
                     <Grid item xs={12} sm={6}>
-                        <TextField name="phone" inputRef={register} label="מספר טלפון" fullWidth />
+                        <TextField name="phone_number" inputRef={register} label="מספר טלפון" fullWidth />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField name="date_of_birth" InputLabelProps={{shrink:true}} type="date" inputRef={register} label="*תאריך לידה" fullWidth />

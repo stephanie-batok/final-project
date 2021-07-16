@@ -36,7 +36,7 @@ export default function ParentDetails(props) {
             <form>
                 <Grid container spacing={4}>
                     <Grid item xs={12}>
-                        <Typography variant="h7" gutterBottom>פרטי הורה ראשון</Typography>
+                        <Typography variant="h7" gutterBottom style={{fontWeight:"bold"}}>פרטי הורה ראשון</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                     <TextField name="parent1_first_name" inputRef={register} label="שם פרטי" fullWidth />
@@ -64,7 +64,7 @@ export default function ParentDetails(props) {
                         <TextField name="parent1_email" inputRef={register} label="דואר אלקטרוני" fullWidth />
                     </Grid>
                     <Grid item xs={12}>
-                            <Typography variant="h7" gutterBottom>פרטי הורה שני</Typography>
+                            <Typography variant="h7" gutterBottom style={{fontWeight:"bold"}}>פרטי הורה שני</Typography>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                             <TextField name="parent2_id" inputRef={register} label="תעודת זהות" fullWidth />

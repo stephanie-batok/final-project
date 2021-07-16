@@ -3,10 +3,12 @@ import apiUrl from '../global';
 import { useForm, Controller } from "react-hook-form";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
-import {Paper,Typography, Grid, IconButton,Button,TextField,Slider,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from '@material-ui/core';
+import {Paper,Typography, Grid, IconButton,Button,ButtonGroup,TextField,Slider,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import CheckIcon from '@material-ui/icons/Check';
 import EmojiObjectsIcon from '@material-ui/icons/EmojiObjects';
+import TimerIcon from '@material-ui/icons/Timer';
+import TimerOffIcon from '@material-ui/icons/TimerOff';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 
@@ -163,6 +165,60 @@ export default function MatchCriteria(props) {
         });
         }
     }
+    const startMatch = () =>{
+
+        fetch(apiUrl+"start",
+            {
+              method: 'GET',
+              headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Accept': 'application/json; charset=UTF-8',
+              })
+            })
+            .then(res => {
+              console.log('res=', res);
+              console.log('res.status', res.status);
+              console.log('res.ok', res.ok);
+              return res;
+            })
+            .then(
+              (result) => {
+                  console.log(result);
+                  alert("שיבוץ אוטומטי של סוסים לשיעורים הופעל. ביום שישי הקרוב יתבצע שיבוץ אוטומטי לשיעורים בשבוע הבא.");
+              },
+              (error) => {
+                console.log(error);
+            }
+        );
+    }
+
+    const stopMatch = () =>{
+
+        fetch(apiUrl+"stop",
+        {
+          method: 'GET',
+          headers: new Headers({
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Accept': 'application/json; charset=UTF-8',
+          })
+        })
+        .then(res => {
+          console.log('res=', res);
+          console.log('res.status', res.status);
+          console.log('res.ok', res.ok);
+          return res;
+        })
+        .then(
+          (result) => {
+              console.log(result);
+              alert("שיבוץ אוטומטי של סוסים לשיעורים הופסק.");
+          },
+          (error) => {
+            console.log(error);
+        }
+    );
+
+    }
 
 
     return (
@@ -179,10 +235,22 @@ export default function MatchCriteria(props) {
                 <main className={classes.layout}>
                     <Paper className={classes.paper}>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <Button color="primary" onClick={()=>setOpen(true)} style={{marginRight:"auto",display:"flex"}}>
-                               <EmojiObjectsIcon fontSize="small"/>
+                        <Grid container justify="space-between">
+                        <ButtonGroup size="small" color="primary" variant="text" aria-label="הפעל/הפסק שיבוץ אוטומטי">
+                            <Button onClick={() => startMatch()}>
+                                <TimerIcon fontSize="small"/>
+                                הפעל שיבוץ אוטומטי
+                            </Button>
+                            <Button onClick={()=> stopMatch()}>
+                                <TimerOffIcon fontSize="small"/>
+                                הפסק שיבוץ אוטומטי
+                            </Button>
+                        </ButtonGroup>
+                        <Button color="primary" onClick={()=>setOpen(true)} >
+                               <EmojiObjectsIcon fontSize="small" />
                                החל שיבוץ חכם
                         </Button>
+                        </Grid>
                         <Grid container justify="center" alignItems="center" spacing={4}>
                             <Grid item xs={12}>
                                 <Typography variant="h6"><br/>קריטריונים לשיבוץ סוסים<br/><br/></Typography>

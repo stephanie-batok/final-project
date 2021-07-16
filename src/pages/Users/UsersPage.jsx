@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useHistory} from "react-router-dom";
 import {Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Container,Button,Grid,IconButton,TextField,MenuItem,Dialog,DialogActions,DialogContent,DialogContentText,DialogTitle} from '@material-ui/core';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
+import RestoreIcon from '@material-ui/icons/Restore';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import AddIcon from '@material-ui/icons/Add';
 import SearchBar from "material-ui-search-bar";
@@ -62,7 +63,7 @@ export default function UsersPage() {
 
     useEffect(()=>{
 
-        fetch(apiUrl+"SystemUser",
+        fetch(apiUrl+"SystemUser/All",
             {
               method: 'GET',
               headers: new Headers({
@@ -134,6 +135,31 @@ export default function UsersPage() {
                 console.log("err post=", error);
         });  
         setOpen(false);
+    };
+
+    const restoreUser = (userToRestore) => {
+        
+        fetch(apiUrl+"SystemUser/"+userToRestore,                               //delete user - turn isAllowed into true
+            {
+                method: 'PUT',
+                headers: new Headers({
+                'Content-Type': 'application/json; charset=UTF-8',
+                'Accept': 'application/json; charset=UTF-8',
+                })
+            })
+            .then(res => {
+                console.log('res=', res);
+                console.log('res.status', res.status);
+                console.log('res.ok', res.ok);
+                return res.json()
+            })
+            .then(
+                (result) => {
+                    console.log(result);
+                },
+                (error) => {
+                console.log("err post=", error);
+        });  
     };  
 
     const requestSearch = (searchedVal) => {
@@ -230,10 +256,16 @@ export default function UsersPage() {
                                         <TableCell>{user.password}</TableCell>
                                         <TableCell>{user.user_type}</TableCell>
                                         <TableCell>
-                                            <IconButton aria-label="מחיקה" classes={{label: classes.tableBtn}}>
+                                            {user.isAllowed?
+                                            <IconButton aria-label="מחק הרשאה" classes={{label: classes.tableBtn}}>
                                                 <DeleteOutlineOutlinedIcon color="error" onClick={() => handleClickOpen(user.id)} />
-                                                <div>מחיקה</div>
+                                                <div>מחיקת הרשאה</div>
+                                            </IconButton>:
+                                                <IconButton aria-label="שחזר הרשאה" classes={{label: classes.tableBtn}}>
+                                                <RestoreIcon color="primary" onClick={() => restoreUser(user.id)} />
+                                                <div>שחזור הרשאה</div>
                                             </IconButton>
+                                            }
                                         </TableCell>
                                     </TableRow>
                                 ))}

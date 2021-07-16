@@ -39,7 +39,7 @@ export default function UserChats(props) {
                         <ListItemAvatar>
                             <Avatar src={uplodedPicPath+chat.user_profile2} />
                         </ListItemAvatar>
-                        <ListItemText primary={chat.user_name2} secondary={chat.last_message.length>=20?chat.last_message.substring(0,24)+"...":chat.last_message} />
+                        <ListItemText primary={chat.user_name2} secondary={chat.last_message.length>=20?chat.last_message.substring(0,20)+"...":chat.last_message} />
                         <ListItemSecondaryAction edge="end" style={{fontSize:12,color:"gray",paddingBottom:16}}>
                             {chat.dateStr===date?chat.timeStr.substring(0, 5):chat.dateStr}
                         </ListItemSecondaryAction>
@@ -51,7 +51,7 @@ export default function UserChats(props) {
                         <ListItemAvatar>
                             <Avatar src={uplodedPicPath+chat.user_profile1} />
                         </ListItemAvatar>
-                        <ListItemText primary={chat.user_name1} secondary={chat.last_message.length>=20?chat.last_message.substring(0,24)+"...":chat.last_message} />
+                        <ListItemText primary={chat.user_name1} secondary={chat.last_message.length>=20?chat.last_message.substring(0,20)+"...":chat.last_message} />
                         <ListItemSecondaryAction edge="end" style={{fontSize:12,color:"gray",paddingBottom:16}}>
                             {chat.dateStr===date?chat.timeStr.substring(0, 5):chat.dateStr}
                         </ListItemSecondaryAction>

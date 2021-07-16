@@ -7,7 +7,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItems from './ListItems';
-import EmailIcon from '@material-ui/icons/Email';
+import MailOutlineIcon from '@material-ui/icons/MailOutline';
 import { useHistory} from "react-router-dom";
 
 const drawerWidth = 240;
@@ -86,7 +86,7 @@ export default function DrawerMenu(props) {
                     </IconButton>
                     <Typography style={{fontSize:14,fontWeight:"bold", paddingTop:20}}>שלום {name}</Typography>
                     <IconButton style={{marginRight:"auto"}} color="primary" onClick={() => {history.push("/Messages")}}>
-                        <EmailIcon />
+                        <MailOutlineIcon style={{color:"#ca0763"}} />
                     </IconButton>
                 </Toolbar>
             </AppBar>

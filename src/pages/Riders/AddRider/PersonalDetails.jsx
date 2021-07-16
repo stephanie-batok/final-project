@@ -121,8 +121,8 @@ export default function PersonalDetails(props) {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <TextField required
-                        value={values.phone}
-                        name="phone"
+                        value={values.phone_number}
+                        name="phone_number"
                         label="טלפון"
                         onChange={handleInputChange}
                         fullWidth

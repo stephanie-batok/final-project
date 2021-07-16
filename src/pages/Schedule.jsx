@@ -266,7 +266,7 @@ export default function Schedule(props) {
                 <ViewState
                     defaultCurrentDate={currentDate}
                 />
-                <DayView startDayHour={12} endDayHour={19}/>
+                <DayView startDayHour={10} endDayHour={19}/>
                 <MonthView />
                 <Toolbar/>
                 <ViewSwitcher />

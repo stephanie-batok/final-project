@@ -155,6 +155,5 @@ export default function AddInstructor(props) {
                 </Paper>
             </main>
         </React.Fragment>
-        
     )
 }

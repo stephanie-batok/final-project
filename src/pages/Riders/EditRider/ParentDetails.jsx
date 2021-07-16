@@ -85,8 +85,8 @@ export default function ParentDetails(props) {
                         <>
                             <Grid item xs={12}>
                                 {key===0?
-                                <Typography variant="h7"><br/>פרטי הורה ראשון</Typography>:
-                                <Typography variant="h7"><br/>פרטי הורה שני</Typography>}
+                                <Typography variant="h7" style={{fontWeight:"bold"}}><br/>פרטי הורה ראשון</Typography>:
+                                <Typography variant="h7" style={{fontWeight:"bold"}}><br/>פרטי הורה שני</Typography>}
                             </Grid>
                             <Grid item xs={12} sm={6}> 
                                 <TextField name={"parent_id"+key} InputProps={{readOnly: true}} defaultValue={parent.id} inputRef={register} label="תעודת זהות" fullWidth />
@@ -116,7 +116,7 @@ export default function ParentDetails(props) {
                         </>)):
                         <>
                             <Grid item xs={12}>
-                                <Typography variant="h7"><br/>פרטי הורה ראשון</Typography>
+                                <Typography variant="h7" style={{fontWeight:"bold"}}><br/>פרטי הורה ראשון</Typography>
                             </Grid>
                             <Grid item xs={12} sm={6}> 
                                 <TextField name={"parent_id0"} inputRef={register} label="תעודת זהות" fullWidth />
@@ -144,7 +144,7 @@ export default function ParentDetails(props) {
                                 <TextField name={"parent_email0"} inputRef={register} label="דואר אלקטרוני" fullWidth />
                             </Grid>
                             <Grid item xs={12}>
-                                <Typography variant="h7"><br/>פרטי הורה שני</Typography>
+                                <Typography variant="h7" style={{fontWeight:"bold"}}><br/>פרטי הורה שני</Typography>
                             </Grid>
                             <Grid item xs={12} sm={6}> 
                                 <TextField name={"parent_id1"} inputRef={register} label="תעודת זהות" fullWidth />

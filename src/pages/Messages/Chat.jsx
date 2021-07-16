@@ -34,7 +34,7 @@ const useStyles = makeStyles(theme => ({
       margin: "8px",
       padding: "10px",
       display: "inline-block",
-      backgroundColor:"#c3e2e8f2"
+      backgroundColor:"white"
     },
     dateStamp:{
       textAlign:"center",
