@@ -2,8 +2,8 @@
 
 ## Installation
 - clone the repository
-- npm/yarn install at main directory
-- expo start
+- npm install at main directory
+- npm start
 - for login:
   - email: rona@gmail.com
   - password: r0na123$
